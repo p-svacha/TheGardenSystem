@@ -26,4 +26,16 @@ public class Object
     public virtual string LabelCap => Def.LabelCap;
     public virtual string Description => Def.Description;
     public virtual Sprite Sprite => Def.Sprite;
+
+    public string GetTooltipDescription()
+    {
+        string tags = "";
+        foreach(ObjectTagDef tag in Tags)
+        {
+            tags += $"<link=tag_{tag.DefName}><color={tag.ColorHex}>{tag.LabelCap}</color></link> ";
+        }
+        tags = tags.TrimEnd(' ');
+
+        return $"{tags}\n\n{Description}";
+    }
 }

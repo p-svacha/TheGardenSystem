@@ -26,7 +26,7 @@ public static class ObjectDefs
         new ObjectDef()
         {
             DefName = "CompostHeap",
-            Label = "compost head",
+            Label = "compost heap",
             Description = "Enriches the soil. Adjacent food plants produce +1 food.",
             Tags = new List<ObjectTagDef>()
             {
