@@ -25,6 +25,7 @@ public static class DefDatabaseRegistry
         ClearAllDatabases();
         DefDatabase<TerrainDef>.AddDefs(TerrainDefs.Defs);
         DefDatabase<ResourceDef>.AddDefs(ResourceDefs.Defs);
+        DefDatabase<ObjectTagDef>.AddDefs(ObjectTagDefs.Defs);
         DefDatabase<ObjectDef>.AddDefs(ObjectDefs.Defs);
     }
 

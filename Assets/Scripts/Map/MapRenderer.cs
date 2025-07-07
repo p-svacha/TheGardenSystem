@@ -73,7 +73,7 @@ public class MapRenderer : MonoBehaviour
             // Compute a transform that both rotates and offsets the tile inside its cell
             Vector3 offset = Vector3.zero;
             Quaternion rot = Quaternion.identity;
-            float centerOffset = 0.4f;
+            float centerOffset = 0.45f;
 
             switch (dir)
             {
@@ -149,10 +149,10 @@ public class MapRenderer : MonoBehaviour
 
     private void DrawFencesAround(MapTile tile)
     {
-        if (!tile.North.IsOwned) DrawFence(tile, Direction.N);
-        if (!tile.East.IsOwned) DrawFence(tile, Direction.E);
-        if (!tile.South.IsOwned) DrawFence(tile, Direction.S);
-        if (!tile.West.IsOwned) DrawFence(tile, Direction.W);
+        if (!tile.TileNorth.IsOwned) DrawFence(tile, Direction.N);
+        if (!tile.TileEast.IsOwned) DrawFence(tile, Direction.E);
+        if (!tile.TileSouth.IsOwned) DrawFence(tile, Direction.S);
+        if (!tile.TileWest.IsOwned) DrawFence(tile, Direction.W);
     }
 
     private void DrawFence(MapTile tile, Direction dir)

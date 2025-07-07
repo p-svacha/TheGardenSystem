@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MapTile
@@ -15,22 +16,44 @@ public class MapTile
         Terrain = new Terrain(this, terrainDef);
     }
 
+    public List<ObjectEffect> GetEffects()
+    {
+        if (HasObject) return Object.Effects;
+        else return new List<ObjectEffect>();
+    }
+
     public void Acquire() => IsOwned = true;
     public void PlaceObject(Object obj) => Object = obj;
     public void ClearObject() => Object = null;
 
     #region Getters
 
-    // Adjacent tiles
-    public MapTile North => Map.GetTile(Coordinates + new Vector2Int(0, 1));
-    public MapTile East => Map.GetTile(Coordinates + new Vector2Int(1, 0));
-    public MapTile South => Map.GetTile(Coordinates + new Vector2Int(0, -1));
-    public MapTile West => Map.GetTile(Coordinates + new Vector2Int(-1, 0));
+    public bool HasObject => Object != null;
 
-    public MapTile NorthEast => Map.GetTile(Coordinates + new Vector2Int(1, 1));
-    public MapTile SouthEast => Map.GetTile(Coordinates + new Vector2Int(1, -1));
-    public MapTile SouthWest => Map.GetTile(Coordinates + new Vector2Int(-1, -1));
-    public MapTile NorthWest => Map.GetTile(Coordinates + new Vector2Int(-1, 1));
+    // Adjacent tiles
+    public MapTile TileNorth => Map.GetTile(Coordinates + new Vector2Int(0, 1));
+    public MapTile TileEast => Map.GetTile(Coordinates + new Vector2Int(1, 0));
+    public MapTile TileSouth => Map.GetTile(Coordinates + new Vector2Int(0, -1));
+    public MapTile TileWest => Map.GetTile(Coordinates + new Vector2Int(-1, 0));
+
+    public MapTile TileNorthEast => Map.GetTile(Coordinates + new Vector2Int(1, 1));
+    public MapTile TileSouthEast => Map.GetTile(Coordinates + new Vector2Int(1, -1));
+    public MapTile TileSouthWest => Map.GetTile(Coordinates + new Vector2Int(-1, -1));
+    public MapTile TileNorthWest => Map.GetTile(Coordinates + new Vector2Int(-1, 1));
+
+    public List<MapTile> GetAdjacentTiles()
+    {
+        List<MapTile> adjTiles = new List<MapTile>();
+        if (TileNorth != null) adjTiles.Add(TileNorth);
+        if (TileEast != null) adjTiles.Add(TileEast);
+        if (TileSouth != null) adjTiles.Add(TileSouth);
+        if (TileWest != null) adjTiles.Add(TileWest);
+        if (TileNorthEast != null) adjTiles.Add(TileNorthEast);
+        if (TileSouthEast != null) adjTiles.Add(TileSouthEast);
+        if (TileSouthWest != null) adjTiles.Add(TileSouthWest);
+        if (TileNorthWest != null) adjTiles.Add(TileNorthWest);
+        return adjTiles;
+    }
 
     #endregion
 }

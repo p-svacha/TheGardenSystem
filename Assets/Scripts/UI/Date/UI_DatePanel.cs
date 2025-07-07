@@ -8,6 +8,6 @@ public class UI_DatePanel : MonoBehaviour
 
     public void Refresh()
     {
-
+        DateText.text = $"{Game.Instance.GetWeekdayName()}, Week {Game.Instance.GetWeekNumber()}";
     }
 }

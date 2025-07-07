@@ -299,8 +299,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 955479302}
-  - {fileID: 1256392352}
   - {fileID: 1527142982}
+  - {fileID: 1256392352}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &54363645
@@ -391,7 +391,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 20
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -816,6 +816,7 @@ GameObject:
   - component: {fileID: 662419677}
   - component: {fileID: 662419679}
   - component: {fileID: 662419678}
+  - component: {fileID: 662419680}
   m_Layer: 5
   m_Name: DatePanel
   m_TagString: Untagged
@@ -841,7 +842,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 10, y: -10}
-  m_SizeDelta: {x: 350, y: 60}
+  m_SizeDelta: {x: 370, y: 60}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &662419678
 MonoBehaviour:
@@ -881,6 +882,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 662419676}
   m_CullTransparentMesh: 1
+--- !u!114 &662419680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662419676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c5abbe168bd56746bf0271349086f4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DateText: {fileID: 4035202}
 --- !u!1 &713588574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,7 +1178,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 20
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -1287,7 +1301,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 20
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -1419,6 +1433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b108f4059b9d2f74a8907c439a0d0f0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DatePanel: {fileID: 662419680}
   ResourcePanel: {fileID: 637363963}
 --- !u!1 &1527142981
 GameObject:
@@ -1619,7 +1634,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 20
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16

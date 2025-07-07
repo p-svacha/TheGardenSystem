@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ListExtensions
+public static class List
 {
     /// <summary>
     /// Returns a random element from the list using UnityEngine.Random. Optionally removes the selected element from the list.
