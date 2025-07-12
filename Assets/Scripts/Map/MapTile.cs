@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapTile
+public class MapTile : INestedTooltipTarget
 {
     public Map Map { get; private set; }
     public Vector2Int Coordinates { get; private set; }
@@ -54,6 +54,28 @@ public class MapTile
         if (TileNorthWest != null) adjTiles.Add(TileNorthWest);
         return adjTiles;
     }
+
+    #endregion
+
+    #region INestedTooltipTaget
+
+    public string GetTooltipTitle() => "";
+    public string GetToolTipBodyText()
+    {
+        if (HasObject) return $"{Object.GetNestedTooltipLink()} on {Terrain.GetNestedTooltipLink()}";
+        else return $"{Terrain.LabelCap}";
+    }
+    public List<INestedTooltipTarget> GetToolTipReferences()
+    {
+        List<INestedTooltipTarget> refs = new List<INestedTooltipTarget>();
+        if (HasObject) refs.Add(Object);
+        refs.Add(Terrain);
+        return refs;
+    }
+
+    public string NestedTooltipLinkId => $"MapTile_{Coordinates}";
+    public string NestedTooltipLinkText => Terrain.LabelCap;
+    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
 
     #endregion
 }

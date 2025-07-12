@@ -4,90 +4,237 @@ using TMPro;
 using UnityEngine.EventSystems;
 using System.Linq;
 
+/// <summary>
+/// Attach this to the container in the UI canvas that will hold all tooltips.
+/// </summary>
 public class NestedTooltipManager : MonoBehaviour
 {
     public static NestedTooltipManager Instance;
-    [Tooltip("A tooltip prefab with TooltipWindow component")]
-    public GameObject TooltipPrefab;
+
+    private const float TOOLTIP_DELAY = 1f; // The time in seconds that something needs to get hovered to spawn a tooltip
+    private const float PIN_DELAY = 1.5f; // The time in seconds it takes for a tooltip to become pinned, allowing to hover into it and spawn nested tooltips
+    public static Color DEFAULT_NESTED_LINK_COLOR = new Color(0.8f, 0.4f, 0f);
+    private const int MOUSE_OFFSET = 5; // px
+    private const int SCREEN_EDGE_OFFSET = 5; // px
+
+    [Header("Tooltip frame colors")]
+    public Color UnpinnedFrameColor;
+    public Color PinnedFrameColor;
+
+    [Header("Prefabs")]
+    public TooltipWindow TooltipPrefab;
+
+
+    /// <summary>
+    /// The INestedTooltipTarget that is currently being hovered, may be null
+    /// </summary>
+    private INestedTooltipTarget CurrentHoveredTarget;
+
+    /// <summary>
+    /// Flag if CurrentHoveredTarget will spawn a new root tooltip if hovered long enough.
+    /// <br/>If false, it will spawn a nested tooltip.
+    /// </summary>
+    private bool IsCurrentHoveredTargetRoot;
+
+    /// <summary>
+    /// How long the current hovered target has been hovered for.
+    /// </summary>
+    private float HoverTimer;
 
     // Stack of open windows in order of creation
     private readonly List<TooltipWindow> Windows = new List<TooltipWindow>();
 
+    /// <summary>
+    /// Dictionary holding information about which TMPro link id's belong to which INestedTooltipTargets.
+    /// </summary>
+    private static Dictionary<string, INestedTooltipTarget> LinkTargets;
+
     private void Awake()
     {
         Instance = this;
+        LinkTargets = new Dictionary<string, INestedTooltipTarget>();
+        HoverTimer = 0f;
+        CurrentHoveredTarget = null;
+    }
+
+    private void Update()
+    {
+        // If the newest tooltip isn't positioned yet, do that.
+        if (Windows.Count > 0 && !Windows.Last().IsPositioned) PositionTooltip(Windows.Last());
+
+        // Accumulate hover time on current hovered target
+        if (CurrentHoveredTarget != null)
+        {
+            bool doAccumulateTime = true;
+            if (Windows.Count > 0 && Windows.Last().Target == CurrentHoveredTarget) doAccumulateTime = false; // Don't accumulate if target already has a tooltip
+            if (Windows.Count > 0 && !Windows.Last().IsPinned) doAccumulateTime = false; // Don't accumulate time if outermost window isn't pinned yet
+            if (doAccumulateTime)
+            {
+                HoverTimer += Time.deltaTime;
+                if (HoverTimer >= TOOLTIP_DELAY)
+                {
+                    if (IsCurrentHoveredTargetRoot)
+                    {
+                         if (Windows.Count == 0) ShowRootTooltip(CurrentHoveredTarget); // Only show new root tooltip if no other tooltips are active
+                    }
+                    else ShowTooltip(CurrentHoveredTarget);
+                }
+            }
+        }
+
+        // Accumulate pin time on outermost tooltip
+        if (Windows.Count > 0 && !Windows.Last().IsPinned)
+        {
+            if (Time.time - Windows.Last().CreatedAt >= PIN_DELAY)
+            {
+                PinTooltip(Windows.Last());
+            }
+        }
+
+        // If neither the outermost tooltip nor the target creating it is hovered, destroy it
+        if(Windows.Count > 0)
+        {
+            bool isOutermostWindowHovered = Windows.Last().IsHovered; // Tooltip window can only count as hovered when pinned
+            bool isTargetSpawningOutermostWindowHovered = (CurrentHoveredTarget == Windows.Last().Target);
+            if (!isOutermostWindowHovered && !isTargetSpawningOutermostWindowHovered) DestroyOutermostWindow();
+        }
+    }
+
+    #region Positioning
+
+    private void PositionTooltip(TooltipWindow tooltip)
+    {
+        RectTransform rect = tooltip.GetComponent<RectTransform>();
+        Vector3 position = tooltip.MousePosition + new Vector3(MOUSE_OFFSET, MOUSE_OFFSET, 0);
+
+        // Fit on screen
+        float tooltipWidth = rect.rect.width;
+        float tooltipHeight = rect.rect.height;
+
+        // If tooltip would go off the right edge, nudge left
+        if (position.x + tooltipWidth > Screen.width - SCREEN_EDGE_OFFSET)
+            position.x = Screen.width - tooltipWidth - SCREEN_EDGE_OFFSET;
+
+        // If it would go off the top
+        if (position.y + tooltipHeight > Screen.height - SCREEN_EDGE_OFFSET)
+            position.y = Screen.height - tooltipHeight - SCREEN_EDGE_OFFSET;
+
+        tooltip.transform.position = position;
+        tooltip.IsPositioned = true;
+
+        tooltip.gameObject.SetActive(true);
+    }
+
+    #endregion
+
+    #region Internal Tooltip Handling
+
+    private void ShowRootTooltip(INestedTooltipTarget target)
+    {
+        // Always destroy all previous tooltips since this a new root tooltip
+        if(Windows.Count > 0) DestroyAllWindows();
+
+        // Create new root tooltip
+        ShowTooltip(target);
     }
 
     /// <summary>
-    /// Call this when you hover a link or a UI element.
+    /// Shows a tooltip without destroying existing tooltips.
     /// </summary>
-    public void ShowTooltip(string title, string body, RectTransform originRect, TooltipWindow parent = null)
+    private void ShowTooltip(INestedTooltipTarget target)
     {
-        // 1) If we already have deeper windows beyond parent, destroy them
-        if (parent != null)
-        {
-            int idx = Windows.IndexOf(parent);
-            DestroyWindowsFrom(idx + 1);
-        }
-        else
-        {
-            DestroyAllWindows();
-        }
+        // Create new tooltip
+        TooltipWindow tooltip = Instantiate(TooltipPrefab, transform);
+        tooltip.Init(target);
+        tooltip.OuterFrame.color = UnpinnedFrameColor;
+        Windows.Add(tooltip);
 
-        // 2) Instantiate new window and init
-        var go = Instantiate(TooltipPrefab, transform);
-        var window = go.GetComponent<TooltipWindow>();
-        window.Init(title, body, parent);
-        Windows.Add(window);
-
-        // 3) Position: world corners of origin, pick bottom-right or right edge
-        Vector3[] corners = new Vector3[4];
-        originRect.GetWorldCorners(corners);
-        Vector3 anchorPos = corners[2]; // top-right
-        // slight offset
-        anchorPos += new Vector3(10f, -10f, 0f);
-        go.GetComponent<RectTransform>().position = anchorPos;
+        // Register tooltip references
+        foreach (INestedTooltipTarget referencedTarget in target.GetToolTipReferences())
+        {
+            string linkId = referencedTarget.NestedTooltipLinkId;
+            if (LinkTargets.ContainsKey(linkId))
+            {
+                // Verify that existing link points to same object
+                if (LinkTargets[linkId] != referencedTarget) throw new System.Exception($"The linkId {linkId} already exists in LinkTargets but points to a different object.\nIt points to {LinkTargets[linkId]} but now it should point to {referencedTarget}.");
+                continue;
+            }
+            LinkTargets.Add(linkId, referencedTarget);
+        }
     }
 
-    /// <summary>
-    /// Notify manager that a window gained/lost hover.
-    /// </summary>
-    public void NotifyWindowHover(TooltipWindow window, bool isHovering)
+    private void PinTooltip(TooltipWindow tooltip)
     {
-        // If you exit the topmost window but still hover its parent, destroy only topmost
-        if (!isHovering && window == Windows.Last())
-        {
-            DestroyWindowsFrom(Windows.Count - 1);
-        }
+        tooltip.IsPinned = true;
+        tooltip.OuterFrame.color = PinnedFrameColor;
     }
 
     public void DestroyAllWindows()
     {
+        Debug.Log("DestroyAllWindows");
         foreach (var w in Windows) Destroy(w.gameObject);
         Windows.Clear();
+        LinkTargets.Clear();
     }
 
-    private void DestroyWindowsFrom(int startIndex)
+    private void DestroyOutermostWindow()
     {
-        for (int i = Windows.Count - 1; i >= startIndex; i--)
+        if (Windows.Count == 1)
         {
-            Destroy(Windows[i].gameObject);
-            Windows.RemoveAt(i);
+            DestroyAllWindows();
+            return;
         }
+
+        Destroy(Windows.Last().gameObject);
+        Windows.RemoveAt(Windows.Count - 1);
     }
 
-    public bool IsAnyWindowUnderPointer()
+    #endregion
+
+    #region Events
+
+    /// <summary>
+    /// Gets called when a INestedTooltipTarget starts getting hovered on any GameObject (UI element, tilemap tile or 3D object).
+    /// </summary>
+    public void NotifyObjectHovered(INestedTooltipTarget target, bool isRoot = true)
     {
-        // Check if pointer is over *any* open TooltipWindow’s RectTransform
-        return Windows.Any(w => RectTransformUtility.RectangleContainsScreenPoint(
-            w.GetComponent<RectTransform>(),
-            Input.mousePosition,
-            w.GetComponentInParent<Canvas>().worldCamera
-        ));
+        if (CurrentHoveredTarget != null) throw new System.Exception("This function may only be called if no object is currently hovered. Make sure to call NotifyObjectUnhovered() on the previous target first.");
+        Debug.Log("NotifyObjectHovered " + target.NestedTooltipLinkText);
+
+        CurrentHoveredTarget = target;
+        IsCurrentHoveredTargetRoot = isRoot;
     }
 
-    public bool RootWindowIsPinned()
+    /// <summary>
+    /// Gets called when a INestedTooltipTarget stops getting hovered on any GameObject (UI element, tilemap tile or 3D object).
+    /// </summary>
+    public void NotifyObjectUnhovered(INestedTooltipTarget target, bool isRoot = true)
     {
-        return Windows.Count > 0 && Windows[0].IsPinned;
+        CurrentHoveredTarget = null;
+        HoverTimer = 0f;
     }
+
+    public void NotifyTooltipLinkHovered(string linkId)
+    {
+        Debug.Log("NotifyTooltipLinkHovered " + linkId);
+
+        // Get tooltip target from link id
+        INestedTooltipTarget target = LinkTargets[linkId];
+
+        // Redirect to default notify
+        NotifyObjectHovered(target, isRoot: false);
+    }
+
+    public void NotifyTooltipLinkUnhovered(string linkId)
+    {
+        Debug.Log("NotifyTooltipLinkUnhovered " + linkId);
+
+        // Get tooltip target from link id
+        INestedTooltipTarget target = LinkTargets[linkId];
+
+        // Redirect to default notify
+        NotifyObjectUnhovered(target, isRoot: false);
+    }
+
+    #endregion
 }

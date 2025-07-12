@@ -3,90 +3,69 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
+/// <summary>
+/// IMPORTANT: UI Element holding this script must have:
+///   > Anchor and Pivot at 0/0
+///   > A NestedTooltipTextEventHandler script attached to the BodyText
+/// </summary>
 public class TooltipWindow : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Image OuterFrame;
     public TextMeshProUGUI TitleText;
     public TextMeshProUGUI BodyText;
-    [HideInInspector] public TooltipWindow ParentWindow;
-    [HideInInspector] public bool IsHovered;
 
-    public bool IsPinned { get; private set; }
-    private float CreatedAt;
-    private TMP_TextEventHandler TextEventHandler;
+    public INestedTooltipTarget Target { get; private set; }
+    public Vector3 MousePosition { get; private set; }
+    public bool IsPositioned { get; set; }
+    public bool IsPinned { get; set; }
+    public float CreatedAt { get; private set; }
+    public bool IsHovered { get; private set; }
 
-    private const float PIN_DELAY = 1.5f;
-
-    public void Init(string title, string body, TooltipWindow parent = null)
+    /// <summary>
+    /// Gets called once from the NestedTooltipManager to set the text and listeners.
+    /// <br/>Positioning will be done 1 frame later by the manager.
+    /// </summary>
+    public void Init(INestedTooltipTarget target)
     {
-        ParentWindow = parent;
-        TitleText.text = title;
-        BodyText.text = body;
+        Target = target;
+        TitleText.text = target.GetTooltipTitle();
+        BodyText.text = target.GetToolTipBodyText();
 
-        // Record creation time
+        // Record creation time and mouse position
+        MousePosition = Input.mousePosition;
         CreatedAt = Time.time;
         IsPinned = false;
-        OuterFrame.color = new Color(0.29f, 0.29f, 0.29f);  // Default grey
 
         // Hook link selection events once
-        if (TextEventHandler == null)
-        {
-            TextEventHandler = BodyText.gameObject.AddComponent<TMP_TextEventHandler>();
-            TextEventHandler.onLinkSelection.AddListener(OnLinkSelected);
-        }
-    }
+        NestedTooltipTextEventHandler textEventHandler = BodyText.gameObject.AddComponent<NestedTooltipTextEventHandler>();
+        textEventHandler.onLinkSelection.AddListener(OnLinkHovered);
+        textEventHandler.onLinkUnhover.AddListener(OnLinkUnhovered);
 
-    private void Update()
-    {
-        // Check pin delay
-        if (!IsPinned && Time.time - CreatedAt >= PIN_DELAY)
-        {
-            IsPinned = true;
-            OuterFrame.color = Color.yellow;
-        }
-    }
+        // Set inactive. One frame later the NestedTooltipManager will correctly position and reenable this tooltip.
+        IsPositioned = false;
 
-    private void OnLinkSelected(string linkID, string linkText, int linkIndex)
-    {
-        if (!IsPinned) return;
-
-        // look up the def you linked to
-        var def = GetDefFromLinkId(linkID);
-
-        // anchor the new window to THIS window’s RectTransform
-        var rt = GetComponent<RectTransform>();
-
-        NestedTooltipManager.Instance.ShowTooltip(
-            def.LabelCap,
-            def.Description,
-            rt,
-            this   // parent = this window
-        );
-    }
-
-    private Def GetDefFromLinkId(string linkID)
-    {
-        string[] linkParts = linkID.Split('_');
-        string type = linkParts[0];
-        string defName = linkParts[1];
-
-        if(type == "tag")
-        {
-            return DefDatabase<ObjectTagDef>.GetNamed(defName);
-        }
-
-        throw new System.NotImplementedException();
+        // Seems weird, but is necessary so width and height of the window get set properly
+        gameObject.SetActive(false);
+        gameObject.SetActive(true);
     }
 
     public void OnPointerEnter(PointerEventData e)
     {
         IsHovered = true;
-        NestedTooltipManager.Instance.NotifyWindowHover(this, true);
     }
 
     public void OnPointerExit(PointerEventData e)
     {
         IsHovered = false;
-        NestedTooltipManager.Instance.NotifyWindowHover(this, false);
+    }
+
+    private void OnLinkHovered(string linkId, string linkText, int linkIndex)
+    {
+        NestedTooltipManager.Instance.NotifyTooltipLinkHovered(linkId);
+    }
+
+    private void OnLinkUnhovered(string linkId, string linkText, int linkIndex)
+    {
+        NestedTooltipManager.Instance.NotifyTooltipLinkUnhovered(linkId);
     }
 }

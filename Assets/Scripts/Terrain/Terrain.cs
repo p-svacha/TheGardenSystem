@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Terrain
+public class Terrain : INestedTooltipTarget
 {
     public MapTile Tile { get; private set; }
     public TerrainDef Def { get; private set; }
@@ -15,4 +16,16 @@ public class Terrain
     public virtual string LabelCap => Def.LabelCap;
     public virtual string Description => Def.Description;
     public virtual Sprite Sprite => Def.Sprite;
+
+    #region INestedTooltipTaget
+
+    public string GetTooltipTitle() => LabelCap;
+    public string GetToolTipBodyText() => Description;
+    public List<INestedTooltipTarget> GetToolTipReferences() => new();
+
+    public string NestedTooltipLinkId => $"Terrain_{Def.DefName}";
+    public string NestedTooltipLinkText => LabelCap;
+    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
+
+    #endregion
 }

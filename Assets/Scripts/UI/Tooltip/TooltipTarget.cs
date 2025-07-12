@@ -5,16 +5,29 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
+/// <summary>
+/// Attach this to a UI element that should show a tooltip when hovered
+/// </summary>
 public class TooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public string Title;
-    public string Text;
+    /// <summary>
+    /// The object the tooltip is shown for.
+    /// </summary>
+    public INestedTooltipTarget TooltipObject { get; private set; }
 
     public bool Disabled;
 
     [HideInInspector] public bool IsFocussed;
     private float Delay = 0.5f;
     [HideInInspector] public float CurrentDelay;
+
+    /// <summary>
+    /// Should be called once.
+    /// </summary>
+    public void Init(INestedTooltipTarget target)
+    {
+        TooltipObject = target;
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -39,18 +52,12 @@ public class TooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void ShowTooltip()
     {
-        var originRect = GetComponent<RectTransform>();
-        NestedTooltipManager.Instance.ShowTooltip(
-            Title,          // your tooltip title
-            Text,           // your tooltip body (may contain <link=id>colored text</link>)
-            originRect,     // so manager knows where to anchor the window
-            null            // parent = null for first level
-        );
+        NestedTooltipManager.Instance.NotifyObjectHovered(TooltipObject);
     }
 
     public void HideTooltip()
     {
-        NestedTooltipManager.Instance.DestroyAllWindows();
+        NestedTooltipManager.Instance.NotifyObjectUnhovered(TooltipObject);
     }
 }
 

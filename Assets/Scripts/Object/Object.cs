@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Object
+public class Object : INestedTooltipTarget
 {
     public ObjectDef Def { get; private set; }
 
@@ -27,15 +27,23 @@ public class Object
     public virtual string Description => Def.Description;
     public virtual Sprite Sprite => Def.Sprite;
 
-    public string GetTooltipDescription()
+
+    // INestedTooltipTaget
+    public string GetTooltipTitle() => LabelCap;
+    public string GetToolTipBodyText()
     {
         string tags = "";
         foreach(ObjectTagDef tag in Tags)
         {
-            tags += $"<link=tag_{tag.DefName}><color={tag.ColorHex}>{tag.LabelCap}</color></link> ";
+            tags += $"{tag.GetNestedTooltipLink()} ";
         }
         tags = tags.TrimEnd(' ');
 
         return $"{tags}\n\n{Description}";
     }
+    public List<INestedTooltipTarget> GetToolTipReferences() => Tags.Select(t => (INestedTooltipTarget)t).ToList();
+
+    public string NestedTooltipLinkId => $"Object_{Def.DefName}";
+    public string NestedTooltipLinkText => LabelCap;
+    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
 }

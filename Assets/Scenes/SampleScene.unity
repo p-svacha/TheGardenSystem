@@ -1621,9 +1621,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b2d45a926e8a3f42b55375c3647c019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectTilemap: {fileID: 0}
-  UICamera: {fileID: 0}
-  HoverDelay: 0.5
+  ObjectTilemap: {fileID: 1527142984}
+  UICamera: {fileID: 519420031}
 --- !u!1 &1594384348
 GameObject:
   m_ObjectHideFlags: 0
