@@ -11,6 +11,8 @@ public class Game
     public Map Map { get; private set; }
     public Dictionary<ResourceDef, int> Resources { get; private set; }
     public List<Object> Objects { get; private set; }
+    public Dictionary<ResourceDef, ResourceProduction> CurrentFinalResourceProduction { get; private set; }
+    public Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> CurrentPerTileResourceProduction { get; private set; }
 
 
     #region Initialization
@@ -21,6 +23,8 @@ public class Game
         Day = 1;
         Map = MapGenerator.GenerateMap(15);
         Resources = new Dictionary<ResourceDef, int>();
+        CurrentFinalResourceProduction = new Dictionary<ResourceDef, ResourceProduction>();
+        CurrentPerTileResourceProduction = new Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>>();
         foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs) Resources.Add(def, 0);
 
         // Starting garden area
@@ -88,17 +92,23 @@ public class Game
             remainingObjects.Remove(pickedObject);
         }
 
+        CurrentFinalResourceProduction = GetCurrentScatterProduction();
+
         DrawFullMap();
 
         GameState = GameState.ScatterManipulation;
+
+        // UI
+        GameUI.Instance.ResourcePanel.Refresh();
+        NestedTooltipManager.Instance.ResetTooltips();
     }
 
     public void ConfirmScatter()
     {
         // Give resources
         Dictionary<ResourceDef, int> resources = new Dictionary<ResourceDef, int>();
-        Dictionary<ResourceDef, ResourceProduction> finalDayProduction = GetFinalDayProduction();
-        foreach (var kvp in finalDayProduction)
+        CurrentFinalResourceProduction = GetCurrentScatterProduction();
+        foreach (var kvp in CurrentFinalResourceProduction)
         {
             ResourceDef resource = kvp.Key;
             ResourceProduction production = kvp.Value;
@@ -109,18 +119,22 @@ public class Game
         AddResources(resources);
 
         GameState = GameState.ConfirmedScatter;
+
+        // UI
+        GameUI.Instance.ResourcePanel.Refresh();
+        NestedTooltipManager.Instance.ResetTooltips();
     }
 
     /// <summary>
     /// Calculates and returns the final resource productions of the day.
     /// </summary>
-    private Dictionary<ResourceDef, ResourceProduction> GetFinalDayProduction()
+    private Dictionary<ResourceDef, ResourceProduction> GetCurrentScatterProduction()
     {
         // Create base resource productions for each tile in the garden
-        Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions = new Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>>();
+        CurrentPerTileResourceProduction.Clear();
         foreach (MapTile tile in Map.OwnedTiles)
         {
-            tileProductions.Add(tile, new Dictionary<ResourceDef, ResourceProduction>());
+            CurrentPerTileResourceProduction.Add(tile, new Dictionary<ResourceDef, ResourceProduction>());
 
             Dictionary<ResourceDef, int> baseProduction = tile.HasObject ? tile.Object.GetBaseResourceProduction() : new();
             string label = tile.HasObject ? tile.Object.LabelCap : "Empty Tile";
@@ -129,7 +143,8 @@ public class Game
             {
                 int baseValue = 0;
                 baseProduction.TryGetValue(resource, out baseValue);
-                tileProductions[tile].Add(resource, new ResourceProduction(label, resource, baseValue));
+                string id = $"{Day}_{tile.Coordinates}_{resource.DefName}";
+                CurrentPerTileResourceProduction[tile].Add(resource, new ResourceProduction(id, label, resource, baseValue));
             }
         }
 
@@ -138,15 +153,20 @@ public class Game
         {
             foreach(ObjectEffect effect in tile.GetEffects())
             {
-                effect.ApplyEffect(tile, tileProductions);
+                effect.ApplyEffect(tile, CurrentPerTileResourceProduction);
             }
         }
 
-        // Create an final resource production values, which are the sum of all tile productions
+        // Create an final resource productions for each resource
         Dictionary<ResourceDef, ResourceProduction> finalProduction = new Dictionary<ResourceDef, ResourceProduction>();
-        foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs) finalProduction.Add(def, new ResourceProduction("Daily Production", def, 0));
+        foreach (ResourceDef resource in DefDatabase<ResourceDef>.AllDefs)
+        {
+            string id = $"{Day}_final_{resource.DefName}";
+            finalProduction.Add(resource, new ResourceProduction(id, "Daily Production", resource, 0));
+        }
 
-        foreach (KeyValuePair<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProduction in tileProductions)
+        // Add resources from every tile to the final production
+        foreach (KeyValuePair<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProduction in CurrentPerTileResourceProduction)
         {
             MapTile tile = tileProduction.Key;
             Object obj = tile.Object;
@@ -156,8 +176,12 @@ public class Game
             {
                 ResourceDef resource = objectResourceProduction.Key;
                 ResourceProduction production = objectResourceProduction.Value;
+                int numResourcesProduced = production.GetValue();
 
-                finalProduction[resource].AddModifier(new ProductionModifier(production.Label, ProductionModifierType.Additive, production.GetValue()));
+                if (numResourcesProduced != 0)
+                {
+                    finalProduction[resource].AddModifier(new ProductionModifier(production, ProductionModifierType.Additive, production.GetValue()));
+                }
             }
         }
 
@@ -167,12 +191,18 @@ public class Game
     public void EndDay()
     {
         Day++;
-        GameUI.Instance.DatePanel.Refresh();
 
         Map.ClearAllObjects();
         DrawFullMap();
 
+        CurrentFinalResourceProduction.Clear();
+
         GameState = GameState.BeforeScatter;
+
+        // UI
+        GameUI.Instance.DatePanel.Refresh();
+        GameUI.Instance.ResourcePanel.Refresh();
+        NestedTooltipManager.Instance.ResetTooltips();
     }
 
     #endregion
@@ -221,6 +251,12 @@ public class Game
     public int GetWeekNumber()
     {
         return ((Day - 1) / 7) + 1;
+    }
+
+    public Dictionary<ResourceDef, ResourceProduction> GetTileProduction(MapTile tile)
+    {
+        if (CurrentPerTileResourceProduction.TryGetValue(tile, out var prod)) return prod;
+        return null;
     }
 
     #endregion

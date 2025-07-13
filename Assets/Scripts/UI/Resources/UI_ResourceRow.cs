@@ -7,10 +7,26 @@ public class UI_ResourceRow : MonoBehaviour
     [Header("Elements")]
     public Image Icon;
     public TextMeshProUGUI ValueText;
+    public TextMeshProUGUI PlusValueText;
 
-    public void Init(ResourceDef def, int amount)
+    public void Init(ResourceDef res)
     {
-        Icon.sprite = def.Sprite;
-        ValueText.text = amount.ToString();
+        Icon.sprite = res.Sprite;
+        ValueText.text = Game.Instance.Resources[res].ToString();
+
+        if (Game.Instance.GameState == GameState.ScatterManipulation)
+        {
+            ResourceProduction production = Game.Instance.CurrentFinalResourceProduction[res];
+            PlusValueText.text = $"(+{production.GetValue()})";
+            PlusValueText.GetComponent<TooltipTarget>().Init(production);
+        }
+        else
+        {
+            PlusValueText.text = "";
+            PlusValueText.GetComponent<TooltipTarget>().Disabled = true;
+        }
+
+        // Tooltips
+        Icon.GetComponent<TooltipTarget>().Init(res);
     }
 }

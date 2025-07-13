@@ -15,7 +15,7 @@ public class UI_ResourcePanel : MonoBehaviour
         foreach(var res in Game.Instance.Resources)
         {
             UI_ResourceRow row = GameObject.Instantiate(ResourceRowPrefab, Container.transform);
-            row.Init(res.Key, res.Value);
+            row.Init(res.Key);
         }
     }
 }

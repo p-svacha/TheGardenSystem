@@ -62,8 +62,26 @@ public class MapTile : INestedTooltipTarget
     public string GetTooltipTitle() => "";
     public string GetToolTipBodyText()
     {
-        if (HasObject) return $"{Object.GetNestedTooltipLink()} on {Terrain.GetNestedTooltipLink()}";
-        else return $"{Terrain.LabelCap}";
+        string text = HasObject ? $"{Object.GetNestedTooltipLink()} on {Terrain.GetNestedTooltipLink()}" : $"{Terrain.LabelCap}";
+
+        if (Game.Instance.GameState == GameState.ScatterManipulation)
+        {
+            Dictionary<ResourceDef, ResourceProduction> tileProduction = Game.Instance.GetTileProduction(this);
+
+            if (tileProduction != null)
+            {
+                foreach (ResourceProduction prod in tileProduction.Values)
+                {
+                    int numProduced = prod.GetValue();
+                    if (numProduced != 0)
+                    {
+                        text += "\n\n" + prod.GetBreakdownString();
+                    }
+                }
+            }
+        }
+
+        return text;
     }
     public List<INestedTooltipTarget> GetToolTipReferences()
     {

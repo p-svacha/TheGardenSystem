@@ -17,10 +17,6 @@ public class TooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public bool Disabled;
 
-    [HideInInspector] public bool IsFocussed;
-    private float Delay = 0.5f;
-    [HideInInspector] public float CurrentDelay;
-
     /// <summary>
     /// Should be called once.
     /// </summary>
@@ -29,34 +25,16 @@ public class TooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         TooltipObject = target;
     }
 
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-        IsFocussed = true;
+        if (Disabled) return;
+        NestedTooltipManager.Instance.NotifyObjectHovered(TooltipObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        HideTooltip();
-        CurrentDelay = 0;
-    }
-
-    private void Update()
-    {
         if (Disabled) return;
-        if (IsFocussed)
-        {
-            if (CurrentDelay < Delay) CurrentDelay += UnityEngine.Time.deltaTime;
-            else ShowTooltip();
-        }
-    }
-
-    private void ShowTooltip()
-    {
-        NestedTooltipManager.Instance.NotifyObjectHovered(TooltipObject);
-    }
-
-    public void HideTooltip()
-    {
         NestedTooltipManager.Instance.NotifyObjectUnhovered(TooltipObject);
     }
 }

@@ -13,14 +13,24 @@ public class TilemapTooltipController : MonoBehaviour
 
     void Update()
     {
-        if (HelperFunctions.IsMouseOverUi()) return;
+        // Being over UI counts as hovering no tile
+        if (HelperFunctions.IsMouseOverUi())
+        {
+            if (LastTile != null)
+            {
+                NestedTooltipManager.Instance.NotifyObjectUnhovered(LastTile);
+                LastTile = null;
+            }
+            
+            return;
+        }
 
-        // 1) Compute which cell the mouse is over
+        // Compute which cell the mouse is over
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int cell = ObjectTilemap.WorldToCell(worldPos);
         MapTile currentTile = Game.Instance.Map.GetTile(cell.x, cell.y);
 
-        // 2) If we moved to a different cell or tile changed, reset timer & state
+        // If we moved to a different cell or tile changed, reset timer & state
         if (currentTile != LastTile)
         {
             if (LastTile != null) NestedTooltipManager.Instance.NotifyObjectUnhovered(LastTile);

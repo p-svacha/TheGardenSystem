@@ -41,7 +41,7 @@ public class AdjacencyEffect : ObjectEffect
             {
                 foreach (ResourceDef resource in tile.Object.GetBaseResourceProduction().Keys)
                 {
-                    ProductionModifier modifier = new ProductionModifier(sourceTile.Object.LabelCap, ProductionModifierType.Additive, GeneralProductionBonus);
+                    ProductionModifier modifier = new ProductionModifier(sourceTile.Object, ProductionModifierType.Additive, GeneralProductionBonus);
                     tileProductions[tile][resource].AddModifier(modifier);
                 }
             }
@@ -52,7 +52,7 @@ public class AdjacencyEffect : ObjectEffect
                 ResourceDef resource = kvp.Key;
                 int productionBonus = kvp.Value;
 
-                ProductionModifier modifier = new ProductionModifier(sourceTile.Object.LabelCap, ProductionModifierType.Additive, productionBonus);
+                ProductionModifier modifier = new ProductionModifier(sourceTile.Object, ProductionModifierType.Additive, productionBonus);
                 tileProductions[tile][resource].AddModifier(modifier);
             }
         }

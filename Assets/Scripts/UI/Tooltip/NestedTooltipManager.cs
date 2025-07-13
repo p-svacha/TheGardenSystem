@@ -14,7 +14,7 @@ public class NestedTooltipManager : MonoBehaviour
     private const float TOOLTIP_DELAY = 1f; // The time in seconds that something needs to get hovered to spawn a tooltip
     private const float PIN_DELAY = 1.5f; // The time in seconds it takes for a tooltip to become pinned, allowing to hover into it and spawn nested tooltips
     public static Color DEFAULT_NESTED_LINK_COLOR = new Color(0.8f, 0.4f, 0f);
-    private const int MOUSE_OFFSET = 5; // px
+    private const int MOUSE_OFFSET = 2; // px
     private const int SCREEN_EDGE_OFFSET = 5; // px
 
     [Header("Tooltip frame colors")]
@@ -177,6 +177,12 @@ public class NestedTooltipManager : MonoBehaviour
         LinkTargets.Clear();
     }
 
+    public void ResetTooltips()
+    {
+        DestroyAllWindows();
+        HoverTimer = 0f;
+    }
+
     private void DestroyOutermostWindow()
     {
         if (Windows.Count == 1)
@@ -198,7 +204,11 @@ public class NestedTooltipManager : MonoBehaviour
     /// </summary>
     public void NotifyObjectHovered(INestedTooltipTarget target, bool isRoot = true)
     {
-        if (CurrentHoveredTarget != null) throw new System.Exception("This function may only be called if no object is currently hovered. Make sure to call NotifyObjectUnhovered() on the previous target first.");
+        if (CurrentHoveredTarget != null)
+        {
+            Debug.LogWarning("This function may only be called if no object is currently hovered. Make sure to call NotifyObjectUnhovered() on the previous target first.");
+            CurrentHoveredTarget = null;
+        }
         Debug.Log("NotifyObjectHovered " + target.NestedTooltipLinkText);
 
         CurrentHoveredTarget = target;
@@ -208,7 +218,7 @@ public class NestedTooltipManager : MonoBehaviour
     /// <summary>
     /// Gets called when a INestedTooltipTarget stops getting hovered on any GameObject (UI element, tilemap tile or 3D object).
     /// </summary>
-    public void NotifyObjectUnhovered(INestedTooltipTarget target, bool isRoot = true)
+    public void NotifyObjectUnhovered(INestedTooltipTarget target)
     {
         CurrentHoveredTarget = null;
         HoverTimer = 0f;
@@ -233,7 +243,7 @@ public class NestedTooltipManager : MonoBehaviour
         INestedTooltipTarget target = LinkTargets[linkId];
 
         // Redirect to default notify
-        NotifyObjectUnhovered(target, isRoot: false);
+        NotifyObjectUnhovered(target);
     }
 
     #endregion

@@ -1,11 +1,17 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
 /// An object storing information of how much of a specific resource is produced by an obect or a collection of objects.
 /// </summary>
-public class ResourceProduction
+public class ResourceProduction : INestedTooltipTarget
 {
+    /// <summary>
+    /// Unique identifier that only this instance of ResourceProduction has.
+    /// </summary>
+    public string Id { get; private set; }
+
     /// <summary>
     /// The label/title of what this production is for / who is producing this.
     /// </summary>
@@ -26,8 +32,9 @@ public class ResourceProduction
     /// </summary>
     public List<ProductionModifier> Modifiers { get; private set; }
 
-    public ResourceProduction(string label, ResourceDef resourceDef, int baseValue)
+    public ResourceProduction(string id, string label, ResourceDef resourceDef, int baseValue)
     {
+        Id = id;
         Label = label;
         Resource = resourceDef;
         BaseValue = baseValue;
@@ -58,13 +65,7 @@ public class ResourceProduction
     public string GetBreakdownString()
     {
         // Label
-        string text = Resource.LabelCap;
-
-        // Description
-        if (Resource.Description != "")
-        {
-            text += "\n\n" + Resource.Description;
-        }
+        string text = $"{Resource.LabelCap} Production";
 
         // Base value
         text += $"\n\nBase Value: {BaseValue}";
@@ -99,4 +100,16 @@ public class ResourceProduction
 
         return ordered;
     }
+
+    #region INestedTooltipTaget
+
+    public string GetTooltipTitle() => Label;
+    public string GetToolTipBodyText() => GetBreakdownString();
+    public List<INestedTooltipTarget> GetToolTipReferences() => Modifiers.Select(m => (INestedTooltipTarget)m.Source).ToList();
+
+    public string NestedTooltipLinkId => $"ResProd_{Id}";
+    public string NestedTooltipLinkText => Label;
+    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
+
+    #endregion
 }

@@ -28,7 +28,8 @@ public class Object : INestedTooltipTarget
     public virtual Sprite Sprite => Def.Sprite;
 
 
-    // INestedTooltipTaget
+    #region INestedTooltipTaget
+
     public string GetTooltipTitle() => LabelCap;
     public string GetToolTipBodyText()
     {
@@ -46,4 +47,6 @@ public class Object : INestedTooltipTarget
     public string NestedTooltipLinkId => $"Object_{Def.DefName}";
     public string NestedTooltipLinkText => LabelCap;
     public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
+
+    #endregion
 }
