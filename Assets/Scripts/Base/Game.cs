@@ -28,11 +28,11 @@ public class Game
         foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs) Resources.Add(def, 0);
 
         // Starting garden area
-        int gardenStartX = (int)((Map.Width / 2f) - (STARTING_AREA_SIZE / 2f)); 
+        int gardenStartX = (int)((Map.Width / 2f) - (STARTING_AREA_SIZE / 2f));
         int gardenStartY = (int)((Map.Height / 2f) - (STARTING_AREA_SIZE / 2f));
-        for(int x = gardenStartX; x < gardenStartX + STARTING_AREA_SIZE; x++)
+        for (int x = gardenStartX; x < gardenStartX + STARTING_AREA_SIZE; x++)
         {
-            for(int y = gardenStartY; y < gardenStartY + STARTING_AREA_SIZE; y++)
+            for (int y = gardenStartY; y < gardenStartY + STARTING_AREA_SIZE; y++)
             {
                 AddTileToGarden(Map.GetTile(x, y), redraw: false);
             }
@@ -67,7 +67,7 @@ public class Game
 
     public void HandleInputs()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (GameState == GameState.BeforeScatter) StartDay();
             else if (GameState == GameState.ScatterManipulation) ConfirmScatter();
@@ -151,7 +151,7 @@ public class Game
         // Apply modifiers from each object to all other affected objects
         foreach (MapTile tile in Map.OwnedTiles)
         {
-            foreach(ObjectEffect effect in tile.GetEffects())
+            foreach (ObjectEffect effect in tile.GetEffects())
             {
                 effect.ApplyEffect(tile, CurrentPerTileResourceProduction);
             }
