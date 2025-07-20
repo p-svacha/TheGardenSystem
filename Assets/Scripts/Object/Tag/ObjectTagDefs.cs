@@ -59,5 +59,13 @@ public static class ObjectTagDefs
             Description = "Decomposed organic matter that can enrich soil and support plant-based synergies.",
             Color = new Color(0.38f, 0.27f, 0.19f),
         },
+
+        new ObjectTagDef()
+        {
+            DefName = "Herb",
+            Label = "herb",
+            Description = "Plants valued for their fragrance, flavor, or medicinal properties. Often small, leafy, and delicate.",
+            Color = new Color(0.4f, 0.7f, 0.4f),
+        },
     };
 }

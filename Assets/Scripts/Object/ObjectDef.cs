@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class ObjectDef : Def, IDraftable
 {
+    public string FlavorText { get; init; } = "";
     public List<ObjectTagDef> Tags { get; init; } = new();
     public ResourceCollection BaseResources { get; init; } = new();
     public List<ObjectEffect> Effects { get; init; } = new();

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class ResourceDef : Def, INestedTooltipTarget
 {
+    new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Resources/" + DefName);
+    public ResourceType Type { get; init; }
+
     // INestedTooltipTaget
     public string GetTooltipTitle() => LabelCap;
     public string GetToolTipBodyText(out List<INestedTooltipTarget> references)

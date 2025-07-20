@@ -9,6 +9,7 @@ public static class ObjectDefs
         {
             DefName = "Carrot",
             Label = "carrot",
+            FlavorText = "Reliable and crisp. Grows underground, but always finds the light.",
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Plant,
@@ -26,6 +27,7 @@ public static class ObjectDefs
         {
             DefName = "CompostHeap",
             Label = "compost heap",
+            FlavorText = "Old scraps, new life. Everything returns to the soil in time.",
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
@@ -53,6 +55,7 @@ public static class ObjectDefs
         {
             DefName = "CornStalk",
             Label = "corn stalk",
+            FlavorText = "Tall and golden, swaying in the breeze. A sign of steady growth.",
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Plant,
@@ -77,6 +80,23 @@ public static class ObjectDefs
                     },
                 },
             },
+        },
+
+        new ObjectDef()
+        {
+            DefName = "Mint",
+            Label = "mint",
+            FlavorText = "A fresh, fragrant plant often used in teas and remedies.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Plant,
+                ObjectTagDefOf.Herb,
+                ObjectTagDefOf.FoodSource,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Herbs, 1 },
+            }),
         },
     };
 }

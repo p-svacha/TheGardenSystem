@@ -5333,6 +5333,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7981800682541896726, guid: e9fbd26e6e55bed42aa2012603522164, type: 3}
+      propertyPath: m_text
+      value: <nobr><sprite=0> 140</nobr>   <nobr><sprite=1> 150</nobr>   <nobr><sprite=0>
+        160</nobr>   <nobr><sprite=0> 15</nobr>   <nobr><sprite=0> 47</nobr>
+      objectReference: {fileID: 0}
     - target: {fileID: 8103411270604955612, guid: e9fbd26e6e55bed42aa2012603522164, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

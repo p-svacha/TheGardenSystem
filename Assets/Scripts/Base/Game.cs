@@ -15,6 +15,7 @@ public class Game
     public List<Object> Objects { get; private set; }
     public Dictionary<ResourceDef, ResourceProduction> CurrentFinalResourceProduction { get; private set; }
     public Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> CurrentPerTileResourceProduction { get; private set; }
+    public List<Customer> WeeklyCustomers { get; private set; }
     public List<Order> ActiveOrders { get; private set; }
 
 
@@ -44,15 +45,12 @@ public class Game
         // Starting objects
         Objects = new List<Object>();
         AddObjectToInventory(ObjectDefOf.Carrot);
-        AddObjectToInventory(ObjectDefOf.CompostHeap);
 
         // Starting orders
+        WeeklyCustomers = new List<Customer>();
+        AddOrUpgradeCustomer(DefDatabase<CustomerDef>.GetNamed("TownCanteen"));
         ActiveOrders = new List<Order>();
-        ResourceCollection firstWeekOrderResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
-        {
-            { ResourceDefOf.Food, 20 },
-        });
-        ActiveOrders.Add(new Order(week: 1, firstWeekOrderResources));
+        CreateNextWeeksOrders(isFirstWeekOrder: true);
 
         GameState = GameState.Uninitialized;
     }
@@ -142,7 +140,8 @@ public class Game
         if (IsLastDayOfWeek)
         {
             DeliverOrders();
-            CreateNextWeeksOrders();
+            UpgradeRandomCustomer();
+            CreateNextWeeksOrders(isFirstWeekOrder: false);
 
             // UI
             GameUI.Instance.ResourcePanel.Refresh();
@@ -151,6 +150,9 @@ public class Game
         StartObjectDraft();
     }
 
+    /// <summary>
+    /// Delivers the resources for orders that are due today and removes them from the active orders.
+    /// </summary>
     private void DeliverOrders()
     {
         foreach (Order order in DueOrders)
@@ -161,26 +163,30 @@ public class Game
             }
             Resources.RemoveResources(order.OrderedResources);
         }
-    }
-    /// <summary>
-    /// Removes the completed orders and creates next weeks orders.
-    /// </summary>
-    private void CreateNextWeeksOrders()
-    {
-        foreach (Order order in DueOrders)
-        {
-            ResourceCollection nextWeeksOrder = new ResourceCollection(order.OrderedResources);
 
-            foreach (ResourceDef res in nextWeeksOrder.GetResourceList())
-            {
-                float multiplier = Random.Range(1.1f, 3f);
-                int targetValue = (int)(nextWeeksOrder.Resources[res] * multiplier);
-                int numToAdd = targetValue - nextWeeksOrder.Resources[res];
-                nextWeeksOrder.AddResource(res, numToAdd);
-            }
-            ActiveOrders.Add(new Order(GetWeekNumber() + 1, nextWeeksOrder));
-        }
         ActiveOrders = ActiveOrders.Where(o => o.DueDay != Day).ToList();
+    }
+
+    /// <summary>
+    /// Upgrades the level of an existing customer or creates adds a new customer.
+    /// </summary>
+    private void UpgradeRandomCustomer()
+    {
+        CustomerDef chosenDef = DefDatabase<CustomerDef>.AllDefs.RandomElement();
+        AddOrUpgradeCustomer(chosenDef);
+    }
+
+    /// <summary>
+    /// Creates next weeks orders according to current customers.
+    /// </summary>
+    private void CreateNextWeeksOrders(bool isFirstWeekOrder)
+    {
+        foreach (Customer customer in WeeklyCustomers)
+        {
+            ResourceCollection customerOrder = customer.GetCurrentLevelOrder();
+            int targetWeek = isFirstWeekOrder ? 1 : GetWeekNumber() + 1;
+            ActiveOrders.Add(new Order(customer, targetWeek, customerOrder));
+        }
     }
 
     private void StartObjectDraft()
@@ -318,6 +324,13 @@ public class Game
         Resources.AddResources(res);
 
         GameUI.Instance.ResourcePanel.Refresh();
+    }
+
+    public void AddOrUpgradeCustomer(CustomerDef def)
+    {
+        Customer existingCustomer = WeeklyCustomers.FirstOrDefault(c => c.Def == def);
+        if (existingCustomer != null) existingCustomer.IncreaseLevel();
+        else WeeklyCustomers.Add(new Customer(def, orderLevel: 1));
     }
 
     #endregion

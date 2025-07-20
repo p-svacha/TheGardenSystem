@@ -1,14 +1,11 @@
 FEATURE ROADMAP (in that order)
 
-orders:
-	each sunday, the weekly orders need to be payed
-	exact amount of resources for each order is reduced
-	if can't pay, game over
-	one order is added or increased every week
-	orders never decay, just accumulate
-
-new resource:
-	add second resource for order variety
+customers:
+	each order is from a specific customer
+	CustomerDefs containing possible customers
+	in the def it gets defined what they can order and what amounts
+	some randomization is always applied
+	also some quick lore/flavor text for each customer
 
 soil fertility on soil terrain:
 	fertility is a new abstract resource that objects can produce
@@ -34,6 +31,9 @@ obstacles:
 	when reaching 0 hp, obstacle is removed
 	technically, obstacles are also just objects, but with the "permanent" tag and no effect
 		objects with the "permanent" tag do not get removed at the end of the day
+
+new resource:
+	add third market resource for order variety
 
 object rarities:
 	Each objectDef has a specific rarity (or maybe use other more fitting term)

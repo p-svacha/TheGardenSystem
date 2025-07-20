@@ -9,7 +9,7 @@ public class UI_Order : MonoBehaviour
 
     public void Init(Order order)
     {
-        CustomerText.text = "";
+        CustomerText.text = $"{order.Customer.LabelCapWord} (Level {order.Customer.OrderLevel})";
         ResourceText.text = order.OrderedResources.GetAsSingleLinkedString();
     }
 }

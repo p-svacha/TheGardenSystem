@@ -7,6 +7,11 @@ using UnityEngine;
 public class Order
 {
     /// <summary>
+    /// The customer that placed this order.
+    /// </summary>
+    public Customer Customer { get; private set; }
+
+    /// <summary>
     /// The day that the order is due at the end.
     /// </summary>
     public int DueDay { get; private set; }
@@ -16,8 +21,9 @@ public class Order
     /// </summary>
     public ResourceCollection OrderedResources { get; private set; }
 
-    public Order(int week, ResourceCollection orderedResources)
+    public Order(Customer customer, int week, ResourceCollection orderedResources)
     {
+        Customer = customer;
         DueDay = week * Game.DAYS_PER_WEEK;
         OrderedResources = orderedResources;
     }
