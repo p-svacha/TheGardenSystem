@@ -15,4 +15,9 @@ public abstract class ObjectEffect
     /// Applies all resource production modifiers that originate from this effect.
     /// </summary>
     public abstract void ApplyEffect(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions);
+
+    /// <summary>
+    /// Returns what this effect does as a human-readable string including TMPro tooltip links.
+    /// </summary>
+    public abstract string GetDescription();
 }

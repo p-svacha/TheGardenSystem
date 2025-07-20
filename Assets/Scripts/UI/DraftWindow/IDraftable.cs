@@ -8,6 +8,9 @@ using UnityEngine;
 public interface IDraftable
 {
     public string DraftDisplay_Title { get; }
-    public string DraftDisplay_Description { get; }
     public Sprite DraftDisplay_Sprite { get; }
+    public string DraftDisplay_DescriptionPre { get; }
+    public string DraftDisplay_DescriptionMain { get; }
+    public string DraftDisplay_DescriptionPost { get; }
+
 }

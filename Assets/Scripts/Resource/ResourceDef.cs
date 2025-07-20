@@ -5,10 +5,13 @@ public class ResourceDef : Def, INestedTooltipTarget
 {
     // INestedTooltipTaget
     public string GetTooltipTitle() => LabelCap;
-    public string GetToolTipBodyText() => Description;
-    public List<INestedTooltipTarget> GetToolTipReferences() => new();
+    public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
+    {
+        references = new List<INestedTooltipTarget>();
+        return Description;
+    }
 
     public string NestedTooltipLinkId => $"Resource_{DefName}";
-    public string NestedTooltipLinkText => LabelCap;
+    public string NestedTooltipLinkText => $"<sprite={DefDatabase<ResourceDef>.AllDefs.IndexOf(this)}>";
     public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
 }

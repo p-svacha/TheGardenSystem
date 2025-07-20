@@ -14,10 +14,9 @@ public class TooltipWindow : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public TextMeshProUGUI TitleText;
     public TextMeshProUGUI BodyText;
 
-    public INestedTooltipTarget Target { get; private set; }
+    public INestedTooltipTarget Target;
     public Vector3 MousePosition { get; private set; }
     public bool IsPositioned { get; set; }
-    public bool IsPinned { get; set; }
     public float CreatedAt { get; private set; }
     public bool IsHovered { get; private set; }
 
@@ -25,19 +24,18 @@ public class TooltipWindow : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     /// Gets called once from the NestedTooltipManager to set the text and listeners.
     /// <br/>Positioning will be done 1 frame later by the manager.
     /// </summary>
-    public void Init(INestedTooltipTarget target)
+    public void Init(string title, string bodyText)
     {
-        Target = target;
-        TitleText.text = target.GetTooltipTitle();
-        BodyText.text = target.GetToolTipBodyText();
+        TitleText.text = title;
+        BodyText.text = bodyText;
 
         // Record creation time and mouse position
         MousePosition = Input.mousePosition;
         CreatedAt = Time.time;
-        IsPinned = false;
 
         // Hook link selection events once
-        NestedTooltipTextEventHandler textEventHandler = BodyText.gameObject.AddComponent<NestedTooltipTextEventHandler>();
+        BodyText.TryGetComponent(out NestedTooltipTextEventHandler textEventHandler);
+        if (textEventHandler == null) textEventHandler = BodyText.gameObject.AddComponent<NestedTooltipTextEventHandler>();
         textEventHandler.onLinkSelection.AddListener(OnLinkHovered);
         textEventHandler.onLinkUnhover.AddListener(OnLinkUnhovered);
 
@@ -45,8 +43,8 @@ public class TooltipWindow : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         IsPositioned = false;
 
         // Seems weird, but is necessary so width and height of the window get set properly
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
         gameObject.SetActive(false);
-        gameObject.SetActive(true);
     }
 
     public void OnPointerEnter(PointerEventData e)
@@ -61,7 +59,7 @@ public class TooltipWindow : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void OnLinkHovered(string linkId, string linkText, int linkIndex)
     {
-        NestedTooltipManager.Instance.NotifyTooltipLinkHovered(linkId);
+        NestedTooltipManager.Instance.NotifyTooltipLinkHovered(linkId, isRoot: false);
     }
 
     private void OnLinkUnhovered(string linkId, string linkText, int linkIndex)

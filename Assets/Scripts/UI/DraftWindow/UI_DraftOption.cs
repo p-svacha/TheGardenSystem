@@ -10,9 +10,11 @@ public class UI_DraftOption : MonoBehaviour
     public Image SelectionFrame;
     public Image InnerFrame;
     public Button Button;
-    public TextMeshProUGUI Title;
+    public TextMeshProUGUI TitleText;
     public Image Image;
-    public TextMeshProUGUI DescriptionText;
+    public TextMeshProUGUI DescriptionPreText;
+    public TextMeshProUGUI DescriptionMainText;
+    public TextMeshProUGUI DescriptionPostText;
 
     public void Init(UI_Draft draft, IDraftable option)
     {
@@ -21,10 +23,10 @@ public class UI_DraftOption : MonoBehaviour
         // Title
         if (option.DraftDisplay_Title != null && option.DraftDisplay_Title != "")
         {
-            Title.gameObject.SetActive(true);
-            Title.text = option.DraftDisplay_Title;
+            TitleText.gameObject.SetActive(true);
+            TitleText.text = option.DraftDisplay_Title;
         }
-        else Title.gameObject.SetActive(false);
+        else TitleText.gameObject.SetActive(false);
 
         // Sprite
         if (option.DraftDisplay_Sprite != null)
@@ -34,13 +36,29 @@ public class UI_DraftOption : MonoBehaviour
         }
         else Image.gameObject.SetActive(false);
 
-        // Description
-        if (option.DraftDisplay_Description != null)
+        // Description Pre
+        if (option.DraftDisplay_DescriptionPre != null)
         {
-            DescriptionText.gameObject.SetActive(true);
-            DescriptionText.text = option.DraftDisplay_Description;
+            DescriptionPreText.gameObject.SetActive(true);
+            DescriptionPreText.text = option.DraftDisplay_DescriptionPre;
         }
-        else DescriptionText.gameObject.SetActive(false);
+        else DescriptionPreText.gameObject.SetActive(false);
+
+        // Description Main
+        if (option.DraftDisplay_DescriptionMain != null)
+        {
+            DescriptionMainText.gameObject.SetActive(true);
+            DescriptionMainText.text = option.DraftDisplay_DescriptionMain;
+        }
+        else DescriptionMainText.gameObject.SetActive(false);
+
+        // Description Post
+        if (option.DraftDisplay_DescriptionPost != null)
+        {
+            DescriptionPostText.gameObject.SetActive(true);
+            DescriptionPostText.text = option.DraftDisplay_DescriptionPost;
+        }
+        else DescriptionPostText.gameObject.SetActive(false);
     }
 
     public void SetSelected(bool value)

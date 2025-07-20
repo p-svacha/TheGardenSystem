@@ -12,6 +12,6 @@ public static class NestedTooltipExtensions
     public static string GetNestedTooltipLink(this INestedTooltipTarget target)
     {
         var hexColor = ColorUtility.ToHtmlStringRGB(target.NestedTooltipLinkColor);
-        return $"<link={target.NestedTooltipLinkId}><color=#{hexColor}>{target.NestedTooltipLinkText}</color></link>";
+        return $"<nobr><link={target.NestedTooltipLinkId}><color=#{hexColor}>{target.NestedTooltipLinkText}</color></link></nobr>";
     }
 }

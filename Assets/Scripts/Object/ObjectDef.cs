@@ -8,8 +8,57 @@ public class ObjectDef : Def, IDraftable
     public List<ObjectEffect> Effects { get; init; } = new();
     new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Objects/" + DefName);
 
-    // IDraftable
+    #region Getters
+
+    /// <summary>
+    /// Returns all effects of this ObjectDef as a human-readable string including TMPro tooltip links.
+    /// </summary>
+    public string GetEffectDescription()
+    {
+        string desc = "";
+
+        foreach (ObjectEffect effect in Effects)
+        {
+            desc += effect.GetDescription() + "\n";
+        }
+        desc = desc.TrimEnd('\n');
+
+        return desc;
+    }
+
+    /// <summary>
+    /// Returns all tags of this ObjectDef as a human-readable string including TMPro tooltip links.
+    /// </summary>
+    public string GetTags()
+    {
+        string tags = "";
+        foreach (ObjectTagDef tag in Tags) tags += $"{tag.GetNestedTooltipLink()}   ";
+        tags = tags.TrimEnd(' ');
+
+        return tags;
+    }
+
+    #endregion
+
+    #region IDraftable
+
     public string DraftDisplay_Title => LabelCapWord;
-    public string DraftDisplay_Description => Description;
     public Sprite DraftDisplay_Sprite => Sprite;
+    public string DraftDisplay_DescriptionPre => GetProductionTooltipString();
+    public string DraftDisplay_DescriptionMain => GetEffectDescription();
+    public string DraftDisplay_DescriptionPost => GetTags();
+
+    private string GetProductionTooltipString()
+    {
+        string txt = "";
+        foreach (var kvp in BaseResources)
+        {
+            txt += $"{kvp.Key.GetNestedTooltipLink()} {kvp.Value}  ";
+        }
+        txt = txt.TrimEnd(' ');
+        return txt;
+    }
+
+    #endregion
+
 }

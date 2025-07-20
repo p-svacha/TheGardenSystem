@@ -11,6 +11,8 @@ public class Object : INestedTooltipTarget
         Def = def;
     }
 
+    #region Getters
+
     /// <summary>
     /// The exact amount of resources of each type that this object produces natively.
     /// </summary>
@@ -31,16 +33,21 @@ public class Object : INestedTooltipTarget
     public virtual List<ObjectTagDef> Tags => Def.Tags;
     public virtual List<ObjectEffect> Effects => Def.Effects;
     public virtual string Label => Def.Label;
-    public virtual string LabelCap => Def.LabelCap;
+    public string LabelCap => Def.LabelCap;
+    public string LabelCapWord => Def.LabelCapWord;
     public virtual string Description => Def.Description;
     public virtual Sprite Sprite => Def.Sprite;
+
+    #endregion
 
 
     #region INestedTooltipTaget
 
     public string GetTooltipTitle() => LabelCap;
-    public string GetToolTipBodyText()
+    public string GetToolTipBodyText(out List<INestedTooltipTarget> dynamicReferences)
     {
+        dynamicReferences = new List<INestedTooltipTarget>();
+
         string tags = "";
         foreach(ObjectTagDef tag in Tags)
         {
@@ -50,10 +57,9 @@ public class Object : INestedTooltipTarget
 
         return $"{tags}\n\n{Description}";
     }
-    public List<INestedTooltipTarget> GetToolTipReferences() => Tags.Select(t => (INestedTooltipTarget)t).ToList();
 
     public string NestedTooltipLinkId => $"Object_{Def.DefName}";
-    public string NestedTooltipLinkText => LabelCap;
+    public string NestedTooltipLinkText => LabelCapWord;
     public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
 
     #endregion

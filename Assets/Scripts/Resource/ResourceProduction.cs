@@ -104,8 +104,11 @@ public class ResourceProduction : INestedTooltipTarget
     #region INestedTooltipTaget
 
     public string GetTooltipTitle() => Label;
-    public string GetToolTipBodyText() => GetBreakdownString();
-    public List<INestedTooltipTarget> GetToolTipReferences() => Modifiers.Select(m => (INestedTooltipTarget)m.Source).ToList();
+    public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
+    {
+        references = Modifiers.Select(m => (INestedTooltipTarget)m.Source).ToList();
+        return GetBreakdownString();
+    }
 
     public string NestedTooltipLinkId => $"ResProd_{Id}";
     public string NestedTooltipLinkText => Label;

@@ -60,9 +60,22 @@ public class MapTile : INestedTooltipTarget
     #region INestedTooltipTaget
 
     public string GetTooltipTitle() => "";
-    public string GetToolTipBodyText()
+    public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
     {
-        string text = HasObject ? $"{Object.GetNestedTooltipLink()} on {Terrain.GetNestedTooltipLink()}" : $"{Terrain.LabelCap}";
+        references = new List<INestedTooltipTarget>();
+
+        string bodyText = "";
+        if (HasObject)
+        {
+            bodyText += $"{Object.GetNestedTooltipLink()} on {Terrain.GetNestedTooltipLink()}";
+            references.Add(Object);
+            references.Add(Terrain);
+        }
+        else
+        {
+            bodyText += $"{Terrain.GetNestedTooltipLink()}";
+            references.Add(Terrain);
+        }
 
         if (Game.Instance.GameState == GameState.ScatterManipulation)
         {
@@ -75,20 +88,13 @@ public class MapTile : INestedTooltipTarget
                     int numProduced = prod.GetValue();
                     if (numProduced != 0)
                     {
-                        text += "\n\n" + prod.GetBreakdownString();
+                        bodyText += "\n\n" + prod.GetBreakdownString();
                     }
                 }
             }
         }
 
-        return text;
-    }
-    public List<INestedTooltipTarget> GetToolTipReferences()
-    {
-        List<INestedTooltipTarget> refs = new List<INestedTooltipTarget>();
-        if (HasObject) refs.Add(Object);
-        refs.Add(Terrain);
-        return refs;
+        return bodyText;
     }
 
     public string NestedTooltipLinkId => $"MapTile_{Coordinates}";

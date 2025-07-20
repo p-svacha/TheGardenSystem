@@ -94,7 +94,6 @@ MonoBehaviour:
   OuterFrame: {fileID: 8646846739021859679}
   TitleText: {fileID: 8477822872943331473}
   BodyText: {fileID: 4066463476721615826}
-  IsHovered: 0
 --- !u!114 &9151553637646823303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +281,6 @@ GameObject:
   - component: {fileID: 3193255241166754082}
   - component: {fileID: 1069206637334629647}
   - component: {fileID: 4066463476721615826}
-  - component: {fileID: 4853065356760871927}
   m_Layer: 5
   m_Name: BodyText
   m_TagString: Untagged
@@ -408,33 +406,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &4853065356760871927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6960594851063628418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1312ae25639a4bae8e25ae223209cc50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OnCharacterSelection:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSpriteSelection:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnWordSelection:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnLineSelection:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnLinkSelection:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8168945827664199668
 GameObject:
   m_ObjectHideFlags: 0

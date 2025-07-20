@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -81,5 +82,33 @@ public class SelfAdjacencyEffect : ObjectEffect
                 tileProductions[sourceTile][resource].AddModifier(modifier);
             }
         }
+    }
+
+    public override string GetDescription()
+    {
+        // 1) Build the bonus part
+        var bonusParts = new List<string>();
+        if (GeneralProductionBonus > 0)
+            bonusParts.Add($"+{GeneralProductionBonus} to all native resources");
+        foreach (var kvp in ResourceProductionBonus)
+            bonusParts.Add($"+{kvp.Value} {kvp.Key.GetNestedTooltipLink()}");
+        string bonusText = string.Join(" and ", bonusParts);
+
+        // 2) Build the “criteria” part
+        string criteriaText;
+        if (EffectCriteria_TagsAny.Count > 0)
+        {
+            // “for each adjacent Farm or Barn”
+            var links = EffectCriteria_TagsAny.Select(t => t.GetNestedTooltipLink());
+            criteriaText = $"for each adjacent {string.Join(" or ", links)}";
+        }
+        else // EffectCriteria_TagsAll.Count > 0
+        {
+            // “for each adjacent object with all tags Grain and Flour”
+            var links = EffectCriteria_TagsAll.Select(t => t.GetNestedTooltipLink());
+            criteriaText = $"for each adjacent {string.Join(" ", links)}";
+        }
+
+        return $"{bonusText} {criteriaText}.";
     }
 }

@@ -18,10 +18,6 @@ public class NestedTooltipManager : MonoBehaviour
     private const int MOUSE_OFFSET = 2; // px
     private const int SCREEN_EDGE_OFFSET = 5; // px
 
-    [Header("Tooltip frame colors")]
-    public Color UnpinnedFrameColor;
-    public Color PinnedFrameColor;
-
     [Header("Prefabs")]
     public TooltipWindow TooltipPrefab;
 
@@ -47,15 +43,38 @@ public class NestedTooltipManager : MonoBehaviour
 
     /// <summary>
     /// Dictionary holding information about which TMPro link id's belong to which INestedTooltipTargets.
+    /// <br/>Targets referenced here are always the same and never change (usually Defs).
     /// </summary>
-    private static Dictionary<string, INestedTooltipTarget> LinkTargets;
+    private static Dictionary<string, INestedTooltipTarget> StaticLinkTargets;
+
+    /// <summary>
+    /// Dictionary holding information about which TMPro link id's, that are currently active in a shown tooltip, belong to which INestedTooltipTargets.
+    /// <br/>Targets referenced here may be temporary objects that only exist in the current context.
+    /// </summary>
+    private static Dictionary<string, INestedTooltipTarget> DynamicLinkTargets;
 
     private void Awake()
     {
         Instance = this;
-        LinkTargets = new Dictionary<string, INestedTooltipTarget>();
         HoverTimer = 0f;
         CurrentHoveredTarget = null;
+    }
+
+    private void Start()
+    {
+        InitStaticLinkTargets();
+        DynamicLinkTargets = new Dictionary<string, INestedTooltipTarget>();
+    }
+
+    private void InitStaticLinkTargets()
+    {
+        StaticLinkTargets = new Dictionary<string, INestedTooltipTarget>();
+
+        // ResourceDefs
+        foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
+
+        // ObjectTagDefs
+        foreach (ObjectTagDef def in DefDatabase<ObjectTagDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
     }
 
     private void Update()
@@ -68,7 +87,6 @@ public class NestedTooltipManager : MonoBehaviour
         {
             bool doAccumulateTime = true;
             if (Windows.Count > 0 && Windows.Last().Target == CurrentHoveredTarget) doAccumulateTime = false; // Don't accumulate if target already has a tooltip
-            if (Windows.Count > 0 && !Windows.Last().IsPinned) doAccumulateTime = false; // Don't accumulate time if outermost window isn't pinned yet
             if (doAccumulateTime)
             {
                 HoverTimer += Time.deltaTime;
@@ -80,15 +98,6 @@ public class NestedTooltipManager : MonoBehaviour
                     }
                     else ShowTooltip(CurrentHoveredTarget);
                 }
-            }
-        }
-
-        // Accumulate pin time on outermost tooltip
-        if (Windows.Count > 0 && !Windows.Last().IsPinned)
-        {
-            if (Time.time - Windows.Last().CreatedAt >= PIN_DELAY)
-            {
-                PinTooltip(Windows.Last());
             }
         }
 
@@ -146,28 +155,24 @@ public class NestedTooltipManager : MonoBehaviour
     {
         // Create new tooltip
         TooltipWindow tooltip = Instantiate(TooltipPrefab, transform);
-        tooltip.Init(target);
-        tooltip.OuterFrame.color = UnpinnedFrameColor;
+        string titleText = target.GetTooltipTitle();
+        string bodyText = target.GetToolTipBodyText(out List<INestedTooltipTarget> dynamicTooltipReferences);
+        tooltip.Init(titleText, bodyText);
+        tooltip.Target = target;
         Windows.Add(tooltip);
 
         // Register tooltip references
-        foreach (INestedTooltipTarget referencedTarget in target.GetToolTipReferences())
+        foreach (INestedTooltipTarget referencedTarget in dynamicTooltipReferences)
         {
             string linkId = referencedTarget.NestedTooltipLinkId;
-            if (LinkTargets.ContainsKey(linkId))
+            if (DynamicLinkTargets.ContainsKey(linkId))
             {
                 // Verify that existing link points to same object
-                if (LinkTargets[linkId] != referencedTarget) throw new System.Exception($"The linkId {linkId} already exists in LinkTargets but points to a different object.\nIt points to {LinkTargets[linkId]} but now it should point to {referencedTarget}.");
+                if (DynamicLinkTargets[linkId] != referencedTarget) throw new System.Exception($"The linkId {linkId} already exists in LinkTargets but points to a different object.\nIt points to {DynamicLinkTargets[linkId]} but now it should point to {referencedTarget}.");
                 continue;
             }
-            LinkTargets.Add(linkId, referencedTarget);
+            DynamicLinkTargets.Add(linkId, referencedTarget);
         }
-    }
-
-    private void PinTooltip(TooltipWindow tooltip)
-    {
-        tooltip.IsPinned = true;
-        tooltip.OuterFrame.color = PinnedFrameColor;
     }
 
     public void DestroyAllWindows()
@@ -175,7 +180,7 @@ public class NestedTooltipManager : MonoBehaviour
         if (DEBUG_ENABLED) Debug.Log("DestroyAllWindows");
         foreach (var w in Windows) Destroy(w.gameObject);
         Windows.Clear();
-        LinkTargets.Clear();
+        DynamicLinkTargets.Clear();
     }
 
     public void ResetTooltips()
@@ -225,15 +230,19 @@ public class NestedTooltipManager : MonoBehaviour
         HoverTimer = 0f;
     }
 
-    public void NotifyTooltipLinkHovered(string linkId)
+    public void NotifyTooltipLinkHovered(string linkId, bool isRoot)
     {
         if (DEBUG_ENABLED) Debug.Log("NotifyTooltipLinkHovered " + linkId);
 
         // Get tooltip target from link id
-        INestedTooltipTarget target = LinkTargets[linkId];
+        if(!StaticLinkTargets.ContainsKey(linkId) && !DynamicLinkTargets.ContainsKey(linkId))
+        {
+            throw new System.Exception($"The provided linkId {linkId} is neither registered in StaticLinkTargets nor in DynamicLinkTargets. If it's a reference to a static object, such as a Def, make sure to register it in NestedTooltipManager.InitStaticLinkTargets(). If it's a reference to a dynamic object from another tooltip, make sure to add it to the out List references of that ITooltipTargets GetToolTipBodyText().\n\nStatic Links:\n{StaticLinkTargets.Keys.ToList().DebugList()}");
+        }
+        INestedTooltipTarget target = StaticLinkTargets.ContainsKey(linkId) ? StaticLinkTargets[linkId] : DynamicLinkTargets[linkId];
 
         // Redirect to default notify
-        NotifyObjectHovered(target, isRoot: false);
+        NotifyObjectHovered(target, isRoot);
     }
 
     public void NotifyTooltipLinkUnhovered(string linkId)
@@ -241,7 +250,11 @@ public class NestedTooltipManager : MonoBehaviour
         if (DEBUG_ENABLED) Debug.Log("NotifyTooltipLinkUnhovered " + linkId);
 
         // Get tooltip target from link id
-        INestedTooltipTarget target = LinkTargets[linkId];
+        if (!StaticLinkTargets.ContainsKey(linkId) && !DynamicLinkTargets.ContainsKey(linkId))
+        {
+            throw new System.Exception($"The provided linkId {linkId} is neither registered in StaticLinkTargets nor in DynamicLinkTargets. If it's a reference to a static object, such as a Def, make sure to register it in NestedTooltipManager.InitStaticLinkTargets(). If it's a reference to a dynamic object from another tooltip, make sure to add it to the out List references of that ITooltipTargets GetToolTipBodyText().\n\nStatic Links:\n{StaticLinkTargets.Keys.ToList().DebugList()}");
+        }
+        INestedTooltipTarget target = StaticLinkTargets.ContainsKey(linkId) ? StaticLinkTargets[linkId] : DynamicLinkTargets[linkId];
 
         // Redirect to default notify
         NotifyObjectUnhovered(target);
