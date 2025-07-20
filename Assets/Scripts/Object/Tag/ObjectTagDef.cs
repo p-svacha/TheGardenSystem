@@ -7,7 +7,7 @@ public class ObjectTagDef : Def, INestedTooltipTarget
     public string ColorHex => "#" + ColorUtility.ToHtmlStringRGB(Color);
 
     // INestedTooltipTaget
-    public string GetTooltipTitle() => LabelCap;
+    public string GetTooltipTitle() => LabelCapWord;
     public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
     {
         references = new List<INestedTooltipTarget>();
@@ -15,6 +15,6 @@ public class ObjectTagDef : Def, INestedTooltipTarget
     }
 
     public string NestedTooltipLinkId => $"ObjectTag_{DefName}";
-    public string NestedTooltipLinkText => LabelCap;
+    public string NestedTooltipLinkText => LabelCapWord;
     public Color NestedTooltipLinkColor => Color;
 }

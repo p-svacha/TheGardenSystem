@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class ObjectDef : Def, IDraftable
 {
     public List<ObjectTagDef> Tags { get; init; } = new();
-    public Dictionary<ResourceDef, int> BaseResources { get; init; } = new();
+    public ResourceCollection BaseResources { get; init; } = new();
     public List<ObjectEffect> Effects { get; init; } = new();
     new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Objects/" + DefName);
 
@@ -44,20 +44,9 @@ public class ObjectDef : Def, IDraftable
 
     public string DraftDisplay_Title => LabelCapWord;
     public Sprite DraftDisplay_Sprite => Sprite;
-    public string DraftDisplay_DescriptionPre => GetProductionTooltipString();
+    public string DraftDisplay_DescriptionPre => BaseResources.GetAsSingleLinkedString();
     public string DraftDisplay_DescriptionMain => GetEffectDescription();
     public string DraftDisplay_DescriptionPost => GetTags();
-
-    private string GetProductionTooltipString()
-    {
-        string txt = "";
-        foreach (var kvp in BaseResources)
-        {
-            txt += $"{kvp.Key.GetNestedTooltipLink()} {kvp.Value}  ";
-        }
-        txt = txt.TrimEnd(' ');
-        return txt;
-    }
 
     #endregion
 

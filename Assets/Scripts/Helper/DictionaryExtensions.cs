@@ -94,7 +94,6 @@ public static class DictionaryExtensions
 
         foreach (var kvp in other)
         {
-            // Reuse Increment to do the work and null/arg checking
             dictionary.Increment(kvp.Key, kvp.Value);
         }
     }
@@ -129,6 +128,27 @@ public static class DictionaryExtensions
         else
         {
             throw new Exception($"Key {key} doesn't exist.");
+        }
+    }
+
+    /// <summary>
+    /// Decrements the integer values in this dictionary by the corresponding values in another dictionary.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionaries.</typeparam>
+    /// <param name="dictionary">The dictionary whose values will be updated.</param>
+    /// <param name="other">The dictionary providing decrement amounts by key.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="dictionary"/> or <paramref name="other"/> is null.</exception>
+    /// <exception cref="Exception">Thrown if any key in <paramref name="other"/> does not exist in <paramref name="dictionary"/> or if a value would go below zero.</exception>
+    public static void DecrementMultiple<TKey>(this Dictionary<TKey, int> dictionary, IDictionary<TKey, int> other)
+    {
+        if (dictionary == null)
+            throw new ArgumentNullException(nameof(dictionary));
+        if (other == null)
+            throw new ArgumentNullException(nameof(other));
+
+        foreach (var kvp in other)
+        {
+            dictionary.Decrement(kvp.Key, kvp.Value);
         }
     }
 

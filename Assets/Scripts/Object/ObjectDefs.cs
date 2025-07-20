@@ -9,7 +9,6 @@ public static class ObjectDefs
         {
             DefName = "Carrot",
             Label = "carrot",
-            Description = "A simple carrot",
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Plant,
@@ -17,17 +16,16 @@ public static class ObjectDefs
                 ObjectTagDefOf.Root,
                 ObjectTagDefOf.FoodSource,
             },
-            BaseResources = new Dictionary<ResourceDef, int>()
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 1 },
-            },
+            }),
         },
 
         new ObjectDef()
         {
             DefName = "CompostHeap",
             Label = "compost heap",
-            Description = "Enriches the soil. Adjacent food plants produce +1 food.",
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
@@ -55,17 +53,16 @@ public static class ObjectDefs
         {
             DefName = "CornStalk",
             Label = "corn stalk",
-            Description = "+1 Food for each adjacent plant.",
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Vegetable,
                 ObjectTagDefOf.FoodSource
             },
-            BaseResources = new Dictionary<ResourceDef, int>()
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 1 },
-            },
+            }),
             Effects = new List<ObjectEffect>()
             {
                 new SelfAdjacencyEffect()

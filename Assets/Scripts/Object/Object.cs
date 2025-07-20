@@ -16,15 +16,15 @@ public class Object : INestedTooltipTarget
     /// <summary>
     /// The exact amount of resources of each type that this object produces natively.
     /// </summary>
-    public virtual Dictionary<ResourceDef, int> GetNativeResourceProduction()
+    public virtual ResourceCollection GetNativeResourceProduction()
     {
-        return new Dictionary<ResourceDef, int>(Def.BaseResources);
+        return new ResourceCollection(Def.BaseResources);
     }
 
     /// <summary>
     /// The list of resources that this object produces natively.
     /// </summary>
-    public List<ResourceDef> NativeResources => GetNativeResourceProduction().Keys.ToList();
+    public List<ResourceDef> NativeResources => GetNativeResourceProduction().GetResourceList();
 
     public bool HasTag(ObjectTagDef tag) => Tags.Contains(tag);
     public bool HasAnyOfTags(List<ObjectTagDef> tags) => tags.Any(t => Tags.Contains(t));
@@ -43,7 +43,7 @@ public class Object : INestedTooltipTarget
 
     #region INestedTooltipTaget
 
-    public string GetTooltipTitle() => LabelCap;
+    public string GetTooltipTitle() => LabelCapWord;
     public string GetToolTipBodyText(out List<INestedTooltipTarget> dynamicReferences)
     {
         dynamicReferences = new List<INestedTooltipTarget>();

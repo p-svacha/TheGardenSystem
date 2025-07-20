@@ -7,6 +7,7 @@ public class GameUI : MonoBehaviour
     [Header("Elements")]
     public UI_DatePanel DatePanel;
     public UI_ResourcePanel ResourcePanel;
+    public UI_OrderPanel OrderPanel;
 
     private void Awake()
     {

@@ -12,7 +12,7 @@ public class UI_ResourceRow : MonoBehaviour
     public void Init(ResourceDef res)
     {
         Icon.sprite = res.Sprite;
-        ValueText.text = Game.Instance.Resources[res].ToString();
+        ValueText.text = Game.Instance.Resources.Resources[res].ToString();
 
         if (Game.Instance.GameState == GameState.ScatterManipulation)
         {

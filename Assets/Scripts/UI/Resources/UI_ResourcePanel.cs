@@ -10,9 +10,9 @@ public class UI_ResourcePanel : MonoBehaviour
 
     public void Refresh()
     {
-        HelperFunctions.DestroyAllChildredImmediately(Container);
+        HelperFunctions.DestroyAllChildredImmediately(Container, skipElements: 1);
 
-        foreach(var res in Game.Instance.Resources)
+        foreach(var res in Game.Instance.Resources.Resources)
         {
             UI_ResourceRow row = GameObject.Instantiate(ResourceRowPrefab, Container.transform);
             row.Init(res.Key);
