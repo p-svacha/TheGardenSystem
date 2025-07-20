@@ -1,0 +1,7 @@
+Objects:
+- Each object is iconic and isolated, sized to fit on one square tile.
+- Sprite is 1024x1024 px in size.
+- Background is transparent.
+- Objects should have unique silhouettes and high visual contrast.
+- Visual metaphors should be clear (e.g. a carrot is unmistakably a carrot).
+- Slight exaggeration encouraged for readability.

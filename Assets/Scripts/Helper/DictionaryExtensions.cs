@@ -1,11 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public static class DictionaryExtensions
 {
+    /// <summary>
+    /// Selects a random key from the dictionary based on integer weights.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <param name="weightDictionary">Dictionary mapping keys to integer weights.</param>
+    /// <returns>A randomly selected key, where probability is proportional to its weight.</returns>
+    /// <exception cref="Exception">Thrown if the dictionary is empty or all weights are zero.</exception>
     public static TKey GetWeightedRandomElement<TKey>(this Dictionary<TKey, int> weightDictionary)
     {
         int probabilitySum = weightDictionary.Sum(x => x.Value);
@@ -17,9 +23,16 @@ public static class DictionaryExtensions
             if (rng < tmpSum)
                 return kvp.Key;
         }
-        throw new System.Exception("No element selected. Check the dictionary for valid weights.");
+        throw new Exception("No element selected. Check the dictionary for valid weights.");
     }
 
+    /// <summary>
+    /// Selects a random key from the dictionary based on float weights.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <param name="weightDictionary">Dictionary mapping keys to float weights.</param>
+    /// <returns>A randomly selected key, where probability is proportional to its weight.</returns>
+    /// <exception cref="Exception">Thrown if the dictionary is empty or all weights are zero.</exception>
     public static TKey GetWeightedRandomElement<TKey>(this Dictionary<TKey, float> weightDictionary)
     {
         float probabilitySum = weightDictionary.Sum(x => x.Value);
@@ -31,7 +44,7 @@ public static class DictionaryExtensions
             if (rng < tmpSum)
                 return kvp.Key;
         }
-        throw new System.Exception("No element selected. Check the dictionary for valid weights.");
+        throw new Exception("No element selected. Check the dictionary for valid weights.");
     }
 
     /// <summary>
@@ -87,24 +100,109 @@ public static class DictionaryExtensions
     }
 
     /// <summary>
-    /// Decreases the value of the given key by 1. If the key doesn't exist or is <= 0, it throws an error. If they value is at 1, it removes the key.
+    /// Decrements the integer value associated with the specified key by a given amount.
+    /// If the key does not exist or its value is less than the decrement amount, an exception is thrown.
     /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <param name="dictionary">The dictionary to operate on.</param>
+    /// <param name="key">The key whose value to decrement.</param>
+    /// <param name="amount">The amount by which to decrement the value (defaults to 1).</param>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="dictionary"/> or <paramref name="key"/> is null.
+    /// </exception>
+    /// <exception cref="Exception">
+    /// Thrown if the key does not exist or its current value is less than the decrement amount.
+    /// </exception>
     public static void Decrement<TKey>(this Dictionary<TKey, int> dictionary, TKey key, int amount = 1)
     {
+        if (dictionary == null)
+            throw new ArgumentNullException(nameof(dictionary));
+        if (key == null)
+            throw new ArgumentNullException(nameof(key));
+
         if (dictionary.ContainsKey(key))
         {
-            if (dictionary[key] < amount) throw new System.Exception($"Key {key} is not allowed to be <{amount} when trying to decrement {amount}, but is {dictionary[key]}");
-            else dictionary[key] -= amount;
+            if (dictionary[key] < amount)
+                throw new Exception($"Key {key} is not allowed to be <{amount} when trying to decrement {amount}, but is {dictionary[key]}");
+            dictionary[key] -= amount;
         }
-        else throw new System.Exception($"Key {key} doesn't exist.");
+        else
+        {
+            throw new Exception($"Key {key} doesn't exist.");
+        }
     }
 
     /// <summary>
-    /// Adds a value to a dictionary that stores values grouped by a key.
+    /// Adds a value to a list stored in the dictionary under the specified key.
+    /// If the key does not exist, a new list is created and the value is added.
     /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="T">The type of elements in the list.</typeparam>
+    /// <param name="dictionary">The dictionary containing lists of values.</param>
+    /// <param name="key">The key under which to add the value.</param>
+    /// <param name="value">The value to add to the list.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="dictionary"/> or <paramref name="key"/> is null.
+    /// </exception>
     public static void AddToValueList<TKey, T>(this Dictionary<TKey, List<T>> dictionary, TKey key, T value)
     {
-        if (dictionary.ContainsKey(key)) dictionary[key].Add(value);
-        else dictionary.Add(key, new List<T>() { value });
+        if (dictionary == null)
+            throw new ArgumentNullException(nameof(dictionary));
+        if (key == null)
+            throw new ArgumentNullException(nameof(key));
+
+        if (dictionary.ContainsKey(key))
+        {
+            dictionary[key].Add(value);
+        }
+        else
+        {
+            dictionary.Add(key, new List<T> { value });
+        }
+    }
+
+    /// <summary>
+    /// Selects multiple random keys from the dictionary based on float weights.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <param name="weightDictionary">Dictionary mapping keys to float weights.</param>
+    /// <param name="amount">The number of keys to select.</param>
+    /// <param name="allowRepeating">If true, the same key can be selected multiple times; otherwise selections are unique.</param>
+    /// <returns>A list of randomly selected keys.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="weightDictionary"/> is null.</exception>
+    /// <exception cref="ArgumentException">
+    /// Thrown if <paramref name="amount"/> is less than 1, or if <paramref name="allowRepeating"/> is false and <paramref name="amount"/> exceeds the number of available keys.
+    /// </exception>
+    public static List<TKey> GetWeightedRandomElements<TKey>(this Dictionary<TKey, float> weightDictionary, int amount, bool allowRepeating = false)
+    {
+        if (weightDictionary == null)
+            throw new ArgumentNullException(nameof(weightDictionary));
+        if (amount < 1)
+            throw new ArgumentException("Amount must be at least 1.", nameof(amount));
+        if (!allowRepeating && amount > weightDictionary.Count)
+            throw new ArgumentException("Amount cannot be greater than the number of unique elements when repetition is disallowed.", nameof(amount));
+
+        var results = new List<TKey>(amount);
+
+        if (allowRepeating)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                results.Add(weightDictionary.GetWeightedRandomElement());
+            }
+        }
+        else
+        {
+            // Create a temporary copy to remove selected items
+            var tempDict = new Dictionary<TKey, float>(weightDictionary);
+            for (int i = 0; i < amount; i++)
+            {
+                TKey selected = tempDict.GetWeightedRandomElement();
+                results.Add(selected);
+                tempDict.Remove(selected);
+            }
+        }
+
+        return results;
     }
 }

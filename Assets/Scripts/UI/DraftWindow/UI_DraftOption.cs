@@ -8,9 +8,11 @@ public class UI_DraftOption : MonoBehaviour
 {
     [Header("Elements")]
     public Image SelectionFrame;
+    public Image InnerFrame;
     public Button Button;
     public TextMeshProUGUI Title;
     public Image Image;
+    public TextMeshProUGUI DescriptionText;
 
     public void Init(UI_Draft draft, IDraftable option)
     {
@@ -31,10 +33,18 @@ public class UI_DraftOption : MonoBehaviour
             Image.sprite = option.DraftDisplay_Sprite;
         }
         else Image.gameObject.SetActive(false);
+
+        // Description
+        if (option.DraftDisplay_Description != null)
+        {
+            DescriptionText.gameObject.SetActive(true);
+            DescriptionText.text = option.DraftDisplay_Description;
+        }
+        else DescriptionText.gameObject.SetActive(false);
     }
 
     public void SetSelected(bool value)
     {
-        
+        InnerFrame.color = value ? ResourceManager.UiBackgroundLighter2 : ResourceManager.UiBackgroundLighter1;
     }
 }

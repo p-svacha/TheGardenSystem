@@ -11,10 +11,18 @@ public class Object : INestedTooltipTarget
         Def = def;
     }
 
-    public virtual Dictionary<ResourceDef, int> GetBaseResourceProduction()
+    /// <summary>
+    /// The exact amount of resources of each type that this object produces natively.
+    /// </summary>
+    public virtual Dictionary<ResourceDef, int> GetNativeResourceProduction()
     {
         return new Dictionary<ResourceDef, int>(Def.BaseResources);
     }
+
+    /// <summary>
+    /// The list of resources that this object produces natively.
+    /// </summary>
+    public List<ResourceDef> NativeResources => GetNativeResourceProduction().Keys.ToList();
 
     public bool HasTag(ObjectTagDef tag) => Tags.Contains(tag);
     public bool HasAnyOfTags(List<ObjectTagDef> tags) => tags.Any(t => Tags.Contains(t));

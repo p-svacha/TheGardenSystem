@@ -45,10 +45,41 @@ public static class ObjectDefs
                     },
                     ResourceProductionBonus = new Dictionary<ResourceDef, int>()
                     {
-                        { ResourceDefOf.Food, 1 }
-                    }
-                }
-            }
-        }
+                        { ResourceDefOf.Food, 1 },
+                    },
+                },
+            },
+        },
+
+        new ObjectDef()
+        {
+            DefName = "CornStalk",
+            Label = "corn stalk",
+            Description = "+1 Food for each adjacent plant.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Plant,
+                ObjectTagDefOf.Vegetable,
+                ObjectTagDefOf.FoodSource
+            },
+            BaseResources = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 1 },
+            },
+            Effects = new List<ObjectEffect>()
+            {
+                new SelfAdjacencyEffect()
+                {
+                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    {
+                        ObjectTagDefOf.Plant,
+                    },
+                    ResourceProductionBonus = new Dictionary<ResourceDef, int>()
+                    {
+                        { ResourceDefOf.Food, 1 },
+                    },
+                },
+            },
+        },
     };
 }

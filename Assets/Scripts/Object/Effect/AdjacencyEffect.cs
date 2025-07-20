@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// A specific kind of of ObjectEffect that gets applied to all adjacent objects of a source object. 
+/// A specific kind of of ObjectEffect that gets applied based on all adjacent objects of a source object. 
 /// </summary>
 public class AdjacencyEffect : ObjectEffect
 {
@@ -17,7 +17,7 @@ public class AdjacencyEffect : ObjectEffect
     public List<ObjectTagDef> AffectedTagsAll { get; init; } = new();
 
     /// <summary>
-    /// The amount of production that gets to added all resources an object produces natively (according to Object.GetBaseResourceProduction)
+    /// The amount of production that gets to added to all resources an object produces natively (according to Object.GetBaseResourceProduction)
     /// </summary>
     public int GeneralProductionBonus { get; init; } = 0;
 
@@ -26,22 +26,42 @@ public class AdjacencyEffect : ObjectEffect
     /// </summary>
     public Dictionary<ResourceDef, int> ResourceProductionBonus { get; init; } = new();
 
+    public override bool Validate(out string invalidReason)
+    {
+        if (AffectedTagsAny.Count == 0 && AffectedTagsAll.Count == 0)
+        {
+            invalidReason = "There is no criteria defined for when this effect should be triggered.";
+            return false;
+        }
+        if (AffectedTagsAny.Count > 0 && AffectedTagsAll.Count > 0)
+        {
+            invalidReason = "There is conflicting criteria defined for when this effect should be triggered.";
+            return false;
+        }
+
+        invalidReason = "";
+        return true;
+    }
+
     public override void ApplyEffect(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
     {
         foreach(MapTile tile in sourceTile.GetAdjacentTiles())
         {
             // Check if effect can be applied
             bool doApplyEffect = true;
-            if (AffectedTagsAny.Count > 0 && (!tile.HasObject || !tile.Object.HasAnyOfTags(AffectedTagsAny))) doApplyEffect = false;
-            if (AffectedTagsAll.Count > 0 && (!tile.HasObject || !tile.Object.HasAllTags(AffectedTagsAll))) doApplyEffect = false;
+
+            if (!tile.HasObject) doApplyEffect = false;
+            else if (AffectedTagsAny.Count > 0 && (!tile.Object.HasAnyOfTags(AffectedTagsAny))) doApplyEffect = false;
+            else if (AffectedTagsAll.Count > 0 && (!tile.Object.HasAllTags(AffectedTagsAll))) doApplyEffect = false;
+
             if (!doApplyEffect) continue;
 
             // Apply bonus to native resources
             if (GeneralProductionBonus > 0)
             {
-                foreach (ResourceDef resource in tile.Object.GetBaseResourceProduction().Keys)
+                foreach (ResourceDef resource in tile.Object.NativeResources)
                 {
-                    ProductionModifier modifier = new ProductionModifier(sourceTile.Object, ProductionModifierType.Additive, GeneralProductionBonus);
+                    ProductionModifier modifier = new ProductionModifier(source: sourceTile.Object, ProductionModifierType.Additive, GeneralProductionBonus);
                     tileProductions[tile][resource].AddModifier(modifier);
                 }
             }
@@ -52,7 +72,7 @@ public class AdjacencyEffect : ObjectEffect
                 ResourceDef resource = kvp.Key;
                 int productionBonus = kvp.Value;
 
-                ProductionModifier modifier = new ProductionModifier(sourceTile.Object, ProductionModifierType.Additive, productionBonus);
+                ProductionModifier modifier = new ProductionModifier(source: sourceTile.Object, ProductionModifierType.Additive, productionBonus);
                 tileProductions[tile][resource].AddModifier(modifier);
             }
         }

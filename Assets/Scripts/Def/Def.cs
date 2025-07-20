@@ -39,6 +39,12 @@ public abstract class Def
     public string LabelCap => Label.CapitalizeFirst();
 
     /// <summary>
+    /// A human-readable label used to identify this in game.
+    /// <br/>Each Word Capitalized.
+    /// </summary>
+    public string LabelCapWord => Label.CapitalizeEachWord();
+
+    /// <summary>
     /// A human-readable description given when the Def is inspected by players.
     /// </summary>
     public string Description { get; init; } = "";

@@ -10,6 +10,7 @@ using System.Linq;
 public class NestedTooltipManager : MonoBehaviour
 {
     public static NestedTooltipManager Instance;
+    private bool DEBUG_ENABLED = false;
 
     private const float TOOLTIP_DELAY = 1f; // The time in seconds that something needs to get hovered to spawn a tooltip
     private const float PIN_DELAY = 1.5f; // The time in seconds it takes for a tooltip to become pinned, allowing to hover into it and spawn nested tooltips
@@ -171,7 +172,7 @@ public class NestedTooltipManager : MonoBehaviour
 
     public void DestroyAllWindows()
     {
-        Debug.Log("DestroyAllWindows");
+        if (DEBUG_ENABLED) Debug.Log("DestroyAllWindows");
         foreach (var w in Windows) Destroy(w.gameObject);
         Windows.Clear();
         LinkTargets.Clear();
@@ -206,10 +207,10 @@ public class NestedTooltipManager : MonoBehaviour
     {
         if (CurrentHoveredTarget != null)
         {
-            Debug.LogWarning("This function may only be called if no object is currently hovered. Make sure to call NotifyObjectUnhovered() on the previous target first.");
+            if (DEBUG_ENABLED) Debug.LogWarning("This function may only be called if no object is currently hovered. Make sure to call NotifyObjectUnhovered() on the previous target first.");
             CurrentHoveredTarget = null;
         }
-        Debug.Log("NotifyObjectHovered " + target.NestedTooltipLinkText);
+        if (DEBUG_ENABLED) Debug.Log("NotifyObjectHovered " + target.NestedTooltipLinkText);
 
         CurrentHoveredTarget = target;
         IsCurrentHoveredTargetRoot = isRoot;
@@ -226,7 +227,7 @@ public class NestedTooltipManager : MonoBehaviour
 
     public void NotifyTooltipLinkHovered(string linkId)
     {
-        Debug.Log("NotifyTooltipLinkHovered " + linkId);
+        if (DEBUG_ENABLED) Debug.Log("NotifyTooltipLinkHovered " + linkId);
 
         // Get tooltip target from link id
         INestedTooltipTarget target = LinkTargets[linkId];
@@ -237,7 +238,7 @@ public class NestedTooltipManager : MonoBehaviour
 
     public void NotifyTooltipLinkUnhovered(string linkId)
     {
-        Debug.Log("NotifyTooltipLinkUnhovered " + linkId);
+        if (DEBUG_ENABLED) Debug.Log("NotifyTooltipLinkUnhovered " + linkId);
 
         // Get tooltip target from link id
         INestedTooltipTarget target = LinkTargets[linkId];

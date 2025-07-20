@@ -6,4 +6,5 @@ public enum GameState
     BeforeScatter,
     ScatterManipulation,
     ConfirmedScatter,
+    ObjectDraft,
 }

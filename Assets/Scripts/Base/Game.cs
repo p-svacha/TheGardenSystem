@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Game
 {
@@ -40,8 +41,8 @@ public class Game
 
         // Starting objects
         Objects = new List<Object>();
-        AddObject(ObjectDefOf.Carrot);
-        AddObject(ObjectDefOf.CompostHeap);
+        AddObjectToInventory(ObjectDefOf.Carrot);
+        AddObjectToInventory(ObjectDefOf.CompostHeap);
 
         GameState = GameState.Uninitialized;
     }
@@ -71,7 +72,7 @@ public class Game
         {
             if (GameState == GameState.BeforeScatter) StartDay();
             else if (GameState == GameState.ScatterManipulation) ConfirmScatter();
-            else if (GameState == GameState.ConfirmedScatter) EndDay();
+            else if (GameState == GameState.ConfirmedScatter) StartObjectDraft();
         }
     }
 
@@ -125,6 +126,37 @@ public class Game
         NestedTooltipManager.Instance.ResetTooltips();
     }
 
+    public void StartObjectDraft()
+    {
+        GameState = GameState.ObjectDraft;
+
+        // Create candidate probability table
+        Dictionary<ObjectDef, float> candidates = new Dictionary<ObjectDef, float>();
+        foreach (ObjectDef def in DefDatabase<ObjectDef>.AllDefs) candidates.Add(def, 1f);
+
+        // Choose draft options out of candidates
+        List<ObjectDef> draftOptions = candidates.GetWeightedRandomElements(amount: 3, allowRepeating: false);
+        List<IDraftable> draftableOptions = draftOptions.Select(o => (IDraftable)o).ToList();
+
+        // Show draft window
+        string draftWindowTitle = $"Day {Day} Complete";
+        string draftWindowSubtitle = "Choose an object to add to your inventory";
+        UI_DraftWindow.Instance.Show(draftWindowTitle, draftWindowSubtitle, draftableOptions, isDraft: true, OnObjectDrafted);
+    }
+
+    private void OnObjectDrafted(List<IDraftable> selectedOptions)
+    {
+        // Add drafted objects to inventory
+        foreach(IDraftable draftedObject in selectedOptions)
+        {
+            ObjectDef def = (ObjectDef)draftedObject;
+            AddObjectToInventory(def);
+        }
+
+        // End day
+        EndDay();
+    }
+
     /// <summary>
     /// Calculates and returns the final resource productions of the day.
     /// </summary>
@@ -136,7 +168,7 @@ public class Game
         {
             CurrentPerTileResourceProduction.Add(tile, new Dictionary<ResourceDef, ResourceProduction>());
 
-            Dictionary<ResourceDef, int> baseProduction = tile.HasObject ? tile.Object.GetBaseResourceProduction() : new();
+            Dictionary<ResourceDef, int> baseProduction = tile.HasObject ? tile.Object.GetNativeResourceProduction() : new();
             string label = tile.HasObject ? tile.Object.LabelCap : "Empty Tile";
 
             foreach (ResourceDef resource in DefDatabase<ResourceDef>.AllDefs)
@@ -153,6 +185,7 @@ public class Game
         {
             foreach (ObjectEffect effect in tile.GetEffects())
             {
+                if (!effect.Validate(out string invalidReason)) throw new System.Exception($"Cannot apply invalid effect of {tile}. ValidationFailReason: {invalidReason}");
                 effect.ApplyEffect(tile, CurrentPerTileResourceProduction);
             }
         }
@@ -209,7 +242,7 @@ public class Game
 
     #region Actions
 
-    public void AddObject(ObjectDef def)
+    public void AddObjectToInventory(ObjectDef def)
     {
         Object newObj = new Object(def);
         Objects.Add(newObj);

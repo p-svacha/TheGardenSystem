@@ -10,6 +10,8 @@ using System.Linq;
 /// </summary>
 public class UI_DraftWindow : MonoBehaviour
 {
+    public static UI_DraftWindow Instance;
+
     [Header("Elements")]
     public TextMeshProUGUI Title;
     public UI_Draft Draft;
@@ -22,10 +24,17 @@ public class UI_DraftWindow : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         ConfirmButton.onClick.AddListener(Confirm);
+        gameObject.SetActive(false);
     }
 
-    public void Show(string title, string subtitle, List<IDraftable> options, bool isDraft, System.Action<List<IDraftable>> callback = null)
+    /// <summary>
+    /// Shows the draft window with the given options.
+    /// If isDraft is false, this represents information without user input.
+    /// The callback gets called with a list of all selected options (or all options if isDraft is false).
+    /// </summary>
+    public void Show(string title, string subtitle, List<IDraftable> options, bool isDraft = true, System.Action<List<IDraftable>> callback = null)
     {
         Callback = callback;
 

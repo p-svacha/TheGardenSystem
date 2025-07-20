@@ -43,7 +43,11 @@ public class UI_Draft : MonoBehaviour
         GameObject currentRow = null;
         foreach (IDraftable option in options)
         {
-            if (counter % MAX_OPTIONS_PER_ROW == 0) currentRow = GameObject.Instantiate(DraftRowPrefab, OptionsContainer.transform);
+            if (counter % MAX_OPTIONS_PER_ROW == 0) // Create new row
+            {
+                currentRow = GameObject.Instantiate(DraftRowPrefab, OptionsContainer.transform);
+                HelperFunctions.DestroyAllChildredImmediately(currentRow);
+            }
             UI_DraftOption optionDisplay = GameObject.Instantiate(DraftOptionPrefab, currentRow.transform);
             optionDisplay.Init(this, option);
             OptionDisplays.Add(option, optionDisplay);

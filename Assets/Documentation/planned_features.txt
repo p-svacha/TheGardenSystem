@@ -1,0 +1,93 @@
+FEATURE ROADMAP (in that order)
+
+orders:
+	each sunday, the weekly orders need to be payed
+	exact amount of resources for each order is reduced
+	if can't pay, game over
+	one order is added or increased every week
+	orders never decay, just accumulate
+
+new resource:
+	add second resource for order variety
+
+soil fertility on soil terrain:
+	fertility is a new abstract resource that objects can produce
+	abstract means non-accumulative and non-storeable and customers don't buy it, instead they have a direct effect on something
+	soil terraindef has a new fertility value from 0 to 10, starting at 0
+	fertility producting objects increase fertility of the soil they land on
+	when reaching 10, soil turns into "fertile soil"
+	fertile soil gives +1 general production to all plants
+
+object to expand garden:
+	tiles outside garden have some sort of "acquire value", maybe 0-3
+	value starts at 0
+	objects can increase this value for adjacent tiles outside the garden
+	when reaching the limit (i.e. 3), the tile gets acquired
+
+obstacles:
+	some tiles may have obstacles on them
+	to start, just take a rock
+	objects will not be scattered on tiles with obstacles on them, until they are removed
+	obstacles have HP
+	objects can reduce obstacle hp
+	i.e. object "Pickaxe" removes 1 hp from all adjacent rocks
+	when reaching 0 hp, obstacle is removed
+	technically, obstacles are also just objects, but with the "permanent" tag and no effect
+		objects with the "permanent" tag do not get removed at the end of the day
+
+object rarities:
+	Each objectDef has a specific rarity (or maybe use other more fitting term)
+	At the end of each day, you draft 1 common object
+	At the end of each week, you draft 1 rare object
+	At the end of each month, you draft 1 epic object
+	as a guideline, 1 rarity level should be approx a 200% increase in strength (ofc this varies a lot based on your setup and strategy, rly just a guideline to orient)
+
+ordered scatter:
+	instead of full scatter all at once, objects get scattered one by one with slight delay in between
+	this will also make merging nicer (see next chapter)
+
+mergeable objects:
+	some tiles have the tag "mergeable".
+	if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increaed rarity) on the middle tile of the 3
+	i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
+	merging happens during scatter, and other objects can occupy the 2 tiles that become free through the merging
+
+prestige orders:
+	additional optional prestige orders may appear
+	these do not lose the game if not completed
+	but they give an extra reward if completed (draft of rare or epic object, research points, free expansion)
+
+game over logic:
+	instead of immediately losing the game upon one failed ordinary order, you only loose when you can't complete a particular customers order for 2 weeks in a row
+	if you can't complete all orders in a week, a new menu appears where you can select which orders you want to complete
+	if an order can't be completed, the customer will expect the resources of that missed order on top of the expected resources of the next week
+
+sectors (maybe 'plots'):
+	instead of having one centralized inventory, where the objects get scattered randomly across the whole garden, the garden can be split in sectors
+	sectors are a defined area within your garden
+	the inventory is grouped by sector, meaning each object is assigned to one specific sector
+	the objects will only be spread within their particular sector
+	at the start of the game there will only be one sector with your whole garden
+	i feel like this is a necessary and interesting concept to make strategic depth possible in the later stages of the game, so you can focus different sectors for different combos in parallel
+	acquring new sectors is a natural reward in very long intervals, but can also be a reward from prestige orders
+	when acquiring a new sector, an existing one can be split along the vertical or horizontal axis, all objects of the split sector can be assigned freely to the two new resulting sectors
+	this means that sectors will always be rectangular, making it visually clear
+	after that, moving objects between sectors isn't free (still need to decide how to do it, maybe with a new general or specialized currency)
+	when drafting objects, you draft for a specific sector (sectors get iterated through each day)
+	[maybe] each sector has a 'shed', a permanent object with no effects, but that is used to check that sectors inventory.
+		Starting sector would have one shed in the middle. Would be elegant way to display inventory without it being just a ui menu you open.
+
+
+[maybe] research:
+	a research tree is added, with modular dependencies between the research projects (like rimworld for example)
+	whenever a research project is finished, you can choose a new one from 3 random available options
+	objects can now additionally give research points, an abstract resource that is needed to complete research projects
+	some ideas of what techs could do
+		unlock a new object or set of objects, that can then be drafted
+		general bonus to a particular tag, or resource production (inlcuding abstract)
+		allowing to see upcoming orders further in advance
+		discount on orders (i.e. customers expect 5% less X)
+		new mechanics (probably also just a set of objects), like i.e. shovels that can dig out treasures / loot boxes
+	still todo: overthing terminology. maybe "research" and "techs" doesn't rly fit the theme
+
+
