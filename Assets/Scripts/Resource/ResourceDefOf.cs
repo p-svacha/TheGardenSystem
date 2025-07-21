@@ -8,5 +8,6 @@ public static class ResourceDefOf
     public static ResourceDef Herbs;
 
     // Abstract resources
+    public static ResourceDef Expansion;
     public static ResourceDef Fertility;
 }

@@ -7,6 +7,7 @@ public class Game
     public static Game Instance;
     public const int STARTING_AREA_SIZE = 3;
     public const int DAYS_PER_WEEK = 7;
+    public const int CLAIMS_NEEDED_TO_ACQUIRE_TILES = 5;
 
     public GameState GameState { get; private set; }
     public int Day { get; private set; }
@@ -28,7 +29,7 @@ public class Game
     {
         Instance = this;
         Day = 1;
-        Map = MapGenerator.GenerateMap(15);
+        Map = MapGenerator.GenerateMap(19);
         CurrentFinalResourceProduction = new Dictionary<ResourceDef, ResourceProduction>();
         CurrentPerTileResourceProduction = new Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>>();
 
@@ -159,15 +160,25 @@ public class Game
     /// </summary>
     private void ApplyAbstractResources()
     {
-        // Fertility
         foreach (var kvp in CurrentPerTileResourceProduction)
         {
             MapTile tile = kvp.Key;
             Dictionary<ResourceDef, ResourceProduction> tileProduction = kvp.Value;
 
+            // Fertility
             if (tileProduction.TryGetValue(ResourceDefOf.Fertility, out ResourceProduction fertilityProduction) && fertilityProduction.GetValue() != 0)
             {
                 tile.Terrain.AdjustFertility(fertilityProduction.GetValue());
+            }
+
+            // Expansion
+            if (tileProduction.TryGetValue(ResourceDefOf.Expansion, out ResourceProduction expansionProduction) && expansionProduction.GetValue() != 0)
+            {
+                int expansion = expansionProduction.GetValue();
+                foreach(MapTile adjTile in tile.GetOrthogonalAdjacentTiles().Where(t => !t.IsOwned))
+                {
+                    adjTile.AdjustClaim(expansion);
+                }
             }
         }
     }

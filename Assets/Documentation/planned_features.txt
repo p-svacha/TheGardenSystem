@@ -1,10 +1,11 @@
 FEATURE ROADMAP (in that order)
 
 object to expand garden:
-	tiles outside garden have some sort of "acquire value", maybe 0-3
+	tiles outside garden have a "claim" stat
 	value starts at 0
-	objects can increase this value for adjacent tiles outside the garden
+	objects can increase this value for adjacent tiles outside the garden with the new resource "expansion"
 	when reaching the limit (i.e. 3), the tile gets acquired
+	each acquire level gets represented with a little flag on the tile
 
 barren soil:
 	negative fertility soil
@@ -20,8 +21,10 @@ obstacles:
 	technically, obstacles are also just objects, but with the "permanent" tag and no effect
 		objects with the "permanent" tag do not get removed at the end of the day
 
-new resource:
+new content:
 	add third market resource for order variety
+	add several customers for variety
+	add several new objects
 
 object rarities:
 	Each objectDef has a specific rarity (or maybe use other more fitting term)

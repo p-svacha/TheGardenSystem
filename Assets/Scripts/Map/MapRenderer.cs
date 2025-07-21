@@ -14,14 +14,18 @@ public class MapRenderer : MonoBehaviour
     private Tilemap GridOverlayTilemap;
     private Dictionary<Direction, Tilemap> FenceTilemaps;
     private Tilemap ObjectTilemap;
+    private Tilemap ClaimTilemap;
 
     // Tile caches
     private Tile GridOverlayTile;
     private Tile FertilityOverlayTile;
     private Tile NegativeFertilityOverlayTile;
+    private Dictionary<int, Tile> ClaimTiles;
     private Dictionary<TerrainDef, Tile> TerrainTileCache;
     private Dictionary<Direction, Tile> FenceTileCache;
     private Dictionary<ObjectDef, Tile> ObjectTileCache;
+
+    #region Initialize
 
     private void Awake()
     {
@@ -39,6 +43,7 @@ public class MapRenderer : MonoBehaviour
         FenceTilemaps.Add(Direction.W, GameObject.Find("FenceTilemap_W").GetComponent<Tilemap>());
 
         ObjectTilemap = GameObject.Find("ObjectTilemap").GetComponent<Tilemap>();
+        ClaimTilemap = GameObject.Find("ClaimTilemap").GetComponent<Tilemap>();
     }
 
     private void Start()
@@ -47,6 +52,7 @@ public class MapRenderer : MonoBehaviour
         InitializeOverlayTiles();
         InitializeFenceTiles();
         InitializeObjectTiles();
+        InitializeClaimTiles();
     }
 
     /// <summary>
@@ -69,7 +75,7 @@ public class MapRenderer : MonoBehaviour
     private void InitializeOverlayTiles()
     {
         // Grid
-        GridOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/TileGridOverlay"));
+        GridOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Overlays/TileGridOverlay"));
         FertilityOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Terrain/Overlays/Fertility"));
         NegativeFertilityOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Terrain/Overlays/FertilityNegative"));
     }
@@ -79,7 +85,7 @@ public class MapRenderer : MonoBehaviour
         FenceTileCache = new Dictionary<Direction, Tile>();
 
         // Load the base vertical fence sprite once
-        Sprite baseFence = ResourceManager.LoadSprite("Sprites/Fence");
+        Sprite baseFence = ResourceManager.LoadSprite("Sprites/Overlays/Fence");
 
         foreach (Direction dir in Enum.GetValues(typeof(Direction)))
         {
@@ -127,6 +133,15 @@ public class MapRenderer : MonoBehaviour
         }
     }
 
+    private void InitializeClaimTiles()
+    {
+        ClaimTiles = new Dictionary<int, Tile>();
+        for(int i = 1; i <= Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES; i++)
+        {
+            ClaimTiles.Add(i, CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Overlays/Claim_" + i)));
+        }
+    }
+
     private Tile CreateTileFromSprite(Sprite sprite)
     {
         var tile = ScriptableObject.CreateInstance<Tile>();
@@ -135,13 +150,19 @@ public class MapRenderer : MonoBehaviour
         return tile;
     }
 
+    #endregion
+
+    #region Draw
+
     public void DrawFullMap(Map map)
     {
         TerrainTilemap.ClearAllTiles();
         TerrainOverlayTilemap.ClearAllTiles();
         GridOverlayTilemap.ClearAllTiles();
+        ClaimTilemap.ClearAllTiles();
+        foreach (Tilemap tilemap in FenceTilemaps.Values) tilemap.ClearAllTiles();
 
-        foreach(MapTile mapTile in map.AllTiles)
+        foreach (MapTile mapTile in map.AllTiles)
         {
             Vector3Int cell = new Vector3Int(mapTile.Coordinates.x, mapTile.Coordinates.y, 0);
 
@@ -179,6 +200,12 @@ public class MapRenderer : MonoBehaviour
             // Object
             if (mapTile.Object == null) ObjectTilemap.SetTile(cell, null);
             else ObjectTilemap.SetTile(cell, ObjectTileCache[mapTile.Object.Def]);
+
+            // Claim
+            if (!mapTile.IsOwned && mapTile.Claim > 0)
+            {
+                ClaimTilemap.SetTile(cell, ClaimTiles[mapTile.Claim]);
+            }
         }
 
         // Force a redraw
@@ -205,4 +232,6 @@ public class MapRenderer : MonoBehaviour
         var cell = new Vector3Int(pos.x, pos.y, 0);
         FenceTilemaps[dir].SetTile(cell, fenceTile);
     }
+
+    #endregion
 }

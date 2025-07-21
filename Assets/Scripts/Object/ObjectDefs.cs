@@ -73,5 +73,22 @@ public static class ObjectDefs
                 { ResourceDefOf.Herbs, 1 },
             }),
         },
+
+        new ObjectDef()
+        {
+            DefName = "Scarecrow",
+            Label = "scarecrow",
+            FlavorText = "Stakes its ground, quietly convincing nearby soil to join the cause.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Structure,
+                ObjectTagDefOf.Expansion,
+                ObjectTagDefOf.Marker,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Expansion, 1 },
+            }),
+        },
     };
 }

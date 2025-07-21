@@ -67,5 +67,21 @@ public static class ObjectTagDefs
             Description = "Plants valued for their fragrance, flavor, or medicinal properties. Often small, leafy, and delicate.",
             Color = new Color(0.4f, 0.7f, 0.4f),
         },
+
+        new ObjectTagDef()
+        {
+            DefName = "Expansion",
+            Label = "expansion",
+            Description = "Objects that generate Expansion, the abstract resource used to claim unowned tiles around the garden.",
+            Color = new Color(0.6f, 0.8f, 0.4f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Marker",
+            Label = "marker",
+            Description = "Objects that signal boundaries or define structure within the garden, often passive but with strategic placement value.",
+            Color = new Color(0.9f, 0.75f, 0.4f),
+        },
     };
 }

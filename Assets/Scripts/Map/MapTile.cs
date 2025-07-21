@@ -6,14 +6,19 @@ public class MapTile : INestedTooltipTarget
     public Map Map { get; private set; }
     public Vector2Int Coordinates { get; private set; }
     public Terrain Terrain { get; private set; }
-    public bool IsOwned { get; private set; }
     public Object Object { get; private set; }
+
+    // Ownage properties
+    public bool IsOwned { get; private set; }
+    public int Claim { get; private set; }
 
     public MapTile(Map map, Vector2Int coordinates, TerrainDef terrainDef)
     {
         Map = map;
         Coordinates = coordinates;
         Terrain = new Terrain(this, terrainDef);
+        IsOwned = false;
+        Claim = 0;
     }
 
     public List<ObjectEffect> GetEffects()
@@ -29,7 +34,18 @@ public class MapTile : INestedTooltipTarget
         return effects;
     }
 
-    public void Acquire() => IsOwned = true;
+    public void AdjustClaim(int amount)
+    {
+        Claim += amount;
+        if (Claim >= Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES) Game.Instance.AddTileToGarden(this);
+        if (Claim < 0) Claim = 0;
+    }
+
+    public void Acquire()
+    {
+        IsOwned = true;
+        Claim = Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES;
+    }
     public void PlaceObject(Object obj) => Object = obj;
     public void ClearObject() => Object = null;
     public void SetTerrain(TerrainDef def)
@@ -66,6 +82,16 @@ public class MapTile : INestedTooltipTarget
         return adjTiles;
     }
 
+    public List<MapTile> GetOrthogonalAdjacentTiles()
+    {
+        List<MapTile> adjTiles = new List<MapTile>();
+        if (TileNorth != null) adjTiles.Add(TileNorth);
+        if (TileEast != null) adjTiles.Add(TileEast);
+        if (TileSouth != null) adjTiles.Add(TileSouth);
+        if (TileWest != null) adjTiles.Add(TileWest);
+        return adjTiles;
+    }
+
     #endregion
 
     #region INestedTooltipTaget
@@ -77,10 +103,12 @@ public class MapTile : INestedTooltipTarget
 
         string bodyText = "";
 
-        // General tile info
+        // Title (terrain + coordinates)
         bodyText += $"{Terrain.Def.GetNestedTooltipLink()} {Coordinates}";
+
+        // Ownage info
         int ownedInfoSize = 14;
-        string ownedText = IsOwned ? "Owned" : "Unowned";
+        string ownedText = IsOwned ? "Owned" : $"Unowned ({Claim}/{Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES} Claim)";
         bodyText += $"\n<size={ownedInfoSize}>{ownedText}</size>";
 
         // Terrain

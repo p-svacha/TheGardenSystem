@@ -16,7 +16,14 @@ public static class MapGenerator
             for (int y = -half; y <= half; y++)
             {
                 Vector2Int coordinates = new Vector2Int(x, y);
-                tiles.Add(coordinates, new MapTile(map, coordinates, TerrainDefOf.Soil));
+                float distanceToCenter = coordinates.magnitude;
+                float fertileSoilChance = distanceToCenter * 0.06f;
+                if (distanceToCenter <= 2) fertileSoilChance = 0f;
+
+                TerrainDef terrain = TerrainDefOf.Soil;
+                if (Random.value < fertileSoilChance) terrain = TerrainDefOf.FertileSoil;
+
+                tiles.Add(coordinates, new MapTile(map, coordinates, terrain));
             }
         }
 
