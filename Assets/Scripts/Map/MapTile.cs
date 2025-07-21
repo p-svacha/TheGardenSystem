@@ -65,16 +65,21 @@ public class MapTile : INestedTooltipTarget
         references = new List<INestedTooltipTarget>();
 
         string bodyText = "";
+
+        // General tile info
+        bodyText += $"{Terrain.Def.GetNestedTooltipLink()} {Coordinates}";
+        int ownedInfoSize = 14;
+        string ownedText = IsOwned ? "Owned" : "Unowned";
+        bodyText += $"\n<size={ownedInfoSize}>{ownedText}</size>";
+
+        // Terrain
+        bodyText += $"\n\n{Terrain.GetDescriptionForTileTooltip()}";
+
+        // Object
         if (HasObject)
         {
-            bodyText += $"{Object.GetNestedTooltipLink()} on {Terrain.GetNestedTooltipLink()}";
+            bodyText += $"\n\n{Object.GetNestedTooltipLink()}";
             references.Add(Object);
-            references.Add(Terrain);
-        }
-        else
-        {
-            bodyText += $"{Terrain.GetNestedTooltipLink()}";
-            references.Add(Terrain);
         }
 
         if (Game.Instance.GameState == GameState.ScatterManipulation)

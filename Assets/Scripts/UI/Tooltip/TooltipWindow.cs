@@ -33,12 +33,6 @@ public class TooltipWindow : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         MousePosition = Input.mousePosition;
         CreatedAt = Time.time;
 
-        // Hook link selection events once
-        BodyText.TryGetComponent(out NestedTooltipTextEventHandler textEventHandler);
-        if (textEventHandler == null) textEventHandler = BodyText.gameObject.AddComponent<NestedTooltipTextEventHandler>();
-        textEventHandler.onLinkSelection.AddListener(OnLinkHovered);
-        textEventHandler.onLinkUnhover.AddListener(OnLinkUnhovered);
-
         // Set inactive. One frame later the NestedTooltipManager will correctly position and reenable this tooltip.
         IsPositioned = false;
 
@@ -55,15 +49,5 @@ public class TooltipWindow : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerExit(PointerEventData e)
     {
         IsHovered = false;
-    }
-
-    private void OnLinkHovered(string linkId, string linkText, int linkIndex)
-    {
-        NestedTooltipManager.Instance.NotifyTooltipLinkHovered(linkId, isRoot: false);
-    }
-
-    private void OnLinkUnhovered(string linkId, string linkText, int linkIndex)
-    {
-        NestedTooltipManager.Instance.NotifyTooltipLinkUnhovered(linkId);
     }
 }

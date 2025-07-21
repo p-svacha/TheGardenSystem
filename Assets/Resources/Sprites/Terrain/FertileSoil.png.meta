@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 564e6c5847834fa4d8902619e6c69afa
+guid: 365880923afe84c44be5abc74cec4da2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8795882421189457584
-    second: TMPro_SpriteSheet_0
+      213: -6601552345572199026
+    second: RichSoil_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 128
+  spritePixelsToUnits: 1024
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,45 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TMPro_SpriteSheet_0
+      name: RichSoil_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 896
-        width: 128
-        height: 128
+        y: 0
+        width: 1024
+        height: 1024
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0b6b911a570411a70800000000000000
-      internalID: 8795882421189457584
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TMPro_SpriteSheet_1
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 896
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f98421169cd72bd48b1647b32e4efa8a
-      internalID: 378207424
+      spriteID: e85b5044e139264a0800000000000000
+      internalID: -6601552345572199026
       vertices: []
       indices: 
       edges: []
@@ -147,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2d17391601ec53444ad69517e50bf17e
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -157,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TMPro_SpriteSheet_0: 8795882421189457584
-      TMPro_SpriteSheet_1: 378207424
+      RichSoil_0: -6601552345572199026
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

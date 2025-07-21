@@ -1,34 +1,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Terrain : INestedTooltipTarget
+public class Terrain
 {
     public MapTile Tile { get; private set; }
     public TerrainDef Def { get; private set; }
+    public int Fertility { get; private set; }
 
     public Terrain(MapTile tile, TerrainDef def)
     {
         Tile = tile;
         Def = def;
+        Fertility = 0;
     }
 
+    public void AdjustFertility(int amount)
+    {
+        Fertility += amount;
+    }
+
+    public bool IsAffectedByFertility => Def.IsAffectedByFertility;
+
     public virtual string Label => Def.Label;
-    public virtual string LabelCap => Def.LabelCap;
+    public string LabelCap => Label.CapitalizeFirst();
+    public string LabelCapWord => Label.CapitalizeEachWord();
     public virtual string Description => Def.Description;
     public virtual Sprite Sprite => Def.Sprite;
 
-    #region INestedTooltipTaget
-
-    public string GetTooltipTitle() => LabelCap;
-    public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
+    public string GetDescriptionForTileTooltip()
     {
-        references = new List<INestedTooltipTarget>();
-        return Description;
+        string desc = "";
+
+        if (IsAffectedByFertility) desc += $"Current Fertility: {Fertility}";
+
+        return desc;
     }
-
-    public string NestedTooltipLinkId => $"Terrain_{Def.DefName}";
-    public string NestedTooltipLinkText => LabelCap;
-    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
-
-    #endregion
 }

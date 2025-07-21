@@ -5,3 +5,11 @@ Objects:
 - Objects should have unique silhouettes and high visual contrast.
 - Visual metaphors should be clear (e.g. a carrot is unmistakably a carrot).
 - Slight exaggeration encouraged for readability.
+
+Resource Icons:
+- Each resource icon is iconic and easily readable.
+- Sprite is 1024x1024 px in size.
+- Background is transparent.
+- Objects should have unique silhouettes and high visual contrast.
+- Visual metaphors should be clear.
+- Slight exaggeration encouraged for readability.

@@ -13,7 +13,15 @@ public class TerrainDefs
             DefName = "Soil",
             Label = "soil",
             Description = "Soil, good for plants to grow on.",
-            Sprite = ResourceManager.LoadSprite("Sprites/Terrain/Soil")
-        }
+            BetterFertilityTerrainDefName = "FertileSoil",
+        },
+
+        new TerrainDef()
+        {
+            DefName = "FertileSoil",
+            Label = "fertile soil",
+            Description = "Fertile soil, increasing the production of plants on it",
+            WorseFertilityTerrainDefName = "Soil",
+        },
     };
 }

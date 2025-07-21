@@ -34,21 +34,10 @@ public static class ObjectDefs
                 ObjectTagDefOf.Fertilizer,
                 ObjectTagDefOf.Compost,
             },
-            Effects = new List<ObjectEffect>()
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
             {
-                new AdjacencyEffect()
-                {
-                    AffectedTagsAll = new List<ObjectTagDef>()
-                    {
-                        ObjectTagDefOf.FoodSource,
-                        ObjectTagDefOf.Plant,
-                    },
-                    ResourceProductionBonus = new Dictionary<ResourceDef, int>()
-                    {
-                        { ResourceDefOf.Food, 1 },
-                    },
-                },
-            },
+                { ResourceDefOf.Fertility, 1 },
+            }),
         },
 
         new ObjectDef()
@@ -66,20 +55,6 @@ public static class ObjectDefs
             {
                 { ResourceDefOf.Food, 1 },
             }),
-            Effects = new List<ObjectEffect>()
-            {
-                new SelfAdjacencyEffect()
-                {
-                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
-                    {
-                        ObjectTagDefOf.Plant,
-                    },
-                    ResourceProductionBonus = new Dictionary<ResourceDef, int>()
-                    {
-                        { ResourceDefOf.Food, 1 },
-                    },
-                },
-            },
         },
 
         new ObjectDef()

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8b81a0477838e1f48aa22530b0c3580d
+guid: 5efaee34cf5f2ce498a6dc757c59e408
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5362735838549604449
-    second: Food_0
+      213: -1179884761097149983
+    second: Fertility_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Food_0
+      name: Fertility_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 3
         y: 0
-        width: 1024
-        height: 1024
+        width: 1019
+        height: 1019
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 168710905d34c6a40800000000000000
-      internalID: 5362735838549604449
+      spriteID: 1e168e2af0530afe0800000000000000
+      internalID: -1179884761097149983
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Food_0: 5362735838549604449
+      Fertility_0: -1179884761097149983
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

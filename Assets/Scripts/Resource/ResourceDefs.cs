@@ -19,6 +19,14 @@ public static class ResourceDefs
             Label = "herbs",
             Description = "Fragrant or medicinal plants used in kitchens, clinics, and cosmetics. A niche demand, but valued by certain customers.",
             Type = ResourceType.MarketResource,
-        }
+        },
+
+        new ResourceDef()
+        {
+            DefName = "Fertility",
+            Label = "fertility",
+            Description = "Enriches or depletes the soil the object lands on. Terrain may change at certain fertility threshholds.",
+            Type = ResourceType.AbstractResource,
+        },
     };
 }

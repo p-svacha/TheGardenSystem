@@ -14,7 +14,7 @@ public class NestedTooltipManager : MonoBehaviour
 
     private const float TOOLTIP_DELAY = 1f; // The time in seconds that something needs to get hovered to spawn a tooltip
     private const float PIN_DELAY = 1.5f; // The time in seconds it takes for a tooltip to become pinned, allowing to hover into it and spawn nested tooltips
-    public static Color DEFAULT_NESTED_LINK_COLOR = new Color(0.8f, 0.4f, 0f);
+    public static Color DEFAULT_NESTED_LINK_COLOR = new Color(0.624f, 0.478f, 0.325f);
     private const int MOUSE_OFFSET = 2; // px
     private const int SCREEN_EDGE_OFFSET = 5; // px
 
@@ -75,6 +75,9 @@ public class NestedTooltipManager : MonoBehaviour
 
         // ObjectTagDefs
         foreach (ObjectTagDef def in DefDatabase<ObjectTagDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
+
+        // TerrainDefs
+        foreach (TerrainDef def in DefDatabase<TerrainDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
     }
 
     private void Update()

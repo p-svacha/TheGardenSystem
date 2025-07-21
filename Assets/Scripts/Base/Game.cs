@@ -26,10 +26,12 @@ public class Game
         Instance = this;
         Day = 1;
         Map = MapGenerator.GenerateMap(15);
-        Resources = new ResourceCollection();
         CurrentFinalResourceProduction = new Dictionary<ResourceDef, ResourceProduction>();
         CurrentPerTileResourceProduction = new Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>>();
-        foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs) Resources.Resources.Add(def, 0);
+
+        // Initialize resources
+        Resources = new ResourceCollection();
+        foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs.Where(r => r.Type == ResourceType.MarketResource)) Resources.Resources.Add(def, 0);
 
         // Starting garden area
         int gardenStartX = (int)((Map.Width / 2f) - (STARTING_AREA_SIZE / 2f));
@@ -115,24 +117,54 @@ public class Game
 
     private void ConfirmScatter()
     {
-        // Give resources
-        ResourceCollection resources = new ResourceCollection();
         CurrentFinalResourceProduction = GetCurrentScatterProduction();
-        foreach (var kvp in CurrentFinalResourceProduction)
-        {
-            ResourceDef resource = kvp.Key;
-            ResourceProduction production = kvp.Value;
 
-            resources.AddResource(resource, production.GetValue());
-        }
+        ApplyMarketResources();
+        ApplyAbstractResources();
 
-        AddResources(resources);
-
+        // State
         GameState = GameState.ConfirmedScatter;
 
         // UI
         GameUI.Instance.ResourcePanel.Refresh();
         NestedTooltipManager.Instance.ResetTooltips();
+    }
+
+    /// <summary>
+    /// Adds all market resources produced today to the resource pool.
+    /// </summary>
+    private void ApplyMarketResources()
+    {
+        ResourceCollection marketResourcesToAdd = new ResourceCollection();
+        foreach (var kvp in CurrentFinalResourceProduction)
+        {
+            ResourceDef resource = kvp.Key;
+            ResourceProduction production = kvp.Value;
+
+            if (resource.Type == ResourceType.MarketResource)
+            {
+                marketResourcesToAdd.AddResource(resource, production.GetValue());
+            }
+        }
+        AddResources(marketResourcesToAdd);
+    }
+
+    /// <summary>
+    /// Applies the effect of all abstract resources that were produced today.
+    /// </summary>
+    private void ApplyAbstractResources()
+    {
+        // Fertility
+        foreach (var kvp in CurrentPerTileResourceProduction)
+        {
+            MapTile tile = kvp.Key;
+            Dictionary<ResourceDef, ResourceProduction> tileProduction = kvp.Value;
+
+            if (tileProduction.TryGetValue(ResourceDefOf.Fertility, out ResourceProduction fertilityProduction) && fertilityProduction.GetValue() != 0)
+            {
+                tile.Terrain.AdjustFertility(fertilityProduction.GetValue());
+            }
+        }
     }
 
     private void StartPostScatter()
@@ -222,7 +254,7 @@ public class Game
     }
 
     /// <summary>
-    /// Calculates and returns the final resource productions of the day.
+    /// Calculates and returns the final resource productions of the day, including abstract resources.
     /// </summary>
     private Dictionary<ResourceDef, ResourceProduction> GetCurrentScatterProduction()
     {

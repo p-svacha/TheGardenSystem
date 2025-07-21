@@ -1,12 +1,5 @@
 FEATURE ROADMAP (in that order)
 
-customers:
-	each order is from a specific customer
-	CustomerDefs containing possible customers
-	in the def it gets defined what they can order and what amounts
-	some randomization is always applied
-	also some quick lore/flavor text for each customer
-
 soil fertility on soil terrain:
 	fertility is a new abstract resource that objects can produce
 	abstract means non-accumulative and non-storeable and customers don't buy it, instead they have a direct effect on something

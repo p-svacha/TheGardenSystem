@@ -15,6 +15,6 @@ public class ResourceDef : Def, INestedTooltipTarget
     }
 
     public string NestedTooltipLinkId => $"Resource_{DefName}";
-    public string NestedTooltipLinkText => $"<sprite={DefDatabase<ResourceDef>.AllDefs.IndexOf(this)}>";
+    public string NestedTooltipLinkText => $"<sprite name=\"{DefName}\">";
     public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
 }

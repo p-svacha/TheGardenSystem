@@ -1,8 +1,10 @@
+using TMPro;
 using UnityEngine;
 
 public class GameUI : MonoBehaviour
 {
     public static GameUI Instance;
+    public static TMP_SpriteAsset TMPResourceSpriteAsset;
 
     [Header("Elements")]
     public UI_DatePanel DatePanel;
@@ -12,5 +14,10 @@ public class GameUI : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        TMPResourceSpriteAsset = RuntimeSpriteAssetBuilder.BuildResourceSpriteAsset();
     }
 }
