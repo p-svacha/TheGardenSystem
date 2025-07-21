@@ -23,10 +23,10 @@ public static class DefDatabaseRegistry
     public static void AddAllDefs()
     {
         ClearAllDatabases();
+        DefDatabase<ObjectTagDef>.AddDefs(ObjectTagDefs.Defs);
         DefDatabase<TerrainDef>.AddDefs(TerrainDefs.Defs);
         DefDatabase<ResourceDef>.AddDefs(ResourceDefs.Defs);
         DefDatabase<CustomerDef>.AddDefs(CustomerDefs.Defs);
-        DefDatabase<ObjectTagDef>.AddDefs(ObjectTagDefs.Defs);
         DefDatabase<ObjectDef>.AddDefs(ObjectDefs.Defs);
     }
 

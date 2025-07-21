@@ -17,6 +17,11 @@ public class TerrainDef : Def, INestedTooltipTarget
     /// </summary>
     public string WorseFertilityTerrainDefName { get; init; } = "";
 
+    /// <summary>
+    /// The effects of this terrain.
+    /// </summary>
+    public List<ObjectEffect> Effects { get; init; } = new();
+
     public TerrainDef NextFertilityTerrain { get; private set; }
     public TerrainDef PrevFertilityTerrain { get; private set; }
 
@@ -25,7 +30,17 @@ public class TerrainDef : Def, INestedTooltipTarget
         if (BetterFertilityTerrainDefName != "") NextFertilityTerrain = DefDatabase<TerrainDef>.GetNamed(BetterFertilityTerrainDefName);
         if (WorseFertilityTerrainDefName != "") PrevFertilityTerrain = DefDatabase<TerrainDef>.GetNamed(WorseFertilityTerrainDefName);
     }
-    
+
+    public override bool Validate()
+    {
+        foreach (ObjectEffect effect in Effects)
+        {
+            if (!effect.Validate(out string invalidReason)) throw new System.Exception($"TerrainDef {DefName} has an invalid Effect: {invalidReason}");
+        }
+
+        return true;
+    }
+
     public bool IsAffectedByFertility => NextFertilityTerrain != null || PrevFertilityTerrain != null;
 
     #region
@@ -36,6 +51,12 @@ public class TerrainDef : Def, INestedTooltipTarget
         references = new List<INestedTooltipTarget>();
 
         string desc = Description;
+
+        if (Effects.Count > 0)
+        {
+            desc += "\n";
+            foreach (ObjectEffect effect in Effects) desc += "\n"+effect.GetDescription();
+        }
 
         if (IsAffectedByFertility) desc += "\n";
         if (NextFertilityTerrain != null) desc += $"\nTurns into {NextFertilityTerrain.GetNestedTooltipLink()} at 10 Fertility.";

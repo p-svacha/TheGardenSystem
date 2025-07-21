@@ -3,29 +3,29 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// A specific kind of of ObjectEffect that gets applied to the object on the source tile based on all objects around it.
+/// A specific kind of of ObjectEffect that gets applied to the object on the source tile based on its attributes.
 /// </summary>
-public class SelfAdjacencyEffect : ObjectEffect
+public class SelfEffect : ObjectEffect
 {
     /// <summary>
-    /// If not empty, the effect is applied to the source object for each adjacent object with a tag included in this list.
+    /// If not empty, the effect is applied to the object on the source tile if it has any tag included in this list.
     /// </summary>
     public List<ObjectTagDef> EffectCriteria_TagsAny { get; init; } = new();
 
     /// <summary>
-    /// If not empty, the effect is applied to the source object for each adjacent object that has all tags included in this list.
+    /// If not empty, the effect is applied to the object on the source tile if it has all tags included in this list.
     /// </summary>
     public List<ObjectTagDef> EffectCriteria_TagsAll { get; init; } = new();
 
     /// <summary>
-    /// The amount of production that gets to added all resources that the source object produces natively (according to Object.GetBaseResourceProduction).
-    /// <br/>The bonus gets applied to the source object for each adjacent object that fulfills the EffectCriteria.
+    /// The amount of production that gets to added all resources that the object on the source tile produces natively (according to Object.GetBaseResourceProduction).
+    /// <br/>The bonus gets applied if the object on the source tile fulfills the EffectCriteria.
     /// </summary>
     public int GeneralProductionBonus { get; init; } = 0;
 
     /// <summary>
-    /// The amount of production that gets to added to specific resources of the source object, disregarding what resources the it produces natively.
-    /// <br/>The bonus gets applied to the source object for each adjacent object that fulfills the EffectCriteria.
+    /// The amount of production that gets to added to specific resources of the object on the source tile, disregarding what resources the it produces natively.
+    /// <br/>The bonus gets applied if the object on the source tile fulfills the EffectCriteria.
     /// </summary>
     public Dictionary<ResourceDef, int> ResourceProductionBonus { get; init; } = new();
 
@@ -59,39 +59,33 @@ public class SelfAdjacencyEffect : ObjectEffect
 
     public override void ApplyEffect(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
     {
-        if (!sourceTile.HasObject) return; // No object on this tile to apply bonuses to
+        bool doApplyEffect = true;
+
+        if (!sourceTile.HasObject) doApplyEffect = false;
+        else if (EffectCriteria_TagsAny.Count > 0 && (!sourceTile.Object.HasAnyOfTags(EffectCriteria_TagsAny))) doApplyEffect = false;
+        else if (EffectCriteria_TagsAll.Count > 0 && (!sourceTile.Object.HasAllTags(EffectCriteria_TagsAll))) doApplyEffect = false;
+        if (!doApplyEffect) return; // Abort if effect shouldn't be applied
+
         Object sourceObject = sourceTile.Object;
 
-        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
+        // Apply bonus to native resources
+        if (GeneralProductionBonus > 0)
         {
-            // Check if effect can be applied
-            bool doApplyEffect = true;
-
-            if (!adjacentTile.HasObject) doApplyEffect = false;
-            else if (EffectCriteria_TagsAny.Count > 0 && (!adjacentTile.Object.HasAnyOfTags(EffectCriteria_TagsAny))) doApplyEffect = false;
-            else if (EffectCriteria_TagsAll.Count > 0 && (!adjacentTile.Object.HasAllTags(EffectCriteria_TagsAll))) doApplyEffect = false;
-
-            if (!doApplyEffect) continue;
-
-            // Apply bonus to native resources
-            if (GeneralProductionBonus > 0)
+            foreach (ResourceDef resource in sourceObject.NativeResources)
             {
-                foreach (ResourceDef resource in sourceObject.NativeResources)
-                {
-                    ProductionModifier modifier = new ProductionModifier(source: adjacentTile.Object, ProductionModifierType.Additive, GeneralProductionBonus);
-                    tileProductions[sourceTile][resource].AddModifier(modifier);
-                }
-            }
-
-            // Apply bonus to specific resources
-            foreach (var kvp in ResourceProductionBonus)
-            {
-                ResourceDef resource = kvp.Key;
-                int productionBonus = kvp.Value;
-
-                ProductionModifier modifier = new ProductionModifier(source: adjacentTile.Object, ProductionModifierType.Additive, productionBonus);
+                ProductionModifier modifier = new ProductionModifier(source: sourceTile.Terrain.Def, ProductionModifierType.Additive, GeneralProductionBonus);
                 tileProductions[sourceTile][resource].AddModifier(modifier);
             }
+        }
+
+        // Apply bonus to specific resources
+        foreach (var kvp in ResourceProductionBonus)
+        {
+            ResourceDef resource = kvp.Key;
+            int productionBonus = kvp.Value;
+
+            ProductionModifier modifier = new ProductionModifier(source: sourceTile.Terrain.Def, ProductionModifierType.Additive, productionBonus);
+            tileProductions[sourceTile][resource].AddModifier(modifier);
         }
     }
 
@@ -109,15 +103,15 @@ public class SelfAdjacencyEffect : ObjectEffect
         string criteriaText;
         if (EffectCriteria_TagsAny.Count > 0)
         {
-            // “for each adjacent Farm or Barn”
+            // “for Farm or Barn”
             var links = EffectCriteria_TagsAny.Select(t => t.GetNestedTooltipLink());
-            criteriaText = $"for each adjacent {string.Join(" or ", links)} objects";
+            criteriaText = $"to {string.Join(" or ", links)} objects";
         }
         else // EffectCriteria_TagsAll.Count > 0
         {
             // “for each adjacent object with all tags Grain and Flour”
             var links = EffectCriteria_TagsAll.Select(t => t.GetNestedTooltipLink());
-            criteriaText = $"for each adjacent {string.Join(" ", links)} objects";
+            criteriaText = $"to {string.Join(" ", links)} objects";
         }
 
         return $"{bonusText} {criteriaText}.";

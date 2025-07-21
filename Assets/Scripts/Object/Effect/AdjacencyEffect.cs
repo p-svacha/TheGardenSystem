@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// A specific kind of of ObjectEffect that gets applied based on all adjacent objects of a source object. 
+/// A specific kind of of ObjectEffect that gets applied to adjacent objects of a source tile. 
 /// </summary>
 public class AdjacencyEffect : ObjectEffect
 {
@@ -29,6 +29,17 @@ public class AdjacencyEffect : ObjectEffect
 
     public override bool Validate(out string invalidReason)
     {
+        if (AffectedTagsAny.Any(t => t == null))
+        {
+            invalidReason = "AffectedTagsAny contains a tag that is null.";
+            return false;
+        }
+        if (AffectedTagsAll.Any(t => t == null))
+        {
+            invalidReason = "AffectedTagsAll contains a tag that is null.";
+            return false;
+        }
+
         if (AffectedTagsAny.Count == 0 && AffectedTagsAll.Count == 0)
         {
             invalidReason = "There is no criteria defined for when this effect should be triggered.";
@@ -84,7 +95,7 @@ public class AdjacencyEffect : ObjectEffect
         // 1) Build the bonus part
         var bonusParts = new List<string>();
         if (GeneralProductionBonus > 0)
-            bonusParts.Add($"+{GeneralProductionBonus} to all native resources");
+            bonusParts.Add($"+{GeneralProductionBonus} native production");
         foreach (var kvp in ResourceProductionBonus)
             bonusParts.Add($"+{kvp.Value} {kvp.Key.GetNestedTooltipLink()}");
         string bonusText = string.Join(" and ", bonusParts);
@@ -95,13 +106,13 @@ public class AdjacencyEffect : ObjectEffect
         {
             // “for each adjacent Farm or Barn”
             var links = AffectedTagsAny.Select(t => t.GetNestedTooltipLink());
-            affectedText = $"to each adjacent {string.Join(" or ", links)}";
+            affectedText = $"to each adjacent {string.Join(" or ", links)} objects";
         }
         else // AffectedTagsAll.Count > 0
         {
             // “for each adjacent object with all tags Grain and Flour”
             var links = AffectedTagsAll.Select(t => t.GetNestedTooltipLink());
-            affectedText = $"to each adjacent {string.Join(" ", links)}";
+            affectedText = $"to each adjacent {string.Join(" ", links)} objects";
         }
 
         return $"{bonusText} {affectedText}.";

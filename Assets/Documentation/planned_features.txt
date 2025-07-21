@@ -1,18 +1,13 @@
 FEATURE ROADMAP (in that order)
 
-soil fertility on soil terrain:
-	fertility is a new abstract resource that objects can produce
-	abstract means non-accumulative and non-storeable and customers don't buy it, instead they have a direct effect on something
-	soil terraindef has a new fertility value from 0 to 10, starting at 0
-	fertility producting objects increase fertility of the soil they land on
-	when reaching 10, soil turns into "fertile soil"
-	fertile soil gives +1 general production to all plants
-
 object to expand garden:
 	tiles outside garden have some sort of "acquire value", maybe 0-3
 	value starts at 0
 	objects can increase this value for adjacent tiles outside the garden
 	when reaching the limit (i.e. 3), the tile gets acquired
+
+barren soil:
+	negative fertility soil
 
 obstacles:
 	some tiles may have obstacles on them

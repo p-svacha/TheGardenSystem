@@ -9,6 +9,16 @@ public class ObjectDef : Def, IDraftable
     public List<ObjectEffect> Effects { get; init; } = new();
     new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Objects/" + DefName);
 
+    public override bool Validate()
+    {
+        foreach (ObjectEffect effect in Effects)
+        {
+            if (!effect.Validate(out string invalidReason)) throw new System.Exception($"TerrainDef {DefName} has an invalid Effect: {invalidReason}");
+        }
+
+        return true;
+    }
+
     #region Getters
 
     /// <summary>

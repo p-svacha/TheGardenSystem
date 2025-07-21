@@ -18,17 +18,20 @@ public class Terrain
     {
         Fertility += amount;
 
-        if (Fertility >= 10 && Def.NextFertilityTerrain != null) Game.Instance.SetTerrain(Tile.Coordinates, Def.NextFertilityTerrain);
-        if (Fertility <= -10 && Def.PrevFertilityTerrain != null) Game.Instance.SetTerrain(Tile.Coordinates, Def.PrevFertilityTerrain);
+        if (Fertility >= 10 && HasNextFertilityLevel) Game.Instance.SetTerrain(Tile.Coordinates, Def.NextFertilityTerrain);
+        if (Fertility <= -10 && HasPrevFertilityLevel) Game.Instance.SetTerrain(Tile.Coordinates, Def.PrevFertilityTerrain);
     }
 
     public bool IsAffectedByFertility => Def.IsAffectedByFertility;
+    public bool HasNextFertilityLevel => Def.NextFertilityTerrain != null;
+    public bool HasPrevFertilityLevel => Def.PrevFertilityTerrain != null;
 
     public virtual string Label => Def.Label;
     public string LabelCap => Label.CapitalizeFirst();
     public string LabelCapWord => Label.CapitalizeEachWord();
     public virtual string Description => Def.Description;
     public virtual Sprite Sprite => Def.Sprite;
+    public virtual List<ObjectEffect> Effects => Def.Effects;
 
     public string GetDescriptionForTileTooltip()
     {

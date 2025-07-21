@@ -1,18 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class MapGenerator
 {
     public static Map GenerateMap(int size)
     {
-        MapTile[,] tiles = new MapTile[size,size];
-        Map map = new Map();
+        if (size % 2 != 1) throw new System.Exception("Size needs to be an odd number");
 
-        for (int x = 0; x < size; x++)
+        Dictionary<Vector2Int, MapTile> tiles = new Dictionary<Vector2Int, MapTile>();
+        Map map = new Map();
+        int half = size / 2;
+
+        for (int x = -half; x <= half; x++)
         {
-            for (int y = 0; y < size; y++)
+            for (int y = -half; y <= half; y++)
             {
                 Vector2Int coordinates = new Vector2Int(x, y);
-                tiles[x, y] = new MapTile(map, coordinates, TerrainDefOf.Soil);
+                tiles.Add(coordinates, new MapTile(map, coordinates, TerrainDefOf.Soil));
             }
         }
 

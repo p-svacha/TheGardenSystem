@@ -141,51 +141,44 @@ public class MapRenderer : MonoBehaviour
         TerrainOverlayTilemap.ClearAllTiles();
         GridOverlayTilemap.ClearAllTiles();
 
-        int width = map.Width;
-        int height = map.Height;
-
-        for (int x = 0; x < width; x++)
+        foreach(MapTile mapTile in map.AllTiles)
         {
-            for (int y = 0; y < height; y++)
+            Vector3Int cell = new Vector3Int(mapTile.Coordinates.x, mapTile.Coordinates.y, 0);
+
+            // Terrain
+            if (!TerrainTileCache.TryGetValue(mapTile.Terrain.Def, out var tile)) continue;
+            TerrainTilemap.SetTile(cell, tile);
+
+            // Terrain Overlay
+            if (mapTile.Terrain.IsAffectedByFertility)
             {
-                Vector3Int cell = new Vector3Int(x, y, 0);
-
-                // Terrain
-                MapTile mapTile = map.GetTile(x, y);
-                if (!TerrainTileCache.TryGetValue(mapTile.Terrain.Def, out var tile)) continue;
-                TerrainTilemap.SetTile(cell, tile);
-
-                // Terrain Overlay
-                if (mapTile.Terrain.IsAffectedByFertility)
+                if (mapTile.Terrain.Fertility > 0 && mapTile.Terrain.HasNextFertilityLevel)
                 {
-                    if (mapTile.Terrain.Fertility > 0)
-                    {
-                        float transparency = mapTile.Terrain.Fertility / 10f;
-                        transparency *= 0.5f;
-                        TerrainOverlayTilemap.SetTile(cell, FertilityOverlayTile);
-                        TerrainOverlayTilemap.SetTileFlags(cell, TileFlags.None);
-                        TerrainOverlayTilemap.SetColor(cell, new Color(1f, 1f, 1f, transparency));
-                    }
-                    if (mapTile.Terrain.Fertility < 0)
-                    {
-                        float transparency = -mapTile.Terrain.Fertility / 10f;
-                        transparency *= 0.5f;
-                        TerrainOverlayTilemap.SetTile(cell, NegativeFertilityOverlayTile);
-                        TerrainOverlayTilemap.SetTileFlags(cell, TileFlags.None);
-                        TerrainOverlayTilemap.SetColor(cell, new Color(1f, 1f, 1f, transparency));
-                    }
+                    float transparency = mapTile.Terrain.Fertility / 10f;
+                    transparency *= 0.5f;
+                    TerrainOverlayTilemap.SetTile(cell, FertilityOverlayTile);
+                    TerrainOverlayTilemap.SetTileFlags(cell, TileFlags.None);
+                    TerrainOverlayTilemap.SetColor(cell, new Color(1f, 1f, 1f, transparency));
                 }
-
-                // Grid Overlay
-                if (Game.Instance.IsShowingGridOverlay) GridOverlayTilemap.SetTile(cell, GridOverlayTile);
-
-                // Fences
-                if (mapTile.IsOwned) DrawFencesAround(mapTile);
-
-                // Object
-                if (mapTile.Object == null) ObjectTilemap.SetTile(cell, null);
-                else ObjectTilemap.SetTile(cell, ObjectTileCache[mapTile.Object.Def]);
+                if (mapTile.Terrain.Fertility < 0 && mapTile.Terrain.HasPrevFertilityLevel)
+                {
+                    float transparency = -mapTile.Terrain.Fertility / 10f;
+                    transparency *= 0.5f;
+                    TerrainOverlayTilemap.SetTile(cell, NegativeFertilityOverlayTile);
+                    TerrainOverlayTilemap.SetTileFlags(cell, TileFlags.None);
+                    TerrainOverlayTilemap.SetColor(cell, new Color(1f, 1f, 1f, transparency));
+                }
             }
+
+            // Grid Overlay
+            if (Game.Instance.IsShowingGridOverlay) GridOverlayTilemap.SetTile(cell, GridOverlayTile);
+
+            // Fences
+            if (mapTile.IsOwned) DrawFencesAround(mapTile);
+
+            // Object
+            if (mapTile.Object == null) ObjectTilemap.SetTile(cell, null);
+            else ObjectTilemap.SetTile(cell, ObjectTileCache[mapTile.Object.Def]);
         }
 
         // Force a redraw

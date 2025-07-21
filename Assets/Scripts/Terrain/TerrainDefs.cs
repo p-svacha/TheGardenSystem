@@ -22,6 +22,17 @@ public class TerrainDefs
             Label = "fertile soil",
             Description = "Fertile soil, increasing the production of plants on it.",
             WorseFertilityTerrainDefName = "Soil",
+            Effects = new List<ObjectEffect>()
+            {
+                new SelfEffect()
+                {
+                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    {
+                        ObjectTagDefOf.Plant,
+                    },
+                    GeneralProductionBonus = 1,
+                },
+            },
         },
     };
 }

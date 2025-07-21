@@ -18,8 +18,15 @@ public class MapTile : INestedTooltipTarget
 
     public List<ObjectEffect> GetEffects()
     {
-        if (HasObject) return Object.Effects;
-        else return new List<ObjectEffect>();
+        List<ObjectEffect> effects = new List<ObjectEffect>();
+
+        // Effects from terrain
+        effects.AddRange(Terrain.Effects);
+
+        // Effects from object
+        if (HasObject) effects.AddRange(Object.Effects);
+
+        return effects;
     }
 
     public void Acquire() => IsOwned = true;

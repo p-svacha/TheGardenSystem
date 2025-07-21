@@ -37,11 +37,11 @@ public class Game
         foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs.Where(r => r.Type == ResourceType.MarketResource)) Resources.Resources.Add(def, 0);
 
         // Starting garden area
-        int gardenStartX = (int)((Map.Width / 2f) - (STARTING_AREA_SIZE / 2f));
-        int gardenStartY = (int)((Map.Height / 2f) - (STARTING_AREA_SIZE / 2f));
-        for (int x = gardenStartX; x < gardenStartX + STARTING_AREA_SIZE; x++)
+        int gardenStartAreaSize = 3;
+        int half = gardenStartAreaSize / 2;
+        for (int x = -half; x <= half; x++)
         {
-            for (int y = gardenStartY; y < gardenStartY + STARTING_AREA_SIZE; y++)
+            for (int y = -half; y <= half; y++)
             {
                 AddTileToGarden(Map.GetTile(x, y), redraw: false);
             }
@@ -65,8 +65,8 @@ public class Game
         // Render
         IsShowingGridOverlay = true;
         DrawFullMap();
-        CameraHandler.Instance.SetBounds(0, 0, Map.Width, Map.Height);
-        CameraHandler.Instance.FocusPosition(new Vector2(Map.Width / 2f, Map.Height / 2f));
+        CameraHandler.Instance.SetBounds(Map.MinX, Map.MinY, Map.MaxX, Map.MaxY);
+        CameraHandler.Instance.FocusPosition(new Vector2(0f, 0f));
 
         // UI
         GameUI.Instance.DatePanel.Refresh();
@@ -281,7 +281,7 @@ public class Game
             }
         }
 
-        // Apply modifiers from each object to all other affected objects
+        // Apply modifiers from each tile to all other affected objects
         foreach (MapTile tile in Map.OwnedTiles)
         {
             foreach (ObjectEffect effect in tile.GetEffects())

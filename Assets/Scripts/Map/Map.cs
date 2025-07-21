@@ -4,9 +4,9 @@ using System.Linq;
 
 public class Map
 {
-    private MapTile[,] Tiles;
+    private Dictionary<Vector2Int, MapTile> Tiles;
 
-    public void Initialize(MapTile[,] tiles)
+    public void Initialize(Dictionary<Vector2Int, MapTile> tiles)
     {
         Tiles = tiles;
     }
@@ -16,20 +16,25 @@ public class Map
         foreach (MapTile tile in AllTiles) tile.ClearObject();
     }
 
-    public MapTile GetTile(int x, int y)
+    public MapTile GetTile(int x, int y) => GetTile(new Vector2Int(x, y));
+
+    public MapTile GetTile(Vector2Int coordinates)
     {
-        if (x < 0 || x >= Width || y < 0 || y >= Height) return null;
-        return Tiles[x, y];
+        if (Tiles.TryGetValue(coordinates, out MapTile tile)) return tile;
+        return null;
     }
 
     public void SetTerrain(Vector2Int coordinates, TerrainDef def)
     {
-        Tiles[coordinates.x, coordinates.y].SetTerrain(def);
+        Tiles[coordinates].SetTerrain(def);
     }
 
-    public int Width => Tiles.GetLength(0);
-    public int Height => Tiles.GetLength(1);
-    public MapTile GetTile(Vector2Int coordinates) => GetTile(coordinates.x, coordinates.y);
-    public List<MapTile> AllTiles => Tiles.Cast<MapTile>().ToList();
+    public int MinX => Tiles.Keys.Min(x => x.x);
+    public int MaxX => Tiles.Keys.Max(x => x.x);
+    public int MinY => Tiles.Keys.Min(x => x.y);
+    public int MaxY => Tiles.Keys.Max(x => x.y);
+    public int Width => MaxX - MinX + 1;
+    public int Height => MaxY - MinY + 1;
+    public List<MapTile> AllTiles => Tiles.Values.ToList();
     public List<MapTile> OwnedTiles => AllTiles.Where(t => t.IsOwned).ToList();
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// An ObjectEffect defines a specific interaction of an object.
+/// An ObjectEffect defines a specific effect originating from a source tile, that affects the resource production of tiles or objects.
 /// </summary>
 public abstract class ObjectEffect
 {
