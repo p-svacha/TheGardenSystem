@@ -22,6 +22,11 @@ public class Map
         return Tiles[x, y];
     }
 
+    public void SetTerrain(Vector2Int coordinates, TerrainDef def)
+    {
+        Tiles[coordinates.x, coordinates.y].SetTerrain(def);
+    }
+
     public int Width => Tiles.GetLength(0);
     public int Height => Tiles.GetLength(1);
     public MapTile GetTile(Vector2Int coordinates) => GetTile(coordinates.x, coordinates.y);

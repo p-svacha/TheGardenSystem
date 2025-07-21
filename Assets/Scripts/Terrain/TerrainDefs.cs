@@ -20,7 +20,7 @@ public class TerrainDefs
         {
             DefName = "FertileSoil",
             Label = "fertile soil",
-            Description = "Fertile soil, increasing the production of plants on it",
+            Description = "Fertile soil, increasing the production of plants on it.",
             WorseFertilityTerrainDefName = "Soil",
         },
     };

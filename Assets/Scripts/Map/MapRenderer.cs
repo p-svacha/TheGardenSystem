@@ -10,10 +10,15 @@ public class MapRenderer : MonoBehaviour
     // Tilemaps
     private Grid TilemapGrid;
     private Tilemap TerrainTilemap;
+    private Tilemap TerrainOverlayTilemap;
+    private Tilemap GridOverlayTilemap;
     private Dictionary<Direction, Tilemap> FenceTilemaps;
     private Tilemap ObjectTilemap;
 
     // Tile caches
+    private Tile GridOverlayTile;
+    private Tile FertilityOverlayTile;
+    private Tile NegativeFertilityOverlayTile;
     private Dictionary<TerrainDef, Tile> TerrainTileCache;
     private Dictionary<Direction, Tile> FenceTileCache;
     private Dictionary<ObjectDef, Tile> ObjectTileCache;
@@ -24,6 +29,8 @@ public class MapRenderer : MonoBehaviour
 
         TilemapGrid = GetComponent<Grid>();
         TerrainTilemap = GameObject.Find("TerrainTilemap").GetComponent<Tilemap>();
+        TerrainOverlayTilemap = GameObject.Find("TerrainOverlayTilemap").GetComponent<Tilemap>();
+        GridOverlayTilemap = GameObject.Find("GridOverlayTilemap").GetComponent<Tilemap>();
 
         FenceTilemaps = new Dictionary<Direction, Tilemap>();
         FenceTilemaps.Add(Direction.N, GameObject.Find("FenceTilemap_N").GetComponent<Tilemap>());
@@ -37,6 +44,7 @@ public class MapRenderer : MonoBehaviour
     private void Start()
     {
         InitializeTerrainTiles();
+        InitializeOverlayTiles();
         InitializeFenceTiles();
         InitializeObjectTiles();
     }
@@ -50,11 +58,20 @@ public class MapRenderer : MonoBehaviour
 
         foreach (var def in DefDatabase<TerrainDef>.AllDefs)
         {
-            var tile = ScriptableObject.CreateInstance<Tile>();
-            tile.sprite = def.Sprite;
-            tile.colliderType = Tile.ColliderType.None;
+            Tile tile = CreateTileFromSprite(def.Sprite);
             TerrainTileCache[def] = tile;
         }
+    }
+
+    /// <summary>
+    /// Creates reusable Tiles used for overlays.
+    /// </summary>
+    private void InitializeOverlayTiles()
+    {
+        // Grid
+        GridOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/TileGridOverlay"));
+        FertilityOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Terrain/Overlays/Fertility"));
+        NegativeFertilityOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Terrain/Overlays/FertilityNegative"));
     }
 
     private void InitializeFenceTiles()
@@ -66,9 +83,7 @@ public class MapRenderer : MonoBehaviour
 
         foreach (Direction dir in Enum.GetValues(typeof(Direction)))
         {
-            var tile = ScriptableObject.CreateInstance<Tile>();
-            tile.sprite = baseFence;
-            tile.colliderType = Tile.ColliderType.None;
+            Tile tile = CreateTileFromSprite(baseFence);
 
             // Compute a transform that both rotates and offsets the tile inside its cell
             Vector3 offset = Vector3.zero;
@@ -107,16 +122,24 @@ public class MapRenderer : MonoBehaviour
 
         foreach (var def in DefDatabase<ObjectDef>.AllDefs)
         {
-            var tile = ScriptableObject.CreateInstance<Tile>();
-            tile.sprite = def.Sprite;
-            tile.colliderType = Tile.ColliderType.None;
+            Tile tile = CreateTileFromSprite(def.Sprite);
             ObjectTileCache[def] = tile;
         }
+    }
+
+    private Tile CreateTileFromSprite(Sprite sprite)
+    {
+        var tile = ScriptableObject.CreateInstance<Tile>();
+        tile.sprite = sprite;
+        tile.colliderType = Tile.ColliderType.None;
+        return tile;
     }
 
     public void DrawFullMap(Map map)
     {
         TerrainTilemap.ClearAllTiles();
+        TerrainOverlayTilemap.ClearAllTiles();
+        GridOverlayTilemap.ClearAllTiles();
 
         int width = map.Width;
         int height = map.Height;
@@ -132,6 +155,30 @@ public class MapRenderer : MonoBehaviour
                 if (!TerrainTileCache.TryGetValue(mapTile.Terrain.Def, out var tile)) continue;
                 TerrainTilemap.SetTile(cell, tile);
 
+                // Terrain Overlay
+                if (mapTile.Terrain.IsAffectedByFertility)
+                {
+                    if (mapTile.Terrain.Fertility > 0)
+                    {
+                        float transparency = mapTile.Terrain.Fertility / 10f;
+                        transparency *= 0.5f;
+                        TerrainOverlayTilemap.SetTile(cell, FertilityOverlayTile);
+                        TerrainOverlayTilemap.SetTileFlags(cell, TileFlags.None);
+                        TerrainOverlayTilemap.SetColor(cell, new Color(1f, 1f, 1f, transparency));
+                    }
+                    if (mapTile.Terrain.Fertility < 0)
+                    {
+                        float transparency = -mapTile.Terrain.Fertility / 10f;
+                        transparency *= 0.5f;
+                        TerrainOverlayTilemap.SetTile(cell, NegativeFertilityOverlayTile);
+                        TerrainOverlayTilemap.SetTileFlags(cell, TileFlags.None);
+                        TerrainOverlayTilemap.SetColor(cell, new Color(1f, 1f, 1f, transparency));
+                    }
+                }
+
+                // Grid Overlay
+                if (Game.Instance.IsShowingGridOverlay) GridOverlayTilemap.SetTile(cell, GridOverlayTile);
+
                 // Fences
                 if (mapTile.IsOwned) DrawFencesAround(mapTile);
 
@@ -143,6 +190,7 @@ public class MapRenderer : MonoBehaviour
 
         // Force a redraw
         TerrainTilemap.RefreshAllTiles();
+        GridOverlayTilemap.RefreshAllTiles();
         foreach (Tilemap tilemap in FenceTilemaps.Values) tilemap.RefreshAllTiles();
         ObjectTilemap.RefreshAllTiles();
     }

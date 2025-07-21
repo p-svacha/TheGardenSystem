@@ -45,14 +45,13 @@ public class UI_DraftWindow : MonoBehaviour
 
     private void Confirm()
     {
-        // Validate
-        if (Draft.IsDraft && Draft.SelectedOption == null) return; // Must choose an option
+        List<IDraftable> chosenOptions = new List<IDraftable>();
 
         // Apply options
-        List<IDraftable> chosenOptions = new List<IDraftable>();
         if (Draft.IsDraft)
         {
-            chosenOptions = new List<IDraftable>() { Draft.SelectedOption };
+            if (Draft.SelectedOption == null) chosenOptions = new List<IDraftable>();
+            else chosenOptions = new List<IDraftable>() { Draft.SelectedOption };
         }
         else
         {

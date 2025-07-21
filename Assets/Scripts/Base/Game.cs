@@ -18,6 +18,9 @@ public class Game
     public List<Customer> WeeklyCustomers { get; private set; }
     public List<Order> ActiveOrders { get; private set; }
 
+    // Visual
+    public bool IsShowingGridOverlay { get; private set; }
+
 
     #region Initialization
 
@@ -60,6 +63,7 @@ public class Game
     public void Initialize()
     {
         // Render
+        IsShowingGridOverlay = true;
         DrawFullMap();
         CameraHandler.Instance.SetBounds(0, 0, Map.Width, Map.Height);
         CameraHandler.Instance.FocusPosition(new Vector2(Map.Width / 2f, Map.Height / 2f));
@@ -126,6 +130,7 @@ public class Game
         GameState = GameState.ConfirmedScatter;
 
         // UI
+        DrawFullMap();
         GameUI.Instance.ResourcePanel.Refresh();
         NestedTooltipManager.Instance.ResetTooltips();
     }
@@ -363,6 +368,12 @@ public class Game
         Customer existingCustomer = WeeklyCustomers.FirstOrDefault(c => c.Def == def);
         if (existingCustomer != null) existingCustomer.IncreaseLevel();
         else WeeklyCustomers.Add(new Customer(def, orderLevel: 1));
+    }
+
+    public void SetTerrain(Vector2Int coordinates, TerrainDef newTerrain)
+    {
+        Map.SetTerrain(coordinates, newTerrain);
+        DrawFullMap();
     }
 
     #endregion

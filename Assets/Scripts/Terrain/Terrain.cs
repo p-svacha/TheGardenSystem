@@ -17,6 +17,9 @@ public class Terrain
     public void AdjustFertility(int amount)
     {
         Fertility += amount;
+
+        if (Fertility >= 10 && Def.NextFertilityTerrain != null) Game.Instance.SetTerrain(Tile.Coordinates, Def.NextFertilityTerrain);
+        if (Fertility <= -10 && Def.PrevFertilityTerrain != null) Game.Instance.SetTerrain(Tile.Coordinates, Def.PrevFertilityTerrain);
     }
 
     public bool IsAffectedByFertility => Def.IsAffectedByFertility;

@@ -25,6 +25,10 @@ public class MapTile : INestedTooltipTarget
     public void Acquire() => IsOwned = true;
     public void PlaceObject(Object obj) => Object = obj;
     public void ClearObject() => Object = null;
+    public void SetTerrain(TerrainDef def)
+    {
+        Terrain = new Terrain(this, def);
+    }
 
     #region Getters
 

@@ -13,3 +13,11 @@ Resource Icons:
 - Objects should have unique silhouettes and high visual contrast.
 - Visual metaphors should be clear.
 - Slight exaggeration encouraged for readability.
+
+Terrain:
+- Sprite is 1024x1024 px in size with no transparency.
+- Flat-shaded, natural textures — Use minimal shading with soft gradients or gentle noise; avoid harsh highlights or outlines.
+- Earthy, muted colors — Favor desaturated browns, greens, and greys that sit quietly under brighter object sprites.
+- Soft, organic shapes — Terrain details (like cracks, clumps, or texture) should feel natural and hand-shaped, not geometric or stylized.
+- Seamless edge blending — Ensure all terrain tiles are looped or designed to seamlessly tile in all directions.
+- No strong borders or high contrast — Avoid comic-style edging or anything that pulls visual attention away from objects.
