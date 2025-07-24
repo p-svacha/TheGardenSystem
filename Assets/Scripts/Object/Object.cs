@@ -26,6 +26,9 @@ public class Object : INestedTooltipTarget
     /// </summary>
     public List<ResourceDef> NativeResources => GetNativeResourceProduction().GetResourceList();
 
+    public bool ProducesAnyOfResourcesNatively(List<ResourceDef> res) => NativeResources.Any(r => res.Contains(r));
+    public bool ProducesAllOfResourcesNatively(List<ResourceDef> res) => NativeResources.All(r => res.Contains(r));
+
     public bool HasTag(ObjectTagDef tag) => Tags.Contains(tag);
     public bool HasAnyOfTags(List<ObjectTagDef> tags) => tags.Any(t => Tags.Contains(t));
     public bool HasAllTags(List<ObjectTagDef> tags) => tags.All(t => Tags.Contains(t));

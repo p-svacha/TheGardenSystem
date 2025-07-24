@@ -14,9 +14,8 @@ public static class CustomerDefs
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
                 { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 5 } }) },
-                { 5, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 10 } }) },
-                { 10, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 15 } }) },
-                { 15, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 20 } }) },
+                { 2, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 15 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 20 } }) },
             },
         },
 
@@ -28,10 +27,10 @@ public static class CustomerDefs
             Backstory = "Mira, the town herbalist, has run her shop for years, mixing poultices and calming infusions for anyone in need. Her shop smells like mint and mystery, and she’s always looking for a steady supply of quality herbs.",
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
-                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 5 } }) },
-                { 5, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 10 } }) },
-                { 10, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 15 } }) },
-                { 15, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 20 } }) },
+                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 10 } }) },
+                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 20 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 30 } }) },
+                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 40 } }) },
             },
         },
 
@@ -44,7 +43,9 @@ public static class CustomerDefs
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
                 { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 10 } }) },
-                { 5, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 5 }, { ResourceDefOf.Herbs, 5 } }) },
+                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 10 }, { ResourceDefOf.Herbs, 10 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 15 }, { ResourceDefOf.Herbs, 15 } }) },
+                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 20 }, { ResourceDefOf.Herbs, 20 } }) },
             },
         },
 
@@ -56,10 +57,10 @@ public static class CustomerDefs
             Backstory = "A family-run supplier of firewood, smokehouse fuel, and oven starters. They’ve taken an interest in your garden’s renewable kindling output and want to see how reliable you can be.",
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
-                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 5 } }) },
-                { 5, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 10 } }) },
-                { 10, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 15 } }) },
-                { 15, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 20 } }) },
+                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 10 } }) },
+                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 20 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 30 } }) },
+                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 40 } }) },
             },
         },
     };

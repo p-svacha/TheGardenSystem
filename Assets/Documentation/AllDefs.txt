@@ -151,6 +151,153 @@
                 { ResourceDefOf.Expansion, 1 },
             }),
         },
+
+        new ObjectDef()
+        {
+            DefName = "FirePit",
+            Label = "fire pit",
+            Tier = ObjectTierDefOf.Common,
+            FlavorText = "Burns wood into kindling but scorches the soil.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Structure,
+                ObjectTagDefOf.Combustion,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Kindle, 2 },
+                { ResourceDefOf.Fertility, -1 },
+            }),
+        },
+
+        new ObjectDef()
+        {
+            DefName = "Wildflower",
+            Label = "wildflower",
+            Tier = ObjectTierDefOf.Common,
+            FlavorText = "A wild flower with beautiful and colorful petals.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Plant,
+                ObjectTagDefOf.Flower,
+                ObjectTagDefOf.Ornamental,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Ornaments, 1 },
+            }),
+        },
+
+        new ObjectDef()
+        {
+            DefName = "Flax",
+            Label = "flax",
+            Tier = ObjectTierDefOf.Common,
+            FlavorText = "A pale, wiry plant that�s more useful than it looks.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Plant,
+                ObjectTagDefOf.Flower,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Fiber, 1 },
+            }),
+        },
+
+        new ObjectDef()
+        {
+            DefName = "BeeHive",
+            Label = "bee hive",
+            Tier = ObjectTierDefOf.Rare,
+            FlavorText = "The workers go where the flowers grow.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Structure,
+                ObjectTagDefOf.Animal,
+                ObjectTagDefOf.Pollinator,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 1 },
+                { ResourceDefOf.Ornaments, 1 },
+            }),
+            Effects = new List<ObjectEffect>()
+            {
+                new AdjacencyEffect()
+                {
+                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    {
+                        ObjectTagDefOf.Flower,
+                    },
+                    NativeProductionModifier = 1
+                },
+            },
+        },
+
+        new ObjectDef()
+        {
+            DefName = "WickerFrame",
+            Label = "wicker frame",
+            Tier = ObjectTierDefOf.Rare,
+            FlavorText = "Woven with care, it brings elegance to even the roughest fibers.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Structure,
+                ObjectTagDefOf.Crafting,
+                ObjectTagDefOf.Ornamental,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Ornaments, 1 },
+            }),
+            Effects = new List<ObjectEffect>()
+            {
+                new SelfAdjacencyEffect()
+                {
+                    EffectCriteria_NativeProduction_Any = new List<ResourceDef>()
+                    {
+                        ResourceDefOf.Fiber,
+                    },
+                    ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                    {
+                        { ResourceDefOf.Ornaments, 1 },
+                    },
+                },
+            },
+        },
+
+        new ObjectDef()
+        {
+            DefName = "CharcoalKiln",
+            Label = "charcoal kiln",
+            Tier = ObjectTierDefOf.Rare,
+            FlavorText = "Where smoke lingers, value rises. It burns low and gives much.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Structure,
+                ObjectTagDefOf.Combustion,
+                ObjectTagDefOf.Crafting,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Kindle, 2 },
+            }),
+            Effects = new List<ObjectEffect>()
+            {
+                new SelfAdjacencyEffect()
+                {
+                    EffectCriteria_NativeProduction_Any = new List<ResourceDef>()
+                    {
+                        ResourceDefOf.Food,
+                    },
+                    ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                    {
+                        { ResourceDefOf.Kindle, 1 },
+                    },
+                },
+            },
+        },
     };
 
 --- ObjectTagDefs.cs ---
@@ -218,6 +365,62 @@
             Label = "marker",
             Description = "Objects that signal boundaries or define structure within the garden, often passive but with strategic placement value.",
             Color = new Color(0.9f, 0.75f, 0.4f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Combustion",
+            Label = "combustion",
+            Description = "Fire-based objects that produce heat or flames, often impacting soil and nearby objects.",
+            Color = new Color(0.85f, 0.35f, 0.10f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Permanent",
+            Label = "permanent",
+            Description = "Objects that stay in place after the daily scatter; persist until explicitly removed.",
+            Color = new Color(0.5f, 0.5f, 0.5f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Ornamental",
+            Label = "ornamental",
+            Description = "Objects valued for their visual appeal. Often used in decorative displays or to fulfill aesthetic orders.",
+            Color = new Color(0.85f, 0.65f, 0.85f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Flower",
+            Label = "flower",
+            Description = "A flowering plant or bloom that may produce ornaments or interact with pollinators.",
+            Color = new Color(0.95f, 0.75f, 0.35f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Animal",
+            Label = "animal",
+            Description = "Living creatures that may produce resources, affect nearby objects, or interact with terrain in unique ways.",
+            Color = new Color(0.6f, 0.4f, 0.3f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Pollinator",
+            Label = "pollinator",
+            Description = "Living creatures that increase production of nearby flowering or ornamental plants.",
+            Color = new Color(0.95f, 0.85f, 0.4f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Crafting",
+            Label = "crafting",
+            Description = "Objects related to manual creation, shaping, or preparation of materials for construction or trade.",
+            Color = new Color(0.65f, 0.5f, 0.3f),
         },
     };
 
@@ -361,7 +564,7 @@
                     {
                         ObjectTagDefOf.Plant,
                     },
-                    GeneralProductionBonus = 1,
+                    NativeProductionModifier = 1,
                 },
             },
         },
@@ -380,7 +583,7 @@
                     {
                         ObjectTagDefOf.Plant,
                     },
-                    GeneralProductionBonus = -1,
+                    NativeProductionModifier = -1,
                 },
             },
         },

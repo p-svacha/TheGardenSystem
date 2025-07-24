@@ -30,7 +30,7 @@ public class Game
     {
         Instance = this;
         Day = 1;
-        Map = MapGenerator.GenerateMap(19);
+        Map = MapGenerator.GenerateMap(21);
         CurrentFinalResourceProduction = new Dictionary<ResourceDef, ResourceProduction>();
         CurrentPerTileResourceProduction = new Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>>();
 
@@ -192,7 +192,8 @@ public class Game
         }
         else
         {
-            StartObjectDraft();
+            string title = $"Day {Day} Complete";
+            StartObjectDraft(title, ObjectTierDefOf.Common);
         }
         
     }
@@ -331,16 +332,16 @@ public class Game
 
     #region Draft
 
-    private void StartObjectDraft()
+    private void StartObjectDraft(string title, ObjectTierDef tier)
     {
         GameState = GameState.ObjectDraft;
 
         // Get options
-        List<ObjectDef> draftOptions = GetEndOfDayDraftOptions();
+        List<ObjectDef> draftOptions = GetDraftOptions(tier);
 
         // Show draft window
-        string draftWindowTitle = $"Day {Day} Complete";
-        string draftWindowSubtitle = "Choose an object to add to your inventory";
+        string draftWindowTitle = title;
+        string draftWindowSubtitle = $"Choose a {tier.Label} object to add to your inventory";
         UI_ObjectDraftWindow.Instance.ShowObjectDraft(draftWindowTitle, draftWindowSubtitle, draftOptions, OnObjectDrafted);
     }
 
@@ -357,13 +358,13 @@ public class Game
         EndDay();
     }
 
-    private List<ObjectDef> GetEndOfDayDraftOptions()
+    private List<ObjectDef> GetDraftOptions(ObjectTierDef tier)
     {
         // Create candidate probability table
         Dictionary<ObjectDef, float> candidates = new Dictionary<ObjectDef, float>();
         foreach (ObjectDef def in DefDatabase<ObjectDef>.AllDefs)
         {
-            if (def.Tier == ObjectTierDefOf.Common) candidates.Add(def, 1f);
+            if (def.Tier == tier) candidates.Add(def, 1f);
         }
 
         // Choose draft options out of candidates
@@ -402,7 +403,8 @@ public class Game
         GameUI.Instance.OrderPanel.Refresh();
 
         // Next step
-        StartObjectDraft();
+        string title = $"Week {GetWeekNumber()} Complete";
+        StartObjectDraft(title, ObjectTierDefOf.Rare);
     }
 
     #endregion

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -24,18 +25,52 @@ public abstract class ObjectEffect
     /// <summary>
     /// Returns the generalized "+1 to all native production" "-2 to food and fiber production" string.
     /// </summary>
-    protected string GetBonusPartOfDescription(int generalProductionModifier, Dictionary<ResourceDef, int> ResourceProductionModifier)
+    protected string GetBonusPartOfDescription(int nativeProductionModifier, Dictionary<ResourceDef, int> resourceProductionModifier)
     {
         string desc = "";
-        if (generalProductionModifier != 0)
+        if (nativeProductionModifier != 0)
         {
-            string sign = generalProductionModifier > 0 ? "+" : "";
-            desc += $"<nobr>{sign}{generalProductionModifier} native production, </nobr>";
+            string sign = nativeProductionModifier > 0 ? "+" : "";
+            desc += $"<nobr>{sign}{nativeProductionModifier} native production, </nobr>";
         }
-        foreach (var kvp in ResourceProductionModifier)
+        foreach (var kvp in resourceProductionModifier)
         {
             string sign = kvp.Value > 0 ? "+" : "";
             desc += $"<nobr>{sign}{kvp.Value} {kvp.Key.GetNestedTooltipLink()} production, </nobr>";
+        }
+
+        // Remove trailing ", </nobr>" if present
+        const string trailing = ", </nobr>";
+        if (desc.EndsWith(trailing))
+        {
+            desc = desc.Substring(0, desc.Length - trailing.Length) + "</nobr>";
+        }
+
+        return desc;
+    }
+
+    /// <summary>
+    /// Returns the generalized "plant or flower object", "crafting structure object", "honey producing object" string.
+    /// </summary>
+    protected string GetCriteriaPartDescription(List<ObjectTagDef> tagsAny, List<ObjectTagDef> tagsAll, List<ResourceDef> nativeProdAny, bool plural = false)
+    {
+        string desc = "";
+
+        string objString = plural ? "objects" : "object";
+        if (tagsAny.Count > 0)
+        {
+            var links = tagsAny.Select(t => t.GetNestedTooltipLink());
+            desc += $"<nobr>{string.Join(" or ", links)} {objString}, </nobr>";
+        }
+        if (tagsAll.Count > 0)
+        {
+            var links = tagsAll.Select(t => t.GetNestedTooltipLink());
+            desc += $"<nobr>{string.Join(" ", links)} {objString}, </nobr>";
+        }
+        if (nativeProdAny.Count > 0)
+        {
+            var links = nativeProdAny.Select(r => r.GetNestedTooltipLink());
+            desc += $"<nobr>{string.Join(" or ", links)} producing {objString}, </nobr>";
         }
 
         // Remove trailing ", </nobr>" if present

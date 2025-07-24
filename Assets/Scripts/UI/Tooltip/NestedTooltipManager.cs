@@ -134,8 +134,7 @@ public class NestedTooltipManager : MonoBehaviour
         if (originalPosition.y + tooltipHeight > Screen.height - SCREEN_EDGE_OFFSET)
             adjustedPosition.y = Screen.height - tooltipHeight - SCREEN_EDGE_OFFSET;
 
-        Debug.Log($"Tooltip is {tooltipWidth}x{tooltipHeight} at position ({originalPosition.x},{originalPosition.y}), Screen is {Screen.width}x{Screen.height}. Adjusting position to ({adjustedPosition.x},{adjustedPosition.y}).");
-
+        // Debug.Log($"Tooltip is {tooltipWidth}x{tooltipHeight} at position ({originalPosition.x},{originalPosition.y}), Screen is {Screen.width}x{Screen.height}. Adjusting position to ({adjustedPosition.x},{adjustedPosition.y}).");
 
         tooltip.transform.position = adjustedPosition;
         tooltip.IsPositioned = true;

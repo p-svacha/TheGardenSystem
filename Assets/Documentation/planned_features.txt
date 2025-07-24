@@ -1,14 +1,39 @@
 FEATURE ROADMAP (in that order)
 
-end of week:
-	x customers increase their order level (x is based on week)
-	one new customer is drafted every n'th week
-	rare item discover
+ordered scatter:
+	instead of full scatter all at once, objects get scattered one by one with slight delay in between
+	this will also make merging nicer (see next chapter)
+
+visual combo feedback:
+	add a little jingle, particles, shake or effect when an effect triggers
+
+lenses
+	add lenses during scatter manipulation
+	hovering resources enables the lens while hovering
+	active lens shows a small UI element over each tile with its production of that resource
+	active lens shows line renderers between tiles giving an effect relevant for that resource
+
+mergeable objects:
+	some tiles have the tag "mergeable".
+	if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increased tier) on the middle tile of the 3
+	i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
+	merging happens during scatter, and other objects can occupy the 2 tiles that become free through the merging
 
 resource progression:
 	not all resources are active from the start
 	only get added once first time produced or ordered
 	only active get shown in resource panel and remaining res
+
+order level increases:
+	at the end of week, x customers increase their order level, where x equals current month
+
+new customer draft:
+	one new customer is drafted at the end of each month
+	additionally, a random customer is added at the end of week 1
+	else customer levels are just upgraded
+
+fiber:
+	make a customer buying fiber
 
 obstacles:
 	some tiles may have obstacles on them
@@ -21,23 +46,18 @@ obstacles:
 	technically, obstacles are also just objects, but with the "permanent" tag and no effect
 		objects with the "permanent" tag do not get removed at the end of the day
 
+conceptDefs:
+	concept defs that can be referenced in tooltips to explain mechanics
+	- native production
+	- market resources
+	- abstract resources
+
 new content:
-	add third market resource for order variety
 	add several customers for variety
 	add several new objects
 
 game over:
 	real game over screen with stats
-
-ordered scatter:
-	instead of full scatter all at once, objects get scattered one by one with slight delay in between
-	this will also make merging nicer (see next chapter)
-
-mergeable objects:
-	some tiles have the tag "mergeable".
-	if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increaed rarity) on the middle tile of the 3
-	i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
-	merging happens during scatter, and other objects can occupy the 2 tiles that become free through the merging
 
 prestige orders:
 	additional optional prestige orders may appear
@@ -45,14 +65,24 @@ prestige orders:
 	but they give an extra reward if completed (draft of rare or epic object, research points, free expansion)
 
 game over logic:
-	instead of immediately losing the game upon one failed ordinary order, you only loose when you can't complete a particular customers order for 2 weeks in a row
-	if you can't complete all orders in a week, a new menu appears where you can select which orders you want to complete
 	if an order can't be completed, the customer will expect the resources of that missed order on top of the expected resources of the next week
+
+ui improvements:
+	in tag tooltip, show owned objects of that tag
+	show object tier in tooltip
+	show resource type in resource tooltip
+	make object production tooltip nicer, with resource icons
+		simply show final productions in tooltip
+		nested tooltip shows broken down production of that resource
+	when selecting object, show amound of currently owned
+	show flavor text in object def tooltip
+	show effects in object def tooltip (analog terrain def)
 
 "bossfight" orders:
 	unique one-time orders in fixed intervals (every month/4 weeks)
 	failing loses the game
 	can be seen from start of the month
+	discover epic at end of month
 
 sectors (maybe 'plots'):
 	instead of having one centralized inventory, where the objects get scattered randomly across the whole garden, the garden can be split in sectors
@@ -68,7 +98,6 @@ sectors (maybe 'plots'):
 	when drafting objects, you draft for a specific sector (sectors get iterated through each day)
 	[maybe] each sector has a 'shed', a permanent object with no effects, but that is used to check that sectors inventory.
 		Starting sector would have one shed in the middle. Would be elegant way to display inventory without it being just a ui menu you open.
-
 
 [maybe] research:
 	a research tree is added, with modular dependencies between the research projects (like rimworld for example)

@@ -31,7 +31,7 @@ public class TerrainDefs
                     {
                         ObjectTagDefOf.Plant,
                     },
-                    GeneralProductionBonus = 1,
+                    NativeProductionModifier = 1,
                 },
             },
         },
@@ -50,7 +50,7 @@ public class TerrainDefs
                     {
                         ObjectTagDefOf.Plant,
                     },
-                    GeneralProductionBonus = -1,
+                    NativeProductionModifier = -1,
                 },
             },
         },

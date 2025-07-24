@@ -67,5 +67,61 @@ public static class ObjectTagDefs
             Description = "Objects that signal boundaries or define structure within the garden, often passive but with strategic placement value.",
             Color = new Color(0.9f, 0.75f, 0.4f),
         },
+
+        new ObjectTagDef()
+        {
+            DefName = "Combustion",
+            Label = "combustion",
+            Description = "Fire-based objects that produce heat or flames, often impacting soil and nearby objects.",
+            Color = new Color(0.85f, 0.35f, 0.10f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Permanent",
+            Label = "permanent",
+            Description = "Objects that stay in place after the daily scatter; persist until explicitly removed.",
+            Color = new Color(0.5f, 0.5f, 0.5f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Ornamental",
+            Label = "ornamental",
+            Description = "Objects valued for their visual appeal. Often used in decorative displays or to fulfill aesthetic orders.",
+            Color = new Color(0.85f, 0.65f, 0.85f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Flower",
+            Label = "flower",
+            Description = "A flowering plant or bloom that may produce ornaments or interact with pollinators.",
+            Color = new Color(0.95f, 0.75f, 0.35f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Animal",
+            Label = "animal",
+            Description = "Living creatures that may produce resources, affect nearby objects, or interact with terrain in unique ways.",
+            Color = new Color(0.6f, 0.4f, 0.3f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Pollinator",
+            Label = "pollinator",
+            Description = "Living creatures that increase production of nearby flowering or ornamental plants.",
+            Color = new Color(0.95f, 0.85f, 0.4f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Crafting",
+            Label = "crafting",
+            Description = "Objects related to manual creation, shaping, or preparation of materials for construction or trade.",
+            Color = new Color(0.65f, 0.5f, 0.3f),
+        },
     };
 }

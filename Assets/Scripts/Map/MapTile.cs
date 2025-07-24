@@ -129,8 +129,9 @@ public class MapTile : INestedTooltipTarget
             {
                 foreach (ResourceProduction prod in tileProduction.Values)
                 {
-                    int numProduced = prod.GetValue();
-                    if (numProduced != 0)
+                    int baseValue = prod.BaseValue;
+                    int finalValue = prod.GetValue();
+                    if (baseValue != 0 || finalValue != 0) // Show breakdown when either base or final value is not 0
                     {
                         bodyText += "\n\n" + prod.GetBreakdownString();
                     }

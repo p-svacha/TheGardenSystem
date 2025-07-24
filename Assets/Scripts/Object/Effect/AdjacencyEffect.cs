@@ -8,44 +8,54 @@ using UnityEngine;
 public class AdjacencyEffect : ObjectEffect
 {
     /// <summary>
-    /// If not empty, only objects with a tag included in this list are affected by this effect.
+    /// If not empty, an adjacent object has to have any of these tags for the effect to be applied to it.
     /// </summary>
-    public List<ObjectTagDef> AffectedTagsAny { get; init; } = new();
+    public List<ObjectTagDef> EffectCriteria_TagsAny { get; init; } = new();
 
     /// <summary>
-    /// If not empty, only objects that have all tags in this list are affected by this effect.
+    /// If not empty, an adjacent object has to have all these tags for the effect to be applied to it.
     /// </summary>
-    public List<ObjectTagDef> AffectedTagsAll { get; init; } = new();
+    public List<ObjectTagDef> EffectCriteria_TagsAll { get; init; } = new();
+
+    /// <summary>
+    /// If not empty, an adjacent object has to produce one of these resources for the effect to be applied to it.
+    /// </summary>
+    public List<ResourceDef> EffectCriteria_NativeProduction_Any { get; init; } = new();
 
     /// <summary>
     /// The amount of production that gets to added to all resources an object produces natively (according to Object.GetBaseResourceProduction)
     /// </summary>
-    public int GeneralProductionBonus { get; init; } = 0;
+    public int NativeProductionModifier { get; init; } = 0;
 
     /// <summary>
     /// The amount of production that gets to added to specific resources, disregarding what resources the object produces natively.
     /// </summary>
-    public Dictionary<ResourceDef, int> ResourceProductionBonus { get; init; } = new();
+    public Dictionary<ResourceDef, int> ResourceProductionModifier { get; init; } = new();
 
     public override bool Validate(out string invalidReason)
     {
-        if (AffectedTagsAny.Any(t => t == null))
+        if (EffectCriteria_TagsAny.Any(t => t == null))
         {
-            invalidReason = "AffectedTagsAny contains a tag that is null.";
+            invalidReason = "EffectCriteria_TagsAny contains a tag that is null.";
             return false;
         }
-        if (AffectedTagsAll.Any(t => t == null))
+        if (EffectCriteria_TagsAll.Any(t => t == null))
         {
-            invalidReason = "AffectedTagsAll contains a tag that is null.";
+            invalidReason = "EffectCriteria_TagsAll contains a tag that is null.";
+            return false;
+        }
+        if (EffectCriteria_NativeProduction_Any.Any(t => t == null))
+        {
+            invalidReason = "EffectCriteria_NativeProduction_Any contains a resource that is null.";
             return false;
         }
 
-        if (AffectedTagsAny.Count == 0 && AffectedTagsAll.Count == 0)
+        if (EffectCriteria_TagsAny.Count == 0 && EffectCriteria_TagsAll.Count == 0 && EffectCriteria_NativeProduction_Any.Count == 0)
         {
             invalidReason = "There is no criteria defined for when this effect should be triggered.";
             return false;
         }
-        if (AffectedTagsAny.Count > 0 && AffectedTagsAll.Count > 0)
+        if (EffectCriteria_TagsAny.Count > 0 && EffectCriteria_TagsAll.Count > 0)
         {
             invalidReason = "There is conflicting criteria defined for when this effect should be triggered.";
             return false;
@@ -63,23 +73,24 @@ public class AdjacencyEffect : ObjectEffect
             bool doApplyEffect = true;
 
             if (!tile.HasObject) doApplyEffect = false;
-            else if (AffectedTagsAny.Count > 0 && (!tile.Object.HasAnyOfTags(AffectedTagsAny))) doApplyEffect = false;
-            else if (AffectedTagsAll.Count > 0 && (!tile.Object.HasAllTags(AffectedTagsAll))) doApplyEffect = false;
+            else if (EffectCriteria_TagsAny.Count > 0 && (!tile.Object.HasAnyOfTags(EffectCriteria_TagsAny))) doApplyEffect = false;
+            else if (EffectCriteria_TagsAll.Count > 0 && (!tile.Object.HasAllTags(EffectCriteria_TagsAll))) doApplyEffect = false;
+            else if (EffectCriteria_NativeProduction_Any.Count > 0 && (!tile.Object.ProducesAnyOfResourcesNatively(EffectCriteria_NativeProduction_Any))) doApplyEffect = false;
 
             if (!doApplyEffect) continue;
 
             // Apply bonus to native resources
-            if (GeneralProductionBonus > 0)
+            if (NativeProductionModifier != 0)
             {
                 foreach (ResourceDef resource in tile.Object.NativeResources)
                 {
-                    ProductionModifier modifier = new ProductionModifier(source: sourceTile.Object, ProductionModifierType.Additive, GeneralProductionBonus);
+                    ProductionModifier modifier = new ProductionModifier(source: sourceTile.Object, ProductionModifierType.Additive, NativeProductionModifier);
                     tileProductions[tile][resource].AddModifier(modifier);
                 }
             }
 
             // Apply bonus to specific resources
-            foreach (var kvp in ResourceProductionBonus)
+            foreach (var kvp in ResourceProductionModifier)
             {
                 ResourceDef resource = kvp.Key;
                 int productionBonus = kvp.Value;
@@ -92,24 +103,8 @@ public class AdjacencyEffect : ObjectEffect
 
     public override string GetDescription()
     {
-        // 1) Build the bonus part
-        string bonusText = GetBonusPartOfDescription(GeneralProductionBonus, ResourceProductionBonus);
-
-        // 2) Build the “affected” criteria part
-        string affectedText;
-        if (AffectedTagsAny.Count > 0)
-        {
-            // “for each adjacent Farm or Barn”
-            var links = AffectedTagsAny.Select(t => t.GetNestedTooltipLink());
-            affectedText = $"to each adjacent {string.Join(" or ", links)} objects";
-        }
-        else // AffectedTagsAll.Count > 0
-        {
-            // “for each adjacent object with all tags Grain and Flour”
-            var links = AffectedTagsAll.Select(t => t.GetNestedTooltipLink());
-            affectedText = $"to each adjacent {string.Join(" ", links)} objects";
-        }
-
-        return $"{bonusText} {affectedText}.";
+        string bonusText = GetBonusPartOfDescription(NativeProductionModifier, ResourceProductionModifier);
+        string criteriaText = GetCriteriaPartDescription(EffectCriteria_TagsAny, EffectCriteria_TagsAll, EffectCriteria_NativeProduction_Any, plural: true);
+        return $"{bonusText} to adjacent {criteriaText}.";
     }
 }

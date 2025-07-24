@@ -18,16 +18,21 @@ public class SelfAdjacencyEffect : ObjectEffect
     public List<ObjectTagDef> EffectCriteria_TagsAll { get; init; } = new();
 
     /// <summary>
+    /// If not empty, an adjacent object has to produce one of these resources for the effect to be applied to the source object.
+    /// </summary>
+    public List<ResourceDef> EffectCriteria_NativeProduction_Any { get; init; } = new();
+
+    /// <summary>
     /// The amount of production that gets to added all resources that the source object produces natively (according to Object.GetBaseResourceProduction).
     /// <br/>The bonus gets applied to the source object for each adjacent object that fulfills the EffectCriteria.
     /// </summary>
-    public int GeneralProductionBonus { get; init; } = 0;
+    public int NativeProductionModifier { get; init; } = 0;
 
     /// <summary>
     /// The amount of production that gets to added to specific resources of the source object, disregarding what resources the it produces natively.
     /// <br/>The bonus gets applied to the source object for each adjacent object that fulfills the EffectCriteria.
     /// </summary>
-    public Dictionary<ResourceDef, int> ResourceProductionBonus { get; init; } = new();
+    public Dictionary<ResourceDef, int> ResourceProductionModifier { get; init; } = new();
 
     public override bool Validate(out string invalidReason)
     {
@@ -41,8 +46,13 @@ public class SelfAdjacencyEffect : ObjectEffect
             invalidReason = "EffectCriteria_TagsAll contains a tag that is null.";
             return false;
         }
+        if (EffectCriteria_NativeProduction_Any.Any(t => t == null))
+        {
+            invalidReason = "EffectCriteria_NativeProduction_Any contains a resource that is null.";
+            return false;
+        }
 
-        if (EffectCriteria_TagsAny.Count == 0 && EffectCriteria_TagsAll.Count == 0)
+        if (EffectCriteria_TagsAny.Count == 0 && EffectCriteria_TagsAll.Count == 0 && EffectCriteria_NativeProduction_Any.Count == 0)
         {
             invalidReason = "There is no criteria defined for when this effect should be triggered.";
             return false;
@@ -68,23 +78,24 @@ public class SelfAdjacencyEffect : ObjectEffect
             bool doApplyEffect = true;
 
             if (!adjacentTile.HasObject) doApplyEffect = false;
-            else if (EffectCriteria_TagsAny.Count > 0 && (!adjacentTile.Object.HasAnyOfTags(EffectCriteria_TagsAny))) doApplyEffect = false;
-            else if (EffectCriteria_TagsAll.Count > 0 && (!adjacentTile.Object.HasAllTags(EffectCriteria_TagsAll))) doApplyEffect = false;
+            else if (EffectCriteria_TagsAny.Count > 0 && !adjacentTile.Object.HasAnyOfTags(EffectCriteria_TagsAny)) doApplyEffect = false;
+            else if (EffectCriteria_TagsAll.Count > 0 && !adjacentTile.Object.HasAllTags(EffectCriteria_TagsAll)) doApplyEffect = false;
+            else if (EffectCriteria_NativeProduction_Any.Count > 0 && !adjacentTile.Object.ProducesAnyOfResourcesNatively(EffectCriteria_NativeProduction_Any)) doApplyEffect = false;
 
             if (!doApplyEffect) continue;
 
             // Apply bonus to native resources
-            if (GeneralProductionBonus > 0)
+            if (NativeProductionModifier != 0)
             {
                 foreach (ResourceDef resource in sourceObject.NativeResources)
                 {
-                    ProductionModifier modifier = new ProductionModifier(source: adjacentTile.Object, ProductionModifierType.Additive, GeneralProductionBonus);
+                    ProductionModifier modifier = new ProductionModifier(source: adjacentTile.Object, ProductionModifierType.Additive, NativeProductionModifier);
                     tileProductions[sourceTile][resource].AddModifier(modifier);
                 }
             }
 
             // Apply bonus to specific resources
-            foreach (var kvp in ResourceProductionBonus)
+            foreach (var kvp in ResourceProductionModifier)
             {
                 ResourceDef resource = kvp.Key;
                 int productionBonus = kvp.Value;
@@ -97,24 +108,8 @@ public class SelfAdjacencyEffect : ObjectEffect
 
     public override string GetDescription()
     {
-        // 1) Build the bonus part
-        string bonusText = GetBonusPartOfDescription(GeneralProductionBonus, ResourceProductionBonus);
-
-        // 2) Build the “criteria” part
-        string criteriaText;
-        if (EffectCriteria_TagsAny.Count > 0)
-        {
-            // “for each adjacent Farm or Barn”
-            var links = EffectCriteria_TagsAny.Select(t => t.GetNestedTooltipLink());
-            criteriaText = $"for each adjacent {string.Join(" or ", links)} objects";
-        }
-        else // EffectCriteria_TagsAll.Count > 0
-        {
-            // “for each adjacent object with all tags Grain and Flour”
-            var links = EffectCriteria_TagsAll.Select(t => t.GetNestedTooltipLink());
-            criteriaText = $"for each adjacent {string.Join(" ", links)} objects";
-        }
-
-        return $"{bonusText} {criteriaText}.";
+        string bonusText = GetBonusPartOfDescription(NativeProductionModifier, ResourceProductionModifier);
+        string criteriaText = GetCriteriaPartDescription(EffectCriteria_TagsAny, EffectCriteria_TagsAll, EffectCriteria_NativeProduction_Any);
+        return $"{bonusText} for each adjacent {criteriaText}.";
     }
 }
