@@ -1,0 +1,381 @@
+﻿=== SOURCE DEF LISTS ===
+
+--- CustomerDefs.cs ---
+    public static List<CustomerDef> Defs => new List<CustomerDef>()
+    {
+        new CustomerDef()
+        {
+            DefName = "TownCanteen",
+            Label = "town canteen",
+            Description = "The local canteen serving affordable lunches to public workers.",
+            Backstory = "Nestled behind the town hall, the Town Canteen has been around for decades, feeding bus drivers, clerks, and school staff with no-frills, hearty meals. It�s publicly funded and always on the lookout for reliable suppliers who can offer basic produce in steady quantities. Your garden caught their eye thanks to your note on the community board.",
+            Orders = new List<ResourceCollection>()
+            {
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 10 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 20 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 30 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 40 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 50 } }) }, // 5
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 60 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 70 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 80 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 90 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 100 } }) }, // 10
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 110 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 120 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 130 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 140 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 150 } }) }, // 15
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 160 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 170 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 180 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 190 } }) },
+                { new (new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 200    } }) }, // 20
+            },
+        }
+    };
+
+--- ObjectDefs.cs ---
+    public static List<ObjectDef> Defs => new List<ObjectDef>()
+    {
+        new ObjectDef()
+        {
+            DefName = "Carrot",
+            Label = "carrot",
+            Tier = ObjectTierDefOf.Common,
+            FlavorText = "Reliable and crisp. Grows underground, but always finds the light.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Plant,
+                ObjectTagDefOf.Vegetable,
+                ObjectTagDefOf.Root,
+                ObjectTagDefOf.FoodSource,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 1 },
+            }),
+        },
+
+        new ObjectDef()
+        {
+            DefName = "CompostHeap",
+            Label = "compost heap",
+            Tier = ObjectTierDefOf.Common,
+            FlavorText = "Old scraps, new life. Everything returns to the soil in time.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Structure,
+                ObjectTagDefOf.Fertilizer,
+                ObjectTagDefOf.Compost,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Fertility, 1 },
+            }),
+        },
+
+        new ObjectDef()
+        {
+            DefName = "CornStalk",
+            Label = "corn stalk",
+            Tier = ObjectTierDefOf.Common,
+            FlavorText = "Tall and golden, swaying in the breeze. A sign of steady growth.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Plant,
+                ObjectTagDefOf.Vegetable,
+                ObjectTagDefOf.FoodSource
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 1 },
+            }),
+        },
+
+        new ObjectDef()
+        {
+            DefName = "Mint",
+            Label = "mint",
+            Tier = ObjectTierDefOf.Common,
+            FlavorText = "A fresh, fragrant plant often used in teas and remedies.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Plant,
+                ObjectTagDefOf.Herb,
+                ObjectTagDefOf.FoodSource,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Herbs, 1 },
+            }),
+        },
+
+        new ObjectDef()
+        {
+            DefName = "Scarecrow",
+            Label = "scarecrow",
+            Tier = ObjectTierDefOf.Common,
+            FlavorText = "Stakes its ground, quietly convincing nearby soil to join the cause.",
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Structure,
+                ObjectTagDefOf.Expansion,
+                ObjectTagDefOf.Marker,
+            },
+            BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Expansion, 1 },
+            }),
+        },
+    };
+
+--- ObjectTagDefs.cs ---
+    public static List<ObjectTagDef> Defs => new List<ObjectTagDef>()
+    {
+        new ObjectTagDef()
+        {
+            DefName = "Plant",
+            Label = "plant",
+            Description = "A living, rooted organism that typically grows from soil and may produce food.",
+            Color = new Color(0.40f, 0.67f, 0.37f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Vegetable",
+            Label = "vegetable",
+            Description = "An edible plant part, usually cultivated for food.",
+            Color = new Color(0.82f, 0.59f, 0.20f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Root",
+            Label = "root",
+            Description = "A subterranean plant part used for anchoring and nutrient storage. Often edible.",
+            Color = new Color(0.58f, 0.39f, 0.26f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "FoodSource",
+            Label = "food source",
+            Description = "An object that passively or actively generates food resources over time.",
+            Color = new Color(0.93f, 0.71f, 0.23f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Structure",
+            Label = "structure",
+            Description = "A built, non-living object that provides effects but does not grow or move.",
+            Color = new Color(0.5f, 0.5f, 0.5f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Fertilizer",
+            Label = "fertilizer",
+            Description = "An object or material that enhances the growth or productivity of nearby plants.",
+            Color = new Color(0.36f, 0.45f, 0.23f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Compost",
+            Label = "compost",
+            Description = "Decomposed organic matter that can enrich soil and support plant-based synergies.",
+            Color = new Color(0.38f, 0.27f, 0.19f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Herb",
+            Label = "herb",
+            Description = "Plants valued for their fragrance, flavor, or medicinal properties. Often small, leafy, and delicate.",
+            Color = new Color(0.4f, 0.7f, 0.4f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Expansion",
+            Label = "expansion",
+            Description = "Objects that generate Expansion, the abstract resource used to claim unowned tiles around the garden.",
+            Color = new Color(0.6f, 0.8f, 0.4f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Marker",
+            Label = "marker",
+            Description = "Objects that signal boundaries or define structure within the garden, often passive but with strategic placement value.",
+            Color = new Color(0.9f, 0.75f, 0.4f),
+        },
+    };
+
+--- ObjectTierDefs.cs ---
+    public static List<ObjectTierDef> Defs => new List<ObjectTierDef>()
+    {
+        new ObjectTierDef()
+        {
+            DefName = "Common",
+            Label = "common",
+            Description = "Most common objects that are drafted at the end of each week.",
+            // Power level guideline: 100%
+        },
+
+        new ObjectTierDef()
+        {
+            DefName = "Rare",
+            Label = "rare",
+            Description = "Powerful rare objects that are harder to acquire. A Rare object is drafted at the end of each week.",
+            // Power level guideline: 200% 
+        },
+
+        new ObjectTierDef()
+        {
+            DefName = "Epic",
+            Label = "epic",
+            Description = "Very powerful but rare objects. An epic object is drafted at the end of each month (every 4th week).",
+            // Power level guideline: 400% 
+        },
+
+        new ObjectTierDef()
+        {
+            DefName = "Legendary",
+            Label = "legendary",
+            Description = "The most powerful objects. Legendary objects cannot be acquired through drafting.",
+            // Power level guideline: 800% 
+        },
+
+        new ObjectTierDef()
+        {
+            DefName = "Cursed",
+            Label = "cursed",
+            Description = "Objects with strictly negative effects, that are added as punishments or difficulty Modifiers. Cursed objects cannot be acquired through drafting.",
+            // Power level guideline: Variable, always negative
+        },
+
+        new ObjectTierDef()
+        {
+            DefName = "Special",
+            Label = "special",
+            Description = "Extraordinary objects with extraordinary origin, effects and purposes. Special objects cannot be acquired through drafting.",
+            // Power level guideline: Variable, depending on object
+        },
+    };
+
+--- ResourceDefs.cs ---
+    public static List<ResourceDef> Defs => new List<ResourceDef>()
+    {
+        // Market resources
+        new ResourceDef()
+        {
+            DefName = "Food",
+            Label = "food",
+            Description = "Basic edible output from plants and animals. Most customers request food regularly.",
+            Type = ResourceType.MarketResource,
+        },
+
+        new ResourceDef()
+        {
+            DefName = "Herbs",
+            Label = "herbs",
+            Description = "Fragrant or medicinal plants used in kitchens, clinics, and cosmetics. A niche demand, but valued by certain customers.",
+            Type = ResourceType.MarketResource,
+        },
+
+        new ResourceDef()
+        {
+            DefName = "Ornaments",
+            Label = "ornaments",
+            Description = "Visually pleasing or fragrant goods used to beautify spaces. Includes flowers, decorative plants, and handmade items with aesthetic value.",
+            Type = ResourceType.MarketResource,
+        },
+
+        new ResourceDef()
+        {
+            DefName = "Kindle",
+            Label = "kindle",
+            Description = "Dry, flammable materials gathered for fires and warmth. Used by townsfolk for cooking, heating, and rituals.",
+            Type = ResourceType.MarketResource,
+        },
+
+        new ResourceDef()
+        {
+            DefName = "Fiber",
+            Label = "fiber",
+            Description = "Natural strands used in weaving, binding, and crafting. Essential for cloth, ropes, and light construction.",
+            Type = ResourceType.MarketResource,
+        },
+
+        // Abstract resources
+        new ResourceDef()
+        {
+            DefName = "Fertility",
+            Label = "fertility",
+            Description = "Enriches or depletes the soil fertility the object lands on. Terrain may change at certain fertility threshholds.",
+            Type = ResourceType.AbstractResource,
+        },
+
+        new ResourceDef()
+        {
+            DefName = "Expansion",
+            Label = "expansion",
+            Description = $"Increases the claim of all 4-way adjacent unowned tiles. When a tile reaches {Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES} claim, it gets added to your garden.",
+            Type = ResourceType.AbstractResource,
+        },
+    };
+
+--- TerrainDefs.cs ---
+    public static List<TerrainDef> Defs => new List<TerrainDef>()
+    {
+        new TerrainDef()
+        {
+            DefName = "Soil",
+            Label = "soil",
+            Description = "Soil, good for plants to grow on.",
+            BetterFertilityTerrainDefName = "FertileSoil",
+            WorseFertilityTerrainDefName = "BarrenSoil",
+        },
+
+        new TerrainDef()
+        {
+            DefName = "FertileSoil",
+            Label = "fertile soil",
+            Description = "Fertile soil, increasing the production of plants on it.",
+            WorseFertilityTerrainDefName = "Soil",
+            Effects = new List<ObjectEffect>()
+            {
+                new SelfEffect()
+                {
+                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    {
+                        ObjectTagDefOf.Plant,
+                    },
+                    GeneralProductionBonus = 1,
+                },
+            },
+        },
+
+        new TerrainDef()
+        {
+            DefName = "BarrenSoil",
+            Label = "barren soil",
+            Description = "Soil stripped of vitality. Plants struggle to grow here, yielding less than usual.",
+            BetterFertilityTerrainDefName = "Soil",
+            Effects = new List<ObjectEffect>()
+            {
+                new SelfEffect()
+                {
+                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    {
+                        ObjectTagDefOf.Plant,
+                    },
+                    GeneralProductionBonus = -1,
+                },
+            },
+        },
+    };
+

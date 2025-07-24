@@ -14,6 +14,7 @@ public class TerrainDefs
             Label = "soil",
             Description = "Soil, good for plants to grow on.",
             BetterFertilityTerrainDefName = "FertileSoil",
+            WorseFertilityTerrainDefName = "BarrenSoil",
         },
 
         new TerrainDef()
@@ -31,6 +32,25 @@ public class TerrainDefs
                         ObjectTagDefOf.Plant,
                     },
                     GeneralProductionBonus = 1,
+                },
+            },
+        },
+
+        new TerrainDef()
+        {
+            DefName = "BarrenSoil",
+            Label = "barren soil",
+            Description = "Soil stripped of vitality. Plants struggle to grow here, yielding less than usual.",
+            BetterFertilityTerrainDefName = "Soil",
+            Effects = new List<ObjectEffect>()
+            {
+                new SelfEffect()
+                {
+                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    {
+                        ObjectTagDefOf.Plant,
+                    },
+                    GeneralProductionBonus = -1,
                 },
             },
         },

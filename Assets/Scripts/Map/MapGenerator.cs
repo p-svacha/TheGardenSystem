@@ -16,12 +16,18 @@ public static class MapGenerator
             for (int y = -half; y <= half; y++)
             {
                 Vector2Int coordinates = new Vector2Int(x, y);
-                float distanceToCenter = coordinates.magnitude;
-                float fertileSoilChance = distanceToCenter * 0.06f;
-                if (distanceToCenter <= 2) fertileSoilChance = 0f;
 
                 TerrainDef terrain = TerrainDefOf.Soil;
-                if (Random.value < fertileSoilChance) terrain = TerrainDefOf.FertileSoil;
+
+                float distanceToCenter = coordinates.magnitude;
+                bool inStartingArea = (distanceToCenter <= 2);
+                if(!inStartingArea)
+                {
+                    float barrenSoilChance = 0.05f;
+                    float fertileSoilChance = distanceToCenter * 0.06f;
+                    if (Random.value < fertileSoilChance) terrain = TerrainDefOf.FertileSoil;
+                    else if (Random.value < barrenSoilChance) terrain = TerrainDefOf.BarrenSoil;
+                }
 
                 tiles.Add(coordinates, new MapTile(map, coordinates, terrain));
             }

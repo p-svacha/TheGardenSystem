@@ -1,14 +1,9 @@
 FEATURE ROADMAP (in that order)
 
-object to expand garden:
-	tiles outside garden have a "claim" stat
-	value starts at 0
-	objects can increase this value for adjacent tiles outside the garden with the new resource "expansion"
-	when reaching the limit (i.e. 3), the tile gets acquired
-	each acquire level gets represented with a little flag on the tile
-
-barren soil:
-	negative fertility soil
+end of week:
+	x customers increase their order level (x is based on week)
+	one new customer is drafted every n'th week
+	rare item discover
 
 obstacles:
 	some tiles may have obstacles on them
@@ -25,13 +20,6 @@ new content:
 	add third market resource for order variety
 	add several customers for variety
 	add several new objects
-
-object rarities:
-	Each objectDef has a specific rarity (or maybe use other more fitting term)
-	At the end of each day, you draft 1 common object
-	At the end of each week, you draft 1 rare object
-	At the end of each month, you draft 1 epic object
-	as a guideline, 1 rarity level should be approx a 200% increase in strength (ofc this varies a lot based on your setup and strategy, rly just a guideline to orient)
 
 ordered scatter:
 	instead of full scatter all at once, objects get scattered one by one with slight delay in between
@@ -52,6 +40,11 @@ game over logic:
 	instead of immediately losing the game upon one failed ordinary order, you only loose when you can't complete a particular customers order for 2 weeks in a row
 	if you can't complete all orders in a week, a new menu appears where you can select which orders you want to complete
 	if an order can't be completed, the customer will expect the resources of that missed order on top of the expected resources of the next week
+
+"bossfight" orders:
+	unique one-time orders in fixed intervals (every month/4 weeks)
+	failing loses the game
+	can be seen from start of the month
 
 sectors (maybe 'plots'):
 	instead of having one centralized inventory, where the objects get scattered randomly across the whole garden, the garden can be split in sectors

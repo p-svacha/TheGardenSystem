@@ -237,38 +237,6 @@ public class Game
         }
     }
 
-    private void StartObjectDraft()
-    {
-        GameState = GameState.ObjectDraft;
-
-        // Create candidate probability table
-        Dictionary<ObjectDef, float> candidates = new Dictionary<ObjectDef, float>();
-        foreach (ObjectDef def in DefDatabase<ObjectDef>.AllDefs) candidates.Add(def, 1f);
-
-        // Choose draft options out of candidates
-        List<ObjectDef> draftOptions = candidates.GetWeightedRandomElements(amount: 3, allowRepeating: false);
-        List<IDraftable> draftableOptions = draftOptions.Select(o => (IDraftable)o).ToList();
-
-        // Show draft window
-        string draftWindowTitle = $"Day {Day} Complete";
-        if (IsLastDayOfWeek) draftWindowTitle = $"Week {GetWeekNumber()} Complete\nAll orders have been delivered.";
-        string draftWindowSubtitle = "Choose an object to add to your inventory";
-        UI_DraftWindow.Instance.Show(draftWindowTitle, draftWindowSubtitle, draftableOptions, isDraft: true, OnObjectDrafted);
-    }
-
-    private void OnObjectDrafted(List<IDraftable> selectedOptions)
-    {
-        // Add drafted objects to inventory
-        foreach(IDraftable draftedObject in selectedOptions)
-        {
-            ObjectDef def = (ObjectDef)draftedObject;
-            AddObjectToInventory(def);
-        }
-
-        // End day
-        EndDay();
-    }
-
     /// <summary>
     /// Calculates and returns the final resource productions of the day, including abstract resources.
     /// </summary>
@@ -349,6 +317,54 @@ public class Game
         GameUI.Instance.ResourcePanel.Refresh();
         GameUI.Instance.OrderPanel.Refresh();
         NestedTooltipManager.Instance.ResetTooltips();
+    }
+
+    #endregion
+
+    #region Draft
+
+    private void StartObjectDraft()
+    {
+        GameState = GameState.ObjectDraft;
+
+        // Get options
+        List<IDraftable> draftOptions = GetEndOfDayDraftOptions();
+
+        // Show draft window
+        string draftWindowTitle = $"Day {Day} Complete";
+        if (IsLastDayOfWeek) draftWindowTitle = $"Week {GetWeekNumber()} Complete\nAll orders have been delivered.";
+        string draftWindowSubtitle = "Choose an object to add to your inventory";
+        UI_DraftWindow.Instance.Show(draftWindowTitle, draftWindowSubtitle, draftOptions, isDraft: true, OnObjectDrafted);
+    }
+
+    private void OnObjectDrafted(List<IDraftable> selectedOptions)
+    {
+        // Add drafted objects to inventory
+        foreach (IDraftable draftedObject in selectedOptions)
+        {
+            ObjectDef def = (ObjectDef)draftedObject;
+            AddObjectToInventory(def);
+        }
+
+        // End day
+        EndDay();
+    }
+
+    private List<IDraftable> GetEndOfDayDraftOptions()
+    {
+        // Create candidate probability table
+        Dictionary<ObjectDef, float> candidates = new Dictionary<ObjectDef, float>();
+        foreach (ObjectDef def in DefDatabase<ObjectDef>.AllDefs)
+        {
+            if (def.Tier == ObjectTierDefOf.Common) candidates.Add(def, 1f);
+        }
+
+        // Choose draft options out of candidates
+        List<ObjectDef> draftOptions = candidates.GetWeightedRandomElements(amount: 3, allowRepeating: false);
+        List<IDraftable> draftableOptions = draftOptions.Select(o => (IDraftable)o).ToList();
+
+        // Return
+        return draftableOptions;
     }
 
     #endregion

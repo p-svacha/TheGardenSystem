@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 [DefOf]
 public static class TerrainDefOf
 {
+    public static TerrainDef BarrenSoil;
     public static TerrainDef FertileSoil;
     public static TerrainDef Soil;
 }

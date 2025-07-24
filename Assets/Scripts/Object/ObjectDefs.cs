@@ -9,6 +9,7 @@ public static class ObjectDefs
         {
             DefName = "Carrot",
             Label = "carrot",
+            Tier = ObjectTierDefOf.Common,
             FlavorText = "Reliable and crisp. Grows underground, but always finds the light.",
             Tags = new List<ObjectTagDef>()
             {
@@ -27,6 +28,7 @@ public static class ObjectDefs
         {
             DefName = "CompostHeap",
             Label = "compost heap",
+            Tier = ObjectTierDefOf.Common,
             FlavorText = "Old scraps, new life. Everything returns to the soil in time.",
             Tags = new List<ObjectTagDef>()
             {
@@ -44,6 +46,7 @@ public static class ObjectDefs
         {
             DefName = "CornStalk",
             Label = "corn stalk",
+            Tier = ObjectTierDefOf.Common,
             FlavorText = "Tall and golden, swaying in the breeze. A sign of steady growth.",
             Tags = new List<ObjectTagDef>()
             {
@@ -61,6 +64,7 @@ public static class ObjectDefs
         {
             DefName = "Mint",
             Label = "mint",
+            Tier = ObjectTierDefOf.Common,
             FlavorText = "A fresh, fragrant plant often used in teas and remedies.",
             Tags = new List<ObjectTagDef>()
             {
@@ -78,6 +82,7 @@ public static class ObjectDefs
         {
             DefName = "Scarecrow",
             Label = "scarecrow",
+            Tier = ObjectTierDefOf.Common,
             FlavorText = "Stakes its ground, quietly convincing nearby soil to join the cause.",
             Tags = new List<ObjectTagDef>()
             {

@@ -93,12 +93,7 @@ public class AdjacencyEffect : ObjectEffect
     public override string GetDescription()
     {
         // 1) Build the bonus part
-        var bonusParts = new List<string>();
-        if (GeneralProductionBonus > 0)
-            bonusParts.Add($"+{GeneralProductionBonus} to all native production");
-        foreach (var kvp in ResourceProductionBonus)
-            bonusParts.Add($"+{kvp.Value} {kvp.Key.GetNestedTooltipLink()}");
-        string bonusText = string.Join(" and ", bonusParts);
+        string bonusText = GetBonusPartOfDescription(GeneralProductionBonus, ResourceProductionBonus);
 
         // 2) Build the “affected” criteria part
         string affectedText;

@@ -5,6 +5,7 @@ public static class ResourceDefs
 {
     public static List<ResourceDef> Defs => new List<ResourceDef>()
     {
+        // Market resources
         new ResourceDef()
         {
             DefName = "Food",
@@ -23,9 +24,34 @@ public static class ResourceDefs
 
         new ResourceDef()
         {
+            DefName = "Ornaments",
+            Label = "ornaments",
+            Description = "Visually pleasing or fragrant goods used to beautify spaces. Includes flowers, decorative plants, and handmade items with aesthetic value.",
+            Type = ResourceType.MarketResource,
+        },
+
+        new ResourceDef()
+        {
+            DefName = "Kindle",
+            Label = "kindle",
+            Description = "Dry, flammable materials gathered for fires and warmth. Used by townsfolk for cooking, heating, and rituals.",
+            Type = ResourceType.MarketResource,
+        },
+
+        new ResourceDef()
+        {
+            DefName = "Fiber",
+            Label = "fiber",
+            Description = "Natural strands used in weaving, binding, and crafting. Essential for cloth, ropes, and light construction.",
+            Type = ResourceType.MarketResource,
+        },
+
+        // Abstract resources
+        new ResourceDef()
+        {
             DefName = "Fertility",
             Label = "fertility",
-            Description = "Enriches or depletes the soil the object lands on. Terrain may change at certain fertility threshholds.",
+            Description = "Enriches or depletes the soil fertility the object lands on. Terrain may change at certain fertility threshholds.",
             Type = ResourceType.AbstractResource,
         },
 

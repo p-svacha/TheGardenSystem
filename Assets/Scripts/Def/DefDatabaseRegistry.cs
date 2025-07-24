@@ -23,6 +23,7 @@ public static class DefDatabaseRegistry
     public static void AddAllDefs()
     {
         ClearAllDatabases();
+        DefDatabase<ObjectTierDef>.AddDefs(ObjectTierDefs.Defs);
         DefDatabase<ObjectTagDef>.AddDefs(ObjectTagDefs.Defs);
         DefDatabase<TerrainDef>.AddDefs(TerrainDefs.Defs);
         DefDatabase<ResourceDef>.AddDefs(ResourceDefs.Defs);
@@ -70,6 +71,8 @@ public static class DefDatabaseRegistry
             MethodInfo resolveMethod = defDatabaseType.GetMethod("OnLoadingDone", BindingFlags.Static | BindingFlags.Public);
             resolveMethod?.Invoke(null, null);
         }
+
+        DefDumpUtility.DumpAllDefs();
     }
 
     /// <summary>

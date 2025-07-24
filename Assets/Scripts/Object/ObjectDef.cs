@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class ObjectDef : Def, IDraftable
 {
     public string FlavorText { get; init; } = "";
+    public ObjectTierDef Tier { get; init; } = null;
     public List<ObjectTagDef> Tags { get; init; } = new();
     public ResourceCollection BaseResources { get; init; } = new();
     public List<ObjectEffect> Effects { get; init; } = new();
@@ -11,6 +12,7 @@ public class ObjectDef : Def, IDraftable
 
     public override bool Validate()
     {
+        if (Tier == null) throw new System.Exception($"Tier must be set of {DefName}.");
         foreach (ObjectEffect effect in Effects)
         {
             if (!effect.Validate(out string invalidReason)) throw new System.Exception($"TerrainDef {DefName} has an invalid Effect: {invalidReason}");
