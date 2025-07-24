@@ -21,6 +21,9 @@ new content:
 	add several customers for variety
 	add several new objects
 
+game over:
+	real game over screen with stats
+
 ordered scatter:
 	instead of full scatter all at once, objects get scattered one by one with slight delay in between
 	this will also make merging nicer (see next chapter)

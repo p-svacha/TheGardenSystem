@@ -6,5 +6,6 @@ public enum GameState
     BeforeScatter,
     ScatterManipulation,
     ConfirmedScatter,
+    OrderSelection, // only at end of week
     ObjectDraft,
 }

@@ -6,8 +6,9 @@ public class Game
 {
     public static Game Instance;
     public const int STARTING_AREA_SIZE = 3;
-    public const int DAYS_PER_WEEK = 7;
+    public const int DAYS_PER_WEEK = 5;
     public const int CLAIMS_NEEDED_TO_ACQUIRE_TILES = 5;
+    public const int CUSTOMER_ORDER_MISSES_IN_A_ROW_TO_LOSE_GAME = 2;
 
     public GameState GameState { get; private set; }
     public int Day { get; private set; }
@@ -187,29 +188,36 @@ public class Game
     {
         if (IsLastDayOfWeek)
         {
-            DeliverOrders();
-            UpgradeRandomCustomer();
-            CreateNextWeeksOrders(isFirstWeekOrder: false);
-
-            // UI
-            GameUI.Instance.ResourcePanel.Refresh();
-            GameUI.Instance.OrderPanel.Refresh();
+            StartOrderSelection();
         }
-        StartObjectDraft();
+        else
+        {
+            StartObjectDraft();
+        }
+        
     }
 
     /// <summary>
-    /// Delivers the resources for orders that are due today and removes them from the active orders.
+    /// Removes all orders that are due today.
+    /// Delivers the resources to the ones selected and applies punishments if not.
     /// </summary>
-    private void DeliverOrders()
+    private void HandleDueOrders(List<Order> deliveredOrders)
     {
         foreach (Order order in DueOrders)
         {
-            if (!Resources.HasResources(order.OrderedResources))
+            if (deliveredOrders.Contains(order))
             {
-                Debug.Log("YOU LOSE YOU LOSE YOU LOSE");
+                Resources.RemoveResources(order.OrderedResources);
+                order.Customer.ResetMissedOrders();
             }
-            Resources.RemoveResources(order.OrderedResources);
+            else
+            {
+                order.Customer.IncrementMissedOrders();
+                if(order.Customer.MissedOrders >= CUSTOMER_ORDER_MISSES_IN_A_ROW_TO_LOSE_GAME)
+                {
+                    LoseGame();
+                }
+            }
         }
 
         ActiveOrders = ActiveOrders.Where(o => o.DueDay != Day).ToList();
@@ -328,13 +336,12 @@ public class Game
         GameState = GameState.ObjectDraft;
 
         // Get options
-        List<IDraftable> draftOptions = GetEndOfDayDraftOptions();
+        List<ObjectDef> draftOptions = GetEndOfDayDraftOptions();
 
         // Show draft window
         string draftWindowTitle = $"Day {Day} Complete";
-        if (IsLastDayOfWeek) draftWindowTitle = $"Week {GetWeekNumber()} Complete\nAll orders have been delivered.";
         string draftWindowSubtitle = "Choose an object to add to your inventory";
-        UI_DraftWindow.Instance.Show(draftWindowTitle, draftWindowSubtitle, draftOptions, isDraft: true, OnObjectDrafted);
+        UI_ObjectDraftWindow.Instance.ShowObjectDraft(draftWindowTitle, draftWindowSubtitle, draftOptions, OnObjectDrafted);
     }
 
     private void OnObjectDrafted(List<IDraftable> selectedOptions)
@@ -350,7 +357,7 @@ public class Game
         EndDay();
     }
 
-    private List<IDraftable> GetEndOfDayDraftOptions()
+    private List<ObjectDef> GetEndOfDayDraftOptions()
     {
         // Create candidate probability table
         Dictionary<ObjectDef, float> candidates = new Dictionary<ObjectDef, float>();
@@ -361,10 +368,40 @@ public class Game
 
         // Choose draft options out of candidates
         List<ObjectDef> draftOptions = candidates.GetWeightedRandomElements(amount: 3, allowRepeating: false);
-        List<IDraftable> draftableOptions = draftOptions.Select(o => (IDraftable)o).ToList();
+        return draftOptions;
+    }
 
-        // Return
-        return draftableOptions;
+
+    /// <summary>
+    /// Shows the window where the player can select which orders to fulfill.
+    /// </summary>
+    private void StartOrderSelection()
+    {
+        GameState = GameState.OrderSelection;
+
+        // Get options
+        List<Order> orderOptions = DueOrders;
+
+        // Show draft window
+        string draftWindowTitle = $"Week {GetWeekNumber()} Complete";
+        string draftWindowSubtitle = "Select the orders you want to deliver.";
+        UI_OrderSelectionWindow.Instance.ShowOrderSelection(draftWindowTitle, draftWindowSubtitle, orderOptions, OnOrdersSelected);
+    }
+
+    private void OnOrdersSelected(List<IDraftable> selectedOptions)
+    {
+        // Order logic
+        List<Order> deliveredOrders = selectedOptions.Select(o => (Order)o).ToList();
+        HandleDueOrders(deliveredOrders);
+        UpgradeRandomCustomer();
+        CreateNextWeeksOrders(isFirstWeekOrder: false);
+
+        // UI
+        GameUI.Instance.ResourcePanel.Refresh();
+        GameUI.Instance.OrderPanel.Refresh();
+
+        // Next step
+        StartObjectDraft();
     }
 
     #endregion
@@ -401,6 +438,11 @@ public class Game
     {
         Map.SetTerrain(coordinates, newTerrain);
         DrawFullMap();
+    }
+
+    private void LoseGame()
+    {
+        Debug.Log("You lose!");
     }
 
     #endregion

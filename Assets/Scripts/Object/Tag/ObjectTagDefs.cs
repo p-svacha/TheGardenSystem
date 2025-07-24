@@ -30,14 +30,6 @@ public static class ObjectTagDefs
 
         new ObjectTagDef()
         {
-            DefName = "FoodSource",
-            Label = "food source",
-            Description = "An object that passively or actively generates food resources over time.",
-            Color = new Color(0.93f, 0.71f, 0.23f),
-        },
-
-        new ObjectTagDef()
-        {
             DefName = "Structure",
             Label = "structure",
             Description = "A built, non-living object that provides effects but does not grow or move.",
@@ -66,14 +58,6 @@ public static class ObjectTagDefs
             Label = "herb",
             Description = "Plants valued for their fragrance, flavor, or medicinal properties. Often small, leafy, and delicate.",
             Color = new Color(0.4f, 0.7f, 0.4f),
-        },
-
-        new ObjectTagDef()
-        {
-            DefName = "Expansion",
-            Label = "expansion",
-            Description = "Objects that generate Expansion, the abstract resource used to claim unowned tiles around the garden.",
-            Color = new Color(0.6f, 0.8f, 0.4f),
         },
 
         new ObjectTagDef()

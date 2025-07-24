@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// An order represents a single set of resources that a customer expects at the end of a specific week.
 /// </summary>
-public class Order
+public class Order : IDraftable
 {
     /// <summary>
     /// The customer that placed this order.

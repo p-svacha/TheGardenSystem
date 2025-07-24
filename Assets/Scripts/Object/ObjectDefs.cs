@@ -16,7 +16,6 @@ public static class ObjectDefs
                 ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Vegetable,
                 ObjectTagDefOf.Root,
-                ObjectTagDefOf.FoodSource,
             },
             BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
             {
@@ -52,7 +51,6 @@ public static class ObjectDefs
             {
                 ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Vegetable,
-                ObjectTagDefOf.FoodSource
             },
             BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
             {
@@ -70,7 +68,6 @@ public static class ObjectDefs
             {
                 ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Herb,
-                ObjectTagDefOf.FoodSource,
             },
             BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()
             {
@@ -87,7 +84,6 @@ public static class ObjectDefs
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
-                ObjectTagDefOf.Expansion,
                 ObjectTagDefOf.Marker,
             },
             BaseResources = new ResourceCollection(new Dictionary<ResourceDef, int>()

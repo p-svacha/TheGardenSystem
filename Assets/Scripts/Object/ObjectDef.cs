@@ -42,7 +42,7 @@ public class ObjectDef : Def, IDraftable
     /// <summary>
     /// Returns all tags of this ObjectDef as a human-readable string including TMPro tooltip links.
     /// </summary>
-    public string GetTags()
+    public string GetTagsAsLinkedString()
     {
         string tags = "";
         foreach (ObjectTagDef tag in Tags) tags += $"{tag.GetNestedTooltipLink()}   ";
@@ -52,15 +52,4 @@ public class ObjectDef : Def, IDraftable
     }
 
     #endregion
-
-    #region IDraftable
-
-    public string DraftDisplay_Title => LabelCapWord;
-    public Sprite DraftDisplay_Sprite => Sprite;
-    public string DraftDisplay_DescriptionPre => BaseResources.GetAsSingleLinkedString();
-    public string DraftDisplay_DescriptionMain => GetEffectDescription();
-    public string DraftDisplay_DescriptionPost => GetTags();
-
-    #endregion
-
 }
