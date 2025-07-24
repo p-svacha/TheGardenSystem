@@ -393,6 +393,7 @@ public class Game
         // Order logic
         List<Order> deliveredOrders = selectedOptions.Select(o => (Order)o).ToList();
         HandleDueOrders(deliveredOrders);
+        if (GameState == GameState.GameOver) return;
         UpgradeRandomCustomer();
         CreateNextWeeksOrders(isFirstWeekOrder: false);
 
@@ -442,7 +443,8 @@ public class Game
 
     private void LoseGame()
     {
-        Debug.Log("You lose!");
+        GameState = GameState.GameOver;
+        UI_GameOverWindow.Instance.Show();
     }
 
     #endregion

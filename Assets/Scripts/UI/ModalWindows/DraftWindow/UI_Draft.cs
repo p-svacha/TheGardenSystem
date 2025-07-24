@@ -23,9 +23,21 @@ public class UI_Draft : MonoBehaviour
     private Dictionary<IDraftable, UI_DraftOption> OptionDisplays;
 
     /// <summary>
+    /// Hook to get selection changes.
+    /// </summary>
+    private System.Action OnSelectionChanged;
+
+    /// <summary>
     /// Initializes the draft with the given options and attributes.
     /// </summary>
-    public void Init(string title, List<IDraftable> options, UI_DraftOption draftOptionPrefab, int minSelectableOptions = 0, int maxSelectableOptions = 1, int maxOptionsDisplayedPerRow = 5, bool initiallyAllSelected = false)
+    public void Init(string title,
+        List<IDraftable> options,
+        UI_DraftOption draftOptionPrefab,
+        int minSelectableOptions = 0,
+        int maxSelectableOptions = 1,
+        int maxOptionsDisplayedPerRow = 5,
+        bool initiallyAllSelected = false,
+        System.Action onSelectionChanged = null)
     {
         if (initiallyAllSelected && (maxSelectableOptions != -1 && maxSelectableOptions < options.Count))
             throw new System.Exception($"Can't initially select all options because maxSelectableOptions is set to {maxSelectableOptions}, which is smaller than the amount of options ({options.Count}).");
@@ -35,6 +47,7 @@ public class UI_Draft : MonoBehaviour
         OptionDisplays = new Dictionary<IDraftable, UI_DraftOption>();
         SelectedOptions = new List<IDraftable>();
         Options = options;
+        OnSelectionChanged = onSelectionChanged;
 
         MinSelectableOptions = minSelectableOptions;
         MaxSelectableOptions = maxSelectableOptions;
@@ -75,6 +88,8 @@ public class UI_Draft : MonoBehaviour
 
     public void SelectOption(IDraftable option)
     {
+        if (SelectedOptions.Contains(option)) return;
+
         // Unselect currently selected options if only one pick possible
         if (MaxSelectableOptions == 1)
         {
@@ -84,12 +99,18 @@ public class UI_Draft : MonoBehaviour
         // Select new option
         SelectedOptions.Add(option);
         OptionDisplays[option].SetSelected(true);
+
+        OnSelectionChanged?.Invoke();
     }
 
     public void DeselectOption(IDraftable option)
     {
+        if (!SelectedOptions.Contains(option)) return;
+
         SelectedOptions.Remove(option);
         OptionDisplays[option].SetSelected(false);
+
+        OnSelectionChanged?.Invoke();
     }
 
     /// <summary>

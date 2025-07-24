@@ -23,6 +23,7 @@ public class UI_ObjectDraftWindow : UI_WindowBase
     private void Awake()
     {
         Instance = this;
+        GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         gameObject.SetActive(false);
     }
 

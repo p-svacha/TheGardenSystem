@@ -8,4 +8,5 @@ public enum GameState
     ConfirmedScatter,
     OrderSelection, // only at end of week
     ObjectDraft,
+    GameOver,
 }

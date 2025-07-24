@@ -118,21 +118,26 @@ public class NestedTooltipManager : MonoBehaviour
     private void PositionTooltip(TooltipWindow tooltip)
     {
         RectTransform rect = tooltip.GetComponent<RectTransform>();
-        Vector3 position = tooltip.MousePosition + new Vector3(MOUSE_OFFSET, MOUSE_OFFSET, 0);
+        Vector3 originalPosition = tooltip.MousePosition + new Vector3(MOUSE_OFFSET, MOUSE_OFFSET, 0);
+        Vector2 adjustedPosition = new Vector2(originalPosition.x, originalPosition.y);
 
         // Fit on screen
-        float tooltipWidth = rect.rect.width;
-        float tooltipHeight = rect.rect.height;
+        float scaleFactor = GetComponentInParent<Canvas>().scaleFactor;
+        float tooltipWidth = rect.rect.width * scaleFactor;
+        float tooltipHeight = rect.rect.height * scaleFactor;
 
         // If tooltip would go off the right edge, nudge left
-        if (position.x + tooltipWidth > Screen.width - SCREEN_EDGE_OFFSET)
-            position.x = Screen.width - tooltipWidth - SCREEN_EDGE_OFFSET;
+        if (originalPosition.x + tooltipWidth > Screen.width - SCREEN_EDGE_OFFSET)
+            adjustedPosition.x = Screen.width - tooltipWidth - SCREEN_EDGE_OFFSET;
 
         // If it would go off the top
-        if (position.y + tooltipHeight > Screen.height - SCREEN_EDGE_OFFSET)
-            position.y = Screen.height - tooltipHeight - SCREEN_EDGE_OFFSET;
+        if (originalPosition.y + tooltipHeight > Screen.height - SCREEN_EDGE_OFFSET)
+            adjustedPosition.y = Screen.height - tooltipHeight - SCREEN_EDGE_OFFSET;
 
-        tooltip.transform.position = position;
+        Debug.Log($"Tooltip is {tooltipWidth}x{tooltipHeight} at position ({originalPosition.x},{originalPosition.y}), Screen is {Screen.width}x{Screen.height}. Adjusting position to ({adjustedPosition.x},{adjustedPosition.y}).");
+
+
+        tooltip.transform.position = adjustedPosition;
         tooltip.IsPositioned = true;
 
         tooltip.gameObject.SetActive(true);

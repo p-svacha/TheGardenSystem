@@ -5,6 +5,11 @@ end of week:
 	one new customer is drafted every n'th week
 	rare item discover
 
+resource progression:
+	not all resources are active from the start
+	only get added once first time produced or ordered
+	only active get shown in resource panel and remaining res
+
 obstacles:
 	some tiles may have obstacles on them
 	to start, just take a rock

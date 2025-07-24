@@ -100,19 +100,20 @@ public static class DictionaryExtensions
 
     /// <summary>
     /// Decrements the integer value associated with the specified key by a given amount.
-    /// If the key does not exist or its value is less than the decrement amount, an exception is thrown.
+    /// If the key does not exist or its value is less than the decrement amount when negative values are disallowed, an exception is thrown.
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <param name="dictionary">The dictionary to operate on.</param>
     /// <param name="key">The key whose value to decrement.</param>
     /// <param name="amount">The amount by which to decrement the value (defaults to 1).</param>
+    /// <param name="allowNegativeValues">If true, allows values to go below zero; otherwise values are not permitted to be negative.</param>
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="dictionary"/> or <paramref name="key"/> is null.
     /// </exception>
     /// <exception cref="Exception">
-    /// Thrown if the key does not exist or its current value is less than the decrement amount.
+    /// Thrown if the key does not exist, or if the key's current value is less than <paramref name="amount"/> when <paramref name="allowNegativeValues"/> is false.
     /// </exception>
-    public static void Decrement<TKey>(this Dictionary<TKey, int> dictionary, TKey key, int amount = 1)
+    public static void Decrement<TKey>(this Dictionary<TKey, int> dictionary, TKey key, int amount = 1, bool allowNegativeValues = false)
     {
         if (dictionary == null)
             throw new ArgumentNullException(nameof(dictionary));
@@ -121,7 +122,7 @@ public static class DictionaryExtensions
 
         if (dictionary.ContainsKey(key))
         {
-            if (dictionary[key] < amount)
+            if (!allowNegativeValues && dictionary[key] < amount)
                 throw new Exception($"Key {key} is not allowed to be <{amount} when trying to decrement {amount}, but is {dictionary[key]}");
             dictionary[key] -= amount;
         }
@@ -137,9 +138,14 @@ public static class DictionaryExtensions
     /// <typeparam name="TKey">The type of keys in the dictionaries.</typeparam>
     /// <param name="dictionary">The dictionary whose values will be updated.</param>
     /// <param name="other">The dictionary providing decrement amounts by key.</param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="dictionary"/> or <paramref name="other"/> is null.</exception>
-    /// <exception cref="Exception">Thrown if any key in <paramref name="other"/> does not exist in <paramref name="dictionary"/> or if a value would go below zero.</exception>
-    public static void DecrementMultiple<TKey>(this Dictionary<TKey, int> dictionary, IDictionary<TKey, int> other)
+    /// <param name="allowNegativeValues">If true, allows values to go below zero; otherwise values are not permitted to be negative.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="dictionary"/> or <paramref name="other"/> is null.
+    /// </exception>
+    /// <exception cref="Exception">
+    /// Thrown if any key in <paramref name="other"/> does not exist in <paramref name="dictionary"/>, or if a decremented value would go below zero when <paramref name="allowNegativeValues"/> is false.
+    /// </exception>
+    public static void DecrementMultiple<TKey>(this Dictionary<TKey, int> dictionary, IDictionary<TKey, int> other, bool allowNegativeValues = false)
     {
         if (dictionary == null)
             throw new ArgumentNullException(nameof(dictionary));
@@ -148,7 +154,38 @@ public static class DictionaryExtensions
 
         foreach (var kvp in other)
         {
-            dictionary.Decrement(kvp.Key, kvp.Value);
+            dictionary.Decrement(kvp.Key, kvp.Value, allowNegativeValues);
+        }
+    }
+
+    /// <summary>
+    /// Modifies the integer values in this dictionary based on the values in another dictionary.
+    /// Positive values in <paramref name="other"/> will increment, and negative values will decrement.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionaries.</typeparam>
+    /// <param name="dictionary">The dictionary whose values will be modified.</param>
+    /// <param name="other">The dictionary providing modification amounts by key (positive to increment, negative to decrement).</param>
+    /// <param name="allowNegativeValues">If true, allows values to go below zero when decrementing; otherwise negative results are disallowed.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="dictionary"/> or <paramref name="other"/> is null.
+    /// </exception>
+    /// <exception cref="Exception">
+    /// Thrown if a decrement would result in a negative value when <paramref name="allowNegativeValues"/> is false,
+    /// or if a key in <paramref name="other"/> does not exist in <paramref name="dictionary"/> during a decrement.
+    /// </exception>
+    public static void ModifyMultiple<TKey>(this Dictionary<TKey, int> dictionary, IDictionary<TKey, int> other, bool allowNegativeValues = false)
+    {
+        if (dictionary == null)
+            throw new ArgumentNullException(nameof(dictionary));
+        if (other == null)
+            throw new ArgumentNullException(nameof(other));
+
+        foreach (var kvp in other)
+        {
+            if (kvp.Value > 0)
+                dictionary.Increment(kvp.Key, kvp.Value);
+            else if (kvp.Value < 0)
+                dictionary.Decrement(kvp.Key, -kvp.Value, allowNegativeValues);
         }
     }
 

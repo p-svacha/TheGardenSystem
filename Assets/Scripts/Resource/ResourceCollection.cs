@@ -8,10 +8,12 @@ using UnityEngine;
 public class ResourceCollection : MonoBehaviour
 {
     public Dictionary<ResourceDef, int> Resources { get; private set; }
+    public bool AllowNegativeValues { get; private set; }
 
-    public ResourceCollection()
+    public ResourceCollection(bool allowNegativeValues = false)
     {
         Resources = new Dictionary<ResourceDef, int>();
+        AllowNegativeValues = allowNegativeValues;
     }
 
     public ResourceCollection(Dictionary<ResourceDef, int> res)
@@ -36,11 +38,11 @@ public class ResourceCollection : MonoBehaviour
 
     public void RemoveResource(ResourceDef def, int amount)
     {
-        Resources.Decrement(def, amount);
+        Resources.Decrement(def, amount, allowNegativeValues: AllowNegativeValues);
     }
     public void RemoveResources(ResourceCollection other)
     {
-        Resources.DecrementMultiple(other.Resources);
+        Resources.DecrementMultiple(other.Resources, allowNegativeValues: AllowNegativeValues);
     }
 
     /// <summary>
@@ -51,6 +53,8 @@ public class ResourceCollection : MonoBehaviour
         if (res.Resources.Any(x => !Resources.ContainsKey(x.Key) || Resources[x.Key] < x.Value)) return false;
         return true;
     }
+
+    public bool HasNegativeValues() => Resources.Values.Any(x => x < 0);
 
     /// <summary>
     /// The list of resources that are in this collection.
@@ -68,7 +72,8 @@ public class ResourceCollection : MonoBehaviour
         string s = "";
         foreach (var kvp in Resources)
         {
-            s += $"{kvp.Key.GetNestedTooltipLink()} {kvp.Value}";
+            string valueText = kvp.Value >= 0 ? kvp.Value.ToString() : $"<color=#E07568>{kvp.Value}</color>";
+            s += $"{kvp.Key.GetNestedTooltipLink()} {valueText}";
             for (int i = 0; i < numSpacesBetweenResources; i++) s += " ";
         }
         s = s.TrimEnd(' ');
