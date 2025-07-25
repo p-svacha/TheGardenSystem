@@ -7,18 +7,30 @@ public class Game
     public static Game Instance;
     public const int STARTING_AREA_SIZE = 3;
     public const int DAYS_PER_WEEK = 5;
+    public const int WEEKS_PER_MONTH = 4;
+    public const int MONTHS_PER_YEAR = 12;
+    public const int DAYS_PER_MONTH = DAYS_PER_WEEK * WEEKS_PER_MONTH;
+    public const int DAYS_PER_YEAR = MONTHS_PER_YEAR * DAYS_PER_MONTH;
     public const int CLAIMS_NEEDED_TO_ACQUIRE_TILES = 5;
     public const int CUSTOMER_ORDER_MISSES_IN_A_ROW_TO_LOSE_GAME = 2;
 
+    // State
     public GameState GameState { get; private set; }
     public int Day { get; private set; }
     public Map Map { get; private set; }
+
+    // Production
     public ResourceCollection Resources { get; private set; }
     public List<Object> Objects { get; private set; }
     public Dictionary<ResourceDef, ResourceProduction> CurrentFinalResourceProduction { get; private set; }
     public Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> CurrentPerTileResourceProduction { get; private set; }
+
+    // Orders
     public List<Customer> WeeklyCustomers { get; private set; }
     public List<Order> ActiveOrders { get; private set; }
+    public Customer TownCouncil { get; private set; }
+    public List<TownMandate> TownMandates { get; private set; }
+    public TownMandate NextTownMandate => (IsLastDayOfMonth && Game.Instance.GameState > GameState.ConfirmedScatter) ? TownMandates[Month + 1] : TownMandates[Month];
 
     // Visual
     public bool IsShowingGridOverlay { get; private set; }
@@ -53,11 +65,19 @@ public class Game
         Objects = new List<Object>();
         AddObjectToInventory(ObjectDefOf.Carrot);
 
-        // Starting orders
+        // Weekly orders
         WeeklyCustomers = new List<Customer>();
         AddOrUpgradeCustomer(DefDatabase<CustomerDef>.GetNamed("TownCanteen"));
         ActiveOrders = new List<Order>();
         CreateNextWeeksOrders(isFirstWeekOrder: true);
+
+        // Town mandates
+        TownCouncil = new Customer(CustomerDefOf.TownCouncil, 1);
+        TownMandates = new List<TownMandate>();
+        for (int i = 0; i < MONTHS_PER_YEAR; i++)
+        {
+            TownMandates.Add(new TownMandate(i, DefDatabase<TownMandateDef>.AllDefs[i]));
+        }
 
         GameState = GameState.Uninitialized;
     }
@@ -186,6 +206,30 @@ public class Game
 
     private void StartPostScatter()
     {
+        if (IsLastDayOfMonth)
+        {
+            // Pay town mandate
+            if (Resources.HasResources(NextTownMandate.OrderedResources))
+            {
+                Resources.RemoveResources(NextTownMandate.OrderedResources);
+
+                // UI
+                GameUI.Instance.ResourcePanel.Refresh();
+                GameUI.Instance.OrderPanel.Refresh();
+
+                if (IsLastDayOfYear)
+                {
+                    WinGame();
+                    return;
+                }
+            }
+            else
+            {
+                LoseGame();
+                return;
+            }
+        }
+
         if (IsLastDayOfWeek)
         {
             StartOrderSelection();
@@ -229,7 +273,7 @@ public class Game
     /// </summary>
     private void UpgradeRandomCustomer()
     {
-        CustomerDef chosenDef = DefDatabase<CustomerDef>.AllDefs.RandomElement();
+        CustomerDef chosenDef = DefDatabase<CustomerDef>.AllDefs.Where(c => c.IsWeeklyCustomer).ToList().RandomElement();
         AddOrUpgradeCustomer(chosenDef);
     }
 
@@ -242,7 +286,7 @@ public class Game
         {
             ResourceCollection customerOrder = customer.GetCurrentLevelOrder();
             int targetWeek = isFirstWeekOrder ? 1 : GetWeekNumber() + 1;
-            ActiveOrders.Add(new Order(customer, targetWeek, customerOrder));
+            ActiveOrders.Add(new Order(customer, targetWeek * DAYS_PER_WEEK, customerOrder));
         }
     }
 
@@ -386,6 +430,7 @@ public class Game
         // Show draft window
         string draftWindowTitle = $"Week {GetWeekNumber()} Complete";
         string draftWindowSubtitle = "Select the orders you want to deliver.";
+        if (IsLastDayOfMonth) draftWindowSubtitle += "\nThe town mandate has already been payed.";
         UI_OrderSelectionWindow.Instance.ShowOrderSelection(draftWindowTitle, draftWindowSubtitle, orderOptions, OnOrdersSelected);
     }
 
@@ -403,8 +448,16 @@ public class Game
         GameUI.Instance.OrderPanel.Refresh();
 
         // Next step
-        string title = $"Week {GetWeekNumber()} Complete";
-        StartObjectDraft(title, ObjectTierDefOf.Rare);
+        if (IsLastDayOfMonth)
+        {
+            string title = $"{CurrentMonthName} Complete";
+            StartObjectDraft(title, ObjectTierDefOf.Epic);
+        }
+        else
+        {
+            string title = $"Week {GetWeekNumber()} Complete";
+            StartObjectDraft(title, ObjectTierDefOf.Rare);
+        }
     }
 
     #endregion
@@ -443,10 +496,15 @@ public class Game
         DrawFullMap();
     }
 
+    private void WinGame()
+    {
+        GameState = GameState.GameOver;
+        UI_GameOverWindow.Instance.Show("You Win!");
+    }
     private void LoseGame()
     {
         GameState = GameState.GameOver;
-        UI_GameOverWindow.Instance.Show();
+        UI_GameOverWindow.Instance.Show("You Lose.");
     }
 
     #endregion
@@ -469,12 +527,23 @@ public class Game
         return weekdayNames[index];
     }
 
+    public string GetMonthName(int monthIndex)
+    {
+        string[] monthNames = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+        return monthNames[monthIndex];
+    }
+    public string CurrentMonthName => GetMonthName(Month);
+
     public int GetWeekNumber()
     {
         return ((Day - 1) / DAYS_PER_WEEK) + 1;
     }
 
+    public int Month => (Day - 1) / DAYS_PER_MONTH;
+
     public bool IsLastDayOfWeek => (Day - 1) % DAYS_PER_WEEK == DAYS_PER_WEEK - 1;
+    public bool IsLastDayOfMonth => (Day - 1) % DAYS_PER_MONTH == DAYS_PER_MONTH - 1;
+    public bool IsLastDayOfYear => (Day - 1) % DAYS_PER_YEAR == DAYS_PER_YEAR - 1;
 
     public Dictionary<ResourceDef, ResourceProduction> GetTileProduction(MapTile tile)
     {

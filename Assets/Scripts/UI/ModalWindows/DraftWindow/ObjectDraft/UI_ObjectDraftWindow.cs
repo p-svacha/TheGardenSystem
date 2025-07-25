@@ -20,11 +20,10 @@ public class UI_ObjectDraftWindow : UI_WindowBase
     /// </summary>
     private System.Action<List<IDraftable>> Callback;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Instance = this;
-        GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        gameObject.SetActive(false);
     }
 
     public void ShowObjectDraft(string title, string subtitle, List<ObjectDef> objects, System.Action<List<IDraftable>> callback)

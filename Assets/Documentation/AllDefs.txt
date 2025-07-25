@@ -5,6 +5,15 @@
     {
         new CustomerDef()
         {
+            DefName = "TownCouncil",
+            Label = "town council",
+            Description = "The town council is your employer and therefore most important customer. They give you monthly mandates for resources they need for various reason.",
+            Backstory = "The town council owns the garden you are managing and expects you to deliver monthly orders for various reasons. The council is operating town activities like festivals, lunches, parties and fairs, as well as managing the town stockpiles.",
+            IsWeeklyCustomer = false,
+        },
+
+        new CustomerDef()
+        {
             DefName = "TownCanteen",    
             Label = "town canteen",
             Description = "The local canteen serving affordable lunches to public workers. Will order food exclusively.",
@@ -12,9 +21,8 @@
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
                 { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 5 } }) },
-                { 5, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 10 } }) },
-                { 10, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 15 } }) },
-                { 15, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 20 } }) },
+                { 2, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 15 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Food, 20 } }) },
             },
         },
 
@@ -26,10 +34,10 @@
             Backstory = "Mira, the town herbalist, has run her shop for years, mixing poultices and calming infusions for anyone in need. Her shop smells like mint and mystery, and she�s always looking for a steady supply of quality herbs.",
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
-                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 5 } }) },
-                { 5, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 10 } }) },
-                { 10, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 15 } }) },
-                { 15, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 20 } }) },
+                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 10 } }) },
+                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 20 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 30 } }) },
+                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Herbs, 40 } }) },
             },
         },
 
@@ -42,7 +50,9 @@
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
                 { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 10 } }) },
-                { 5, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 5 }, { ResourceDefOf.Herbs, 5 } }) },
+                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 10 }, { ResourceDefOf.Herbs, 10 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 15 }, { ResourceDefOf.Herbs, 15 } }) },
+                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 20 }, { ResourceDefOf.Herbs, 20 } }) },
             },
         },
 
@@ -54,10 +64,10 @@
             Backstory = "A family-run supplier of firewood, smokehouse fuel, and oven starters. They�ve taken an interest in your garden�s renewable kindling output and want to see how reliable you can be.",
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
-                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 5 } }) },
-                { 5, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 10 } }) },
-                { 10, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 15 } }) },
-                { 15, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 20 } }) },
+                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 10 } }) },
+                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 20 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 30 } }) },
+                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Kindle, 40 } }) },
             },
         },
     };
@@ -473,6 +483,177 @@
             Label = "special",
             Description = "Extraordinary objects with extraordinary origin, effects and purposes. Special objects cannot be acquired through drafting.",
             // Power level guideline: Variable, depending on object
+        },
+    };
+
+--- TownMandateDefs.cs ---
+    public static List<TownMandateDef> Defs => new List<TownMandateDef>()
+    {
+        // Jan
+        new TownMandateDef()
+        {
+            DefName = "WinterSupplies",
+            Label = "Winter Supplies",
+            Description = "The town needs preserved goods and warmth for colder households.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 15 },
+                { ResourceDefOf.Kindle, 5 },
+            }),
+        },
+
+
+        // Feb
+        new TownMandateDef()
+        {
+            DefName = "SchoolLunch",
+            Label = "School Lunches",
+            Description = "The primary school kitchen is reopening. Simple meals for energetic kids.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 35 },
+                { ResourceDefOf.Herbs, 5 },
+            }),
+        },
+
+        // Mar
+        new TownMandateDef()
+        {
+            DefName = "SpringWellnessFestival",
+            Label = "Spring Wellness Festival",
+            Description = "Local apothecaries and herbalists host a market of healing and teas.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Herbs, 40 },
+                { ResourceDefOf.Ornaments, 20 },
+            }),
+        },
+
+        // Apr
+        new TownMandateDef()
+        {
+            DefName = "TownBeautificationWeek",
+            Label = "Town Beautification Week",
+            Description = "Volunteers are decorating public spaces and planters across town.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Ornaments, 80 },
+            }),
+        },
+
+        // May
+        new TownMandateDef()
+        {
+            DefName = "FireFestival",
+            Label = "Festival of Fire",
+            Description = "An ancient bonfire festival honoring the changing season.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Kindle, 65 },
+                { ResourceDefOf.Ornaments, 35 },
+            }),
+        },
+
+        // Jun
+        new TownMandateDef()
+        {
+            DefName = "SummerTradeCaravan",
+            Label = "Summer Trade Caravan",
+            Description = "The town is preparing a gift shipment for visiting merchants.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 25 },
+                { ResourceDefOf.Herbs, 25 },
+                { ResourceDefOf.Ornaments, 25 },
+                { ResourceDefOf.Kindle, 25 },
+                { ResourceDefOf.Fiber, 25 },
+            }),
+        },
+
+        // Jul
+        new TownMandateDef()
+        {
+            DefName = "WeaversFair",
+            Label = "Weaver's Fair",
+            Description = "Tailors, spinners, and dyers from nearby towns gather to showcase work.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Fiber, 80 },
+                { ResourceDefOf.Herbs, 40 },
+                { ResourceDefOf.Ornaments, 20 },
+            }),
+        },
+
+        // Aug
+        new TownMandateDef()
+        {
+            DefName = "MidSummerBanquet",
+            Label = "Mid-Summer Banquet",
+            Description = "A grand feast in the central square. Public and guests welcome.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 100 },
+                { ResourceDefOf.Herbs, 30 },
+                { ResourceDefOf.Ornaments, 30 },
+            }),
+        },
+
+        // Sep
+        new TownMandateDef()
+        {
+            DefName = "RainstockPrep",
+            Label = "Rainstock Prep",
+            Description = "Autumn rains are coming. Stockpiling waterproof goods and dry fuel.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Fiber, 70 },
+                { ResourceDefOf.Kindle, 70 },
+                { ResourceDefOf.Food, 40 },
+            }),
+        },
+
+        // Oct
+        new TownMandateDef()
+        {
+            DefName = "FragranceFestival",
+            Label = "Festival of Fragrance",
+            Description = "A town-wide parade of petals, perfumes, and herbal arrangements.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Ornaments, 100 },
+                { ResourceDefOf.Herbs, 60 },
+                { ResourceDefOf.Food, 40 },
+            }),
+        },
+
+        // Nov
+        new TownMandateDef()
+        {
+            DefName = "HarvestExchange",
+            Label = "Harvest Exchange",
+            Description = "The annual harvest fair allows townsfolk to trade surplus goods freely.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 70 },
+                { ResourceDefOf.Fiber, 60 },
+                { ResourceDefOf.Kindle, 60 },
+                { ResourceDefOf.Ornaments, 30 },
+            }),
+        },
+
+        // Dec
+        new TownMandateDef()
+        {
+            DefName = "WinterCrownCeremony",
+            Label = "Winter Crown Ceremony",
+            Description = "A ceremonial offering for the town's oldest tradition.",
+            OrderedResources = new(new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Food, 85 },
+                { ResourceDefOf.Ornaments, 65 },
+                { ResourceDefOf.Herbs, 55 },
+                { ResourceDefOf.Kindle, 35 },
+            }),
         },
     };
 

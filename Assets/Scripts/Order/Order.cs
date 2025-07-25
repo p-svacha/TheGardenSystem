@@ -9,22 +9,25 @@ public class Order : IDraftable
     /// <summary>
     /// The customer that placed this order.
     /// </summary>
-    public Customer Customer { get; private set; }
+    public Customer Customer { get; protected set; }
 
     /// <summary>
     /// The day that the order is due at the end.
     /// </summary>
-    public int DueDay { get; private set; }
+    public int DueDay { get; protected set; }
 
     /// <summary>
     /// The resources expected in the order.
     /// </summary>
-    public ResourceCollection OrderedResources { get; private set; }
+    public ResourceCollection OrderedResources { get; protected set; }
 
-    public Order(Customer customer, int week, ResourceCollection orderedResources)
+    public Order() { }
+    public Order(Customer customer, int day, ResourceCollection orderedResources)
     {
         Customer = customer;
-        DueDay = week * Game.DAYS_PER_WEEK;
+        DueDay = day;
         OrderedResources = orderedResources;
     }
+
+    public virtual string Label => Customer.LabelCapWord;
 }

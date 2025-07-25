@@ -23,7 +23,7 @@ public class DynamicUITooltipTarget : MonoBehaviour
         textEventHandler.onLinkUnhover.AddListener(OnLinkUnhovered);
     }
 
-    private void OnEnable()
+    private void Start()
     {
         // Attach correct sprite sheet to Text Component
         gameObject.GetComponent<TextMeshProUGUI>().spriteAsset = GameUI.TMPResourceSpriteAsset;

@@ -1,4 +1,11 @@
-FEATURE ROADMAP (in that order)
+FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
+
+epic objects:
+	3 to make draft not crash
+
+trading:
+	add trading mechanic
+	all resources can be sold for 1 and bought for 2 gold
 
 ordered scatter:
 	instead of full scatter all at once, objects get scattered one by one with slight delay in between
@@ -12,6 +19,14 @@ lenses
 	hovering resources enables the lens while hovering
 	active lens shows a small UI element over each tile with its production of that resource
 	active lens shows line renderers between tiles giving an effect relevant for that resource
+
+rework town mandates to be more dynamic:	
+	include list of months they can appear
+	change resources to weight table
+		so i.e. "winter supplies" requires 0.6 kindle, 0.4 food
+		in january that would be 12 kindle, 8 food = 20 total
+		in march 36 kindle, 24 food, = 60 total etc
+		total is always month * 20
 
 mergeable objects:
 	some tiles have the tag "mergeable".
@@ -64,8 +79,24 @@ prestige orders:
 	these do not lose the game if not completed
 	but they give an extra reward if completed (draft of rare or epic object, research points, free expansion)
 
+currency:
+	new currency resource
+	gained by:
+		object production
+		fulfilled orders
+	used for:
+		buying garden tiles
+		buying objects from a store with common/rare/epic/legendary/special objects that changes stock each month
+
+change of acquiring new tiles:
+	claim stat of unowned tiles gets removed
+	tiles have a cost and can be bought at the start/end of days with currency
+	further out tile are more expensive
+	"expansion" resources still exists, but instead of increasing claim, it reduces cost (and acquires when reaching 0)
+
 game over logic:
-	if an order can't be completed, the customer will expect the resources of that missed order on top of the expected resources of the next week
+	if an order can't be completed, the customer will expect NOT the resources of that missed order on top of the expected resources of the next week, but you will not get payment for that order
+		add this as a note somehwere
 
 ui improvements:
 	in tag tooltip, show owned objects of that tag
@@ -77,12 +108,6 @@ ui improvements:
 	when selecting object, show amound of currently owned
 	show flavor text in object def tooltip
 	show effects in object def tooltip (analog terrain def)
-
-"bossfight" orders:
-	unique one-time orders in fixed intervals (every month/4 weeks)
-	failing loses the game
-	can be seen from start of the month
-	discover epic at end of month
 
 sectors (maybe 'plots'):
 	instead of having one centralized inventory, where the objects get scattered randomly across the whole garden, the garden can be split in sectors
@@ -101,14 +126,57 @@ sectors (maybe 'plots'):
 
 [maybe] research:
 	a research tree is added, with modular dependencies between the research projects (like rimworld for example)
-	whenever a research project is finished, you can choose a new one from 3 random available options
+	whenever a research project is finished, you can choose a new one from X (starts at 2) random available options
 	objects can now additionally give research points, an abstract resource that is needed to complete research projects
+	ObjectDef get a new optional research requirement field with a research def
 	some ideas of what techs could do
 		unlock a new object or set of objects, that can then be drafted
 		general bonus to a particular tag, or resource production (inlcuding abstract)
 		allowing to see upcoming orders further in advance
-		discount on orders (i.e. customers expect 5% less X)
 		new mechanics (probably also just a set of objects), like i.e. shovels that can dig out treasures / loot boxes
 	still todo: overthing terminology. maybe "research" and "techs" doesn't rly fit the theme
+	important design considerations:
+		techs should mostly not give "general" or plain stat bonuses, but rather amplify specific strategies or help in specific situations
+	ideas for specific researches
+		- you get an additional option when drafting an object (3 -> 4)
+		- you get an additional option when drafting a customer (2 -> 3)
+		- you get an additional option when drafting a customer (3 -> 4)
+		- you get an additional option when drafting a tech to research (2 -> 3)
+		- you get an additional option when drafting a tech to research (3 -> 4)
+		- Unlock plots and lets you split your garden into 2 plots
+		- Unlock a 3rd plot
+		- Unlock a 4th plot
+		- Unlock a 5th plot
+		- fertilization objects
+		- food specialization objects
+		- herbs specialization objects
+		- ornaments specialization objects
+		- kindle specialization objects
+		- fiber specialization objects
+		- obstacle removal objects
+		- relations: still get some amount for failed orders
+		- relations: get additional money if haven't failed order 3 times in a row for customer
+		- mechanic and resource to remove specific objects from inventory
+		- mechanic to merge objects
+		- mechanic and resource to "expand" option - doesn't replace original options like in a replace, but rather adds 3 additional options
+		- general +10% produced for specific resource (applied at end)
+		- mechanic to make objects permanent
+		- mechanic to get higher tier items in draft than usual (like +5% chance of rare items in end of day draft)
+		- mechanic to pay currency for failed delivered order to make it count not as missed
+		- see "bossfight" orders an additional month in advance (1->2)
+		- new resource trading mechanic where you can trade one resource for another at reduced efficiency
+			- then additional research to improve trading
+		- complex resources that are "crafted" from basic resources (i.e. object with -1 food, -1 herbs, +1 premium food)
+		- mechanic and resource to change town mandate. When used, you get a new option and can choose to stick to the old mandate or take the new one
 
+campaign:
+	different levels
+	each level is the garden of a different town
+	garden map generation is unique per town
+	town mandates are unique per town
 
+main menu:
+	just a small main menu instead of starting game directly
+
+load/save game:
+	logic to save and load games

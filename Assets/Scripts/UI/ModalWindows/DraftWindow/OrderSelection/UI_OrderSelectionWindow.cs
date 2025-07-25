@@ -21,11 +21,10 @@ public class UI_OrderSelectionWindow : UI_WindowBase
     /// </summary>
     private System.Action<List<IDraftable>> Callback;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Instance = this;
-        GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        gameObject.SetActive(false);
     }
 
     public void ShowOrderSelection(string title, string subtitle, List<Order> orders, System.Action<List<IDraftable>> callback)

@@ -1,5 +1,5 @@
-You’ve just inherited your late uncle’s odd little garden on the edge of town.
-Not much grows there yet, but you’ve got determination—and a hand-painted sign on the town board offering produce for sale. Locals, companies, even the town council soon begin placing small weekly orders.
+You got the job to manage the town garden for a town.
+Not much grows there yet, but you’ve got determination—and a hand-painted sign on the town board offering produce for sale. Locals and companies begin placing small weekly orders.
 
 But there’s something strange about this place.
 Each morning, everything you’ve stored in the sheds reappears scattered across the garden. Carrots shift spots, compost piles nudge themselves around, tools end up in the oddest corners. Somehow, the land decides where things go.
@@ -8,3 +8,5 @@ You can’t control the scatter—but you can shape it.
 By carefully choosing what to store in each sector, you influence what grows best, where it thrives, and how it all fits together.
 As your reputation grows and the orders pile up, your challenge is clear:
 Tend the garden. Satisfy the town. And master the quiet magic of the soil.
+
+Each month, the town council issues a new mandate for the public garden—used for festivals, school lunches, trade fairs, or seasonal stockpiles. It’s your duty as caretaker to fulfill it. You’re given 20 days to prepare. If you fail, your contract is terminated.

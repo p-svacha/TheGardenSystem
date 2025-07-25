@@ -9,6 +9,12 @@ public class CustomerDef : Def
     public string Backstory { get; init; }
 
     /// <summary>
+    /// Flag if this customer can place weekly orders.
+    /// If false, they will not appear as regular customers and only in specific circumstances.
+    /// </summary>
+    public bool IsWeeklyCustomer { get; init; } = true;
+
+    /// <summary>
     /// The resources that this customer orders.
     /// The dictionary stores how much the ordered resource amount increases per level, whereas the level is the key of the dictionary.
     /// If there is no key for a specific order level, the increase is the same as the previous most defined key.
@@ -23,7 +29,10 @@ public class CustomerDef : Def
 
     public override bool Validate()
     {
-        if (!OrderIncreases.ContainsKey(1)) throw new System.Exception($"OrderIncreases in CustomerDef {DefName} must have something defined for Level 1.");
+        if (IsWeeklyCustomer)
+        {
+            if (!OrderIncreases.ContainsKey(1)) throw new System.Exception($"OrderIncreases in CustomerDef {DefName} must have something defined for Level 1.");
+        }
 
         return base.Validate();
     }

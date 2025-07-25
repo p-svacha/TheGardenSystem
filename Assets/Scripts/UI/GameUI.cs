@@ -4,7 +4,16 @@ using UnityEngine;
 public class GameUI : MonoBehaviour
 {
     public static GameUI Instance;
-    public static TMP_SpriteAsset TMPResourceSpriteAsset;
+
+    private static TMP_SpriteAsset _TMPResourceSpriteAsset;
+    public static TMP_SpriteAsset TMPResourceSpriteAsset
+    {
+        get
+        {
+            if (_TMPResourceSpriteAsset == null) _TMPResourceSpriteAsset = RuntimeSpriteAssetBuilder.BuildResourceSpriteAsset();
+            return _TMPResourceSpriteAsset;
+        }
+    }
 
     [Header("Elements")]
     public UI_DatePanel DatePanel;
@@ -14,10 +23,6 @@ public class GameUI : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
-        TMPResourceSpriteAsset = RuntimeSpriteAssetBuilder.BuildResourceSpriteAsset();
+        _TMPResourceSpriteAsset = null;
     }
 }

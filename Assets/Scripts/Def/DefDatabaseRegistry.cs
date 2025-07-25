@@ -29,6 +29,7 @@ public static class DefDatabaseRegistry
         DefDatabase<ResourceDef>.AddDefs(ResourceDefs.Defs);
         DefDatabase<CustomerDef>.AddDefs(CustomerDefs.Defs);
         DefDatabase<ObjectDef>.AddDefs(ObjectDefs.Defs);
+        DefDatabase<TownMandateDef>.AddDefs(TownMandateDefs.Defs);
     }
 
     // Called when a DefDatabase<T> type is accessed for the first time

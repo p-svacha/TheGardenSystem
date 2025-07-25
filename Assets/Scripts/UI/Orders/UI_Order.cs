@@ -14,7 +14,7 @@ public class UI_Order : MonoBehaviour
 
     public void Init(Order order)
     {
-        CustomerText.text = $"{order.Customer.LabelCapWord}";
+        CustomerText.text = $"{order.Label}";
         LevelText.text = $"Level {order.Customer.OrderLevel}";
         ResourceText.text = order.OrderedResources.GetAsSingleLinkedString();
 
@@ -26,5 +26,13 @@ public class UI_Order : MonoBehaviour
             GameObject.Instantiate(MissedOrderPrefab, MissedOrdersContainer.transform);
         }
         MissedOrdersContainer.GetComponent<SimpleTooltipTarget>().Text = $"You have failed to deliver {numMissedOrders} orders in a row this customer. You will lose the game when failing to deliver {Game.CUSTOMER_ORDER_MISSES_IN_A_ROW_TO_LOSE_GAME} orders in a row.";
+    }
+
+    public void Init(TownMandate mandate)
+    {
+        CustomerText.text = $"{mandate.Def.Label}";
+        LevelText.gameObject.SetActive(false);
+        ResourceText.text = mandate.OrderedResources.GetAsSingleLinkedString();
+        MissedOrdersContainer.gameObject.SetActive(false);
     }
 }

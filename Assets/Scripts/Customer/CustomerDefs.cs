@@ -7,6 +7,15 @@ public static class CustomerDefs
     {
         new CustomerDef()
         {
+            DefName = "TownCouncil",
+            Label = "town council",
+            Description = "The town council is your employer and therefore most important customer. They give you monthly mandates for resources they need for various reason.",
+            Backstory = "The town council owns the garden you are managing and expects you to deliver monthly orders for various reasons. The council is operating town activities like festivals, lunches, parties and fairs, as well as managing the town stockpiles.",
+            IsWeeklyCustomer = false,
+        },
+
+        new CustomerDef()
+        {
             DefName = "TownCanteen",    
             Label = "town canteen",
             Description = "The local canteen serving affordable lunches to public workers. Will order food exclusively.",
