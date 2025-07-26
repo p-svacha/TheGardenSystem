@@ -22,6 +22,11 @@ public class EffectOutcome
     public ModifierDef AppliedModifier { get; init; }
 
     /// <summary>
+    /// How long the applied modifier will last. Default is infinite.
+    /// </summary>
+    public int AppliedModifierDuration { get; init; } = -1;
+
+    /// <summary>
     /// Checks if this criteria is valid the way it is defined.
     /// </summary>
     public bool Validate(out string invalidReason)
@@ -45,7 +50,7 @@ public class EffectOutcome
             foreach (ResourceDef resource in tile.Object.NativeResources)
             {
                 ProductionModifier modifier = new ProductionModifier(source, ProductionModifierType.Additive, NativeProductionModifier);
-                tileProductions[tile][resource].AddModifier(modifier);
+                tileProductions[tile][resource].AddProductionModifier(modifier);
             }
         }
 
@@ -56,7 +61,7 @@ public class EffectOutcome
             int productionBonus = kvp.Value;
 
             ProductionModifier modifier = new ProductionModifier(source, ProductionModifierType.Additive, productionBonus);
-            tileProductions[tile][resource].AddModifier(modifier);
+            tileProductions[tile][resource].AddProductionModifier(modifier);
         }
     }
 
@@ -66,7 +71,7 @@ public class EffectOutcome
 
         if (AppliedModifier != null)
         {
-            obj.ApplyModifier(AppliedModifier);
+            obj.ApplyModifier(AppliedModifier, AppliedModifierDuration);
         }
     }
 
@@ -108,6 +113,7 @@ public class EffectOutcome
             NativeProductionModifier = this.NativeProductionModifier,
             ResourceProductionModifier = new Dictionary<ResourceDef, int>(this.ResourceProductionModifier),
             AppliedModifier = this.AppliedModifier,
+            AppliedModifierDuration = this.AppliedModifierDuration,
         };
     }
 }

@@ -294,6 +294,7 @@ public static class ObjectDefs
                             { ResourceDefOf.Food, 1 }
                         },
                         AppliedModifier = ModifierDefOf.VerdantlyIdolized,
+                        AppliedModifierDuration = 3,
                     },
                 },
                 new SelfEffect()

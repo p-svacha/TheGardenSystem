@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class MapRenderer : MonoBehaviour
 {
@@ -227,7 +228,8 @@ public class MapRenderer : MonoBehaviour
 
                 // Object modifiers
                 int index = 0;
-                foreach (ModifierDef def in mapTile.Object.Modifiers.Keys)
+                HashSet<ModifierDef> modiferDefSet = mapTile.Object.Modifiers.Select(m => m.Def).ToHashSet();
+                foreach (ModifierDef def in modiferDefSet)
                 {
                     ObjectOverlayTilemaps[index].SetTile(cell, ObjectModifierTileCache[def]);
                     index++;

@@ -101,6 +101,9 @@ conceptDefs:
 	- market resources
 	- abstract resources
 
+modifier apply feedback:
+	sound or animation when a modifier is applied
+
 new content:
 	add several customers for variety
 	add several new objects

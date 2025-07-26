@@ -46,6 +46,11 @@ public class MapTile : INestedTooltipTarget
         IsOwned = true;
         Claim = Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES;
     }
+    public void Unacquire()
+    {
+        IsOwned = false;
+        Claim = 0;
+    }
     public void PlaceObject(Object obj) => Object = obj;
     public void ClearObject() => Object = null;
     public void SetTerrain(TerrainDef def)

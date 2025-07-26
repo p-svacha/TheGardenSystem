@@ -113,13 +113,14 @@ public class Game
         }
 
         // Dev mode - Terrain
+        // Compute which cell the mouse is over
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int cell = MapRenderer.Instance.ObjectTilemap.WorldToCell(worldPos);
+        MapTile currentTile = Game.Instance.Map.GetTile(cell.x, cell.y);
+
+        // Terrain
         if (UI_DevModePanel.Instance.IsChangeTerrainActive)
         {
-            // Compute which cell the mouse is over
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int cell = MapRenderer.Instance.ObjectTilemap.WorldToCell(worldPos);
-            MapTile currentTile = Game.Instance.Map.GetTile(cell.x, cell.y);
-
             if (currentTile != null && !HelperFunctions.IsMouseOverUi())
             {
                 int currentTerrainIndex = DefDatabase<TerrainDef>.AllDefs.IndexOf(currentTile.Terrain.Def);
@@ -137,6 +138,16 @@ public class Game
                     TerrainDef newTerrain = DefDatabase<TerrainDef>.AllDefs[prevIndex];
                     SetTerrain(currentTile.Coordinates, newTerrain);
                 }
+            }
+        }
+
+        // Ownership
+        if ( UI_DevModePanel.Instance.IsToggleOwnershipActive)
+        {
+            if (currentTile != null && !HelperFunctions.IsMouseOverUi())
+            {
+                if (Input.GetMouseButtonDown(0)) AddTileToGarden(currentTile);
+                if (Input.GetMouseButtonDown(1)) RemoveTileFromGarden(currentTile);
             }
         }
     }
@@ -175,7 +186,9 @@ public class Game
 
         ApplyMarketResources();
         ApplyAbstractResources();
-        ApplyObjectModifiers();
+
+        DecrementModifierDurations();
+        ApplyNewModifiers();
 
         // State
         GameState = GameState.ConfirmedScatter;
@@ -234,9 +247,23 @@ public class Game
     }
 
     /// <summary>
-    /// Applies all object modifiers that got added from effects this turn.
+    /// Decrements the duration of all modifiers.
     /// </summary>
-    private void ApplyObjectModifiers()
+    private void DecrementModifierDurations()
+    {
+        foreach (MapTile tile in Map.OwnedTiles)
+        {
+            if(tile.HasObject)
+            {
+                tile.Object.DecrementModifierDurations();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Applies all modifiers that got added to objects or tiles from effects this turn.
+    /// </summary>
+    private void ApplyNewModifiers()
     {
         foreach (MapTile tile in Map.OwnedTiles)
         {
@@ -389,7 +416,7 @@ public class Game
 
                 if (numResourcesProduced != 0)
                 {
-                    finalProduction[resource].AddModifier(new ProductionModifier(production.Label, ProductionModifierType.Additive, production.GetValue()));
+                    finalProduction[resource].AddProductionModifier(new ProductionModifier(production.Label, ProductionModifierType.Additive, production.GetValue()));
                 }
             }
         }
@@ -517,7 +544,12 @@ public class Game
     public void AddTileToGarden(MapTile tile, bool redraw = true)
     {
         tile.Acquire();
-        if(redraw) DrawFullMap();
+        if (redraw) DrawFullMap();
+    }
+    public void RemoveTileFromGarden(MapTile tile, bool redraw = true)
+    {
+        tile.Unacquire();
+        if (redraw) DrawFullMap();
     }
 
     public void AddResources(ResourceCollection res)

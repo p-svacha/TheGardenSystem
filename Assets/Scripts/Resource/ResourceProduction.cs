@@ -41,7 +41,7 @@ public class ResourceProduction : INestedTooltipTarget
         Modifiers = new List<ProductionModifier>();
     }
 
-    public void AddModifier(ProductionModifier modifier)
+    public void AddProductionModifier(ProductionModifier modifier)
     {
         Modifiers.Add(modifier);
     }

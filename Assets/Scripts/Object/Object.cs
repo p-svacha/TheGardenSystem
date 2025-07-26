@@ -7,24 +7,36 @@ public class Object : INestedTooltipTarget
     public ObjectDef Def { get; private set; }
 
     /// <summary>
-    /// The modifiers applied to this object, with the value being how many times a specific modifier has been applied.
+    /// The modifiers applied to this object.
     /// </summary>
-    public Dictionary<ModifierDef, int> Modifiers;
+    public List<Modifier> Modifiers;
 
     public Object(ObjectDef def)
     {
         Def = def;
-        Modifiers = new Dictionary<ModifierDef, int>();
+        Modifiers = new List<Modifier>();
     }
 
-    public void ApplyModifier(ModifierDef def)
+    public void ApplyModifier(ModifierDef def, int duration = -1)
     {
-        if (def.IsStackable) Modifiers.Increment(def);
-        else if(!Modifiers.TryGetValue(def, out int value) || value < 1)
+        Debug.Log($"Applying modifier {def.DefName} to {Def.DefName} with a duration of {duration}.");
+        if (!def.IsStackable && HasModifier(def))
         {
-            Modifiers.Increment(def);
+            Modifier existingModifier = Modifiers.First(m => m.Def == def);
+            if (existingModifier.IsInfinite) return;
+            if (duration == -1) existingModifier.MakeInfinite();
+            else if (duration > existingModifier.RemainingDuration) existingModifier.SetDuration(duration);
         }
+        else Modifiers.Add(new Modifier(def, duration));
     }
+
+    public void DecrementModifierDurations()
+    {
+        foreach (Modifier modifier in Modifiers) modifier.DecreaseDuration();
+        Modifiers = Modifiers.Where(m => m.RemainingDuration == -1 || m.RemainingDuration > 0).ToList();
+    }
+
+    public bool HasModifier(ModifierDef def) => Modifiers.Any(m => m.Def == def);
 
     #region Getters
 
@@ -63,16 +75,11 @@ public class Object : INestedTooltipTarget
         effects.AddRange(GetNativeEffects());
 
         // Effects from modifiers
-        foreach (var kvp in Modifiers)
+        foreach (Modifier modifier in Modifiers)
         {
-            ModifierDef modifier = kvp.Key;
-            int numApplied = kvp.Value;
-            for(int i = 0; i < numApplied; i++)
-            {
-                ObjectEffect modifierEffect = modifier.Effect.GetCopy();
-                modifierEffect.EffectSource = modifier;
-                effects.Add(modifierEffect);
-            }
+            ObjectEffect modifierEffect = modifier.Effect.GetCopy();
+            modifierEffect.EffectSource = modifier.Def;
+            effects.Add(modifierEffect);
         }
 
         return effects;
@@ -129,12 +136,10 @@ public class Object : INestedTooltipTarget
         if (Modifiers.Count > 0)
         {
             modifiersDesc += "\n\nModifiers:";
-            foreach (var kvp in Modifiers)
+            foreach (Modifier modifier in Modifiers)
             {
-                string amount = kvp.Value > 1 ? $"{kvp.Value}x " : "";
-                string mod = kvp.Key.LabelCapWord;
-                string effect = kvp.Key.Effect.GetDescription();
-                modifiersDesc += $"\n{amount}{mod}: {effect}";
+                string duration = modifier.IsInfinite ? "" : $" ({modifier.RemainingDuration} days remaining)";
+                modifiersDesc += $"\n{modifier.Def.GetTooltipLink()}: {modifier.Effect.GetDescription()}{duration}";
             }
         }
 

@@ -11,13 +11,18 @@ public class UI_DevModePanel : MonoBehaviour
     public Image ChangeTerrainFrame;
     public Button ChangeTerrainButton;
 
+    public Image ToggleTileOwnershipFrame;
+    public Button ToggleTileOwnershipButton;
+
     public bool IsChangeTerrainActive { get; private set; }
+    public bool IsToggleOwnershipActive { get; private set; }
 
     private void Awake()
     {
         Instance = this;
         AddObjectButton.onClick.AddListener(AddObjectButton_OnClick);
         ChangeTerrainButton.onClick.AddListener(ChangeTerrainButton_OnClick);
+        ToggleTileOwnershipButton.onClick.AddListener(ToggleTileOwnershipButton_OnClick);
     }
 
     private void AddObjectButton_OnClick()
@@ -29,5 +34,11 @@ public class UI_DevModePanel : MonoBehaviour
     {
         IsChangeTerrainActive = !IsChangeTerrainActive;
         ChangeTerrainFrame.enabled = IsChangeTerrainActive;
+    }
+
+    private void ToggleTileOwnershipButton_OnClick()
+    {
+        IsToggleOwnershipActive = !IsToggleOwnershipActive;
+        ToggleTileOwnershipFrame.enabled = IsToggleOwnershipActive;
     }
 }
