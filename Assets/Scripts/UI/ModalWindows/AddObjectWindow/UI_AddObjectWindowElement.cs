@@ -11,6 +11,7 @@ public class UI_AddObjectWindowElement : MonoBehaviour
     {
         Sprite.sprite = def.Sprite;
         Button.onClick.AddListener(() => AddObject(def));
+        GetComponent<TooltipTarget>().Init(def);
     }
 
     private void AddObject(ObjectDef def)

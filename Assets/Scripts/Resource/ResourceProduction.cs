@@ -103,7 +103,7 @@ public class ResourceProduction : INestedTooltipTarget
     #region INestedTooltipTaget
 
     public string GetTooltipTitle() => Label;
-    public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
+    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
     {
         references = new List<INestedTooltipTarget>();
         return GetBreakdownString();

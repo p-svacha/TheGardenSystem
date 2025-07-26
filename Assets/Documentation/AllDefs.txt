@@ -476,6 +476,62 @@
             }
         },
         
+        new ObjectDef()
+        {
+            DefName = "BloomingPavillon",
+            Label = "blooming pavillon",
+            Description = "Built for nothing but beauty.",
+            Tier = ObjectTierDefOf.Epic,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Structure,
+                ObjectTagDefOf.Ornamental,
+                ObjectTagDefOf.Prestige,
+                ObjectTagDefOf.Luxury,
+            },
+            NativeProduction = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Ornaments, 2 },
+                { ResourceDefOf.Herbs, 1 },
+            },
+            Effects = new List<ObjectEffect>()
+            {
+                new AdjacencyEffect()
+                {
+                    Radius = 2,
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TagsAny = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Ornamental,
+                        },
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                        {
+                            { ResourceDefOf.Ornaments, 1 },
+                        }
+                    },
+                },
+                new SelfEffect()
+                {
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TagNearby = ObjectTagDefOf.Ornamental,
+                        TagNearbyThreshhold = 3,
+                        TagNearbyRadius = 2,
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                        {
+                            { ResourceDefOf.Ornaments, 3 },
+                        }
+                    },
+                },
+            },
+        },
     };
 
 --- ObjectTagDefs.cs ---

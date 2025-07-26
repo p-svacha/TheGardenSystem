@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ObjectDef : Def, IDraftable
+public class ObjectDef : Def, IDraftable, INestedTooltipTarget
 {
     public ObjectTierDef Tier { get; init; } = null;
     public List<ObjectTagDef> Tags { get; init; } = new();
@@ -57,6 +57,46 @@ public class ObjectDef : Def, IDraftable
 
         return tags;
     }
+
+    #endregion
+
+    #region INestedTooltipTarget
+
+    public string GetTooltipTitle() => LabelCapWord;
+    public string GetTooltipBodyText(out List<INestedTooltipTarget> dynamicReferences)
+    {
+        dynamicReferences = new List<INestedTooltipTarget>();
+
+        // Tags
+        string tags = "";
+        foreach (ObjectTagDef tag in Tags)
+        {
+            tags += $"{tag.GetTooltipLink()} ";
+        }
+        tags = tags.TrimEnd(' ');
+
+        // Native production
+        string nativeProd = "";
+        if (!GetNativeProduction().IsEmpty)
+        {
+            nativeProd += $"\n\nNative Production: {GetNativeProduction().GetAsSingleLinkedString()}";
+        }
+
+        // Effects
+        string effectDescriptions = "";
+        List<ObjectEffect> effects = Effects;
+        if (effects.Count > 0)
+        {
+            effectDescriptions += "\n";
+            foreach (ObjectEffect effect in effects) effectDescriptions += $"\n <color=#555555>•</color> {effect.GetDescription()}";
+        }
+
+        return $"{tags}\n\n<color=#999999>{Description}</color>{nativeProd}{effectDescriptions}";
+    }
+
+    public string NestedTooltipLinkId => $"ObjectDef_{DefName}";
+    public string NestedTooltipLinkText => LabelCapWord;
+    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
 
     #endregion
 }

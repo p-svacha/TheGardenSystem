@@ -70,6 +70,9 @@ public class NestedTooltipManager : MonoBehaviour
     {
         StaticLinkTargets = new Dictionary<string, INestedTooltipTarget>();
 
+        // ObjectDefs
+        foreach (ObjectDef def in DefDatabase<ObjectDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
+
         // ResourceDefs
         foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
 
@@ -166,7 +169,7 @@ public class NestedTooltipManager : MonoBehaviour
         // Create new tooltip
         TooltipWindow tooltip = Instantiate(TooltipPrefab, transform);
         string titleText = target.GetTooltipTitle();
-        string bodyText = target.GetToolTipBodyText(out List<INestedTooltipTarget> dynamicTooltipReferences);
+        string bodyText = target.GetTooltipBodyText(out List<INestedTooltipTarget> dynamicTooltipReferences);
         tooltip.Init(titleText, bodyText);
         tooltip.Target = target;
         Windows.Add(tooltip);

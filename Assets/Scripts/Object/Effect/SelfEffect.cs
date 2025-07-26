@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// A specific kind of of ObjectEffect that gets applied to the object on the source tile based on its attributes.
+/// A specific kind of of ObjectEffect that an object applies to itself if the criteria is fulfilled.
 /// </summary>
 public class SelfEffect : ObjectEffect
 {

@@ -7,9 +7,11 @@ using UnityEngine;
 /// </summary>
 public class AdjacencyEffect : ObjectEffect
 {
+    public int Radius { get; set; } = 1;
+
     public override void ApplyProductionModifiers(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
     {
-        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
+        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles(Radius))
         {
             if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
 
@@ -20,7 +22,7 @@ public class AdjacencyEffect : ObjectEffect
 
     public override void ApplyObjectModifiers(MapTile sourceTile)
     {
-        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
+        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles(Radius))
         {
             if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
             EffectOutcome.ApplyModifiersTo(adjacentTile);
@@ -31,13 +33,15 @@ public class AdjacencyEffect : ObjectEffect
     {
         string bonusText = EffectOutcome.GetAsReadableString();
         string criteriaText = EffectCriteria.GetAsReadableString(plural: true);
-        return $"{bonusText} to adjacent {criteriaText}.";
+        string radiusText = Radius == 1 ? "" : $" in a {Radius} tile radius";
+        return $"{bonusText} to adjacent {criteriaText}{radiusText}.";
     }
 
     public override ObjectEffect GetCopy()
     {
         AdjacencyEffect copy = new AdjacencyEffect();
         copy.SetValuesFrom(this);
+        copy.Radius = this.Radius;
         return copy;
     }
 }

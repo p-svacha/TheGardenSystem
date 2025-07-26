@@ -98,11 +98,17 @@ public class EffectOutcome
         foreach (var kvp in ResourceProductionModifier)
         {
             string sign = kvp.Value > 0 ? "+" : "";
-            desc += $"<nobr>{sign}{kvp.Value} {kvp.Key.GetTooltipLink()} production, </nobr>";
+            desc += $"<nobr>{sign}{kvp.Value} {kvp.Key.GetTooltipLink()}, </nobr>";
         }
         if (AppliedObjectModifier != null)
         {
-            desc += $"<nobr>{AppliedObjectModifier.GetTooltipLink()}, </nobr>";
+            string duration = AppliedObjectModifierDuration == -1 ? "" : $" for {AppliedObjectModifierDuration} days";
+            desc += $"<nobr>{AppliedObjectModifier.GetTooltipLink()}{duration}, </nobr>";
+        }
+        if (AppliedTileModifier != null)
+        {
+            string duration = AppliedTileModifierDuration == -1 ? "" : $" for {AppliedTileModifierDuration} days";
+            desc += $"<nobr>Applies {AppliedTileModifier.GetTooltipLink()} to the tile{duration}, </nobr>";
         }
 
         // Remove trailing ", </nobr>" if present

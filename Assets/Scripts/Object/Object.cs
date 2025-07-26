@@ -107,33 +107,11 @@ public class Object : INestedTooltipTarget
     #region INestedTooltipTaget
 
     public string GetTooltipTitle() => LabelCapWord;
-    public string GetToolTipBodyText(out List<INestedTooltipTarget> dynamicReferences)
+    public string GetTooltipBodyText(out List<INestedTooltipTarget> dynamicReferences)
     {
         dynamicReferences = new List<INestedTooltipTarget>();
 
-        // Tags
-        string tags = "";
-        foreach(ObjectTagDef tag in Tags)
-        {
-            tags += $"{tag.GetTooltipLink()} ";
-        }
-        tags = tags.TrimEnd(' ');
-
-        // Native production
-        string nativeProd = "";
-        if (!GetNativeResourceProduction().IsEmpty)
-        {
-            nativeProd += $"\n\nNative Production: {GetNativeResourceProduction().GetAsSingleLinkedString()}";
-        }
-
-        // Effects
-        string effectDescriptions = "";
-        List<ObjectEffect> effects = GetNativeEffects();
-        if (effects.Count > 0)
-        {
-            effectDescriptions += "\n";
-            foreach (ObjectEffect effect in effects) effectDescriptions += "\n" + effect.GetDescription();
-        }
+        string defDesc = Def.GetTooltipBodyText(out dynamicReferences);
 
         // Modifiers
         string modifiersDesc = "";
@@ -147,7 +125,7 @@ public class Object : INestedTooltipTarget
             }
         }
 
-        return $"{tags}\n\n<color=#999999>{Description}</color>{nativeProd}{effectDescriptions}{modifiersDesc}";
+        return $"{defDesc}{modifiersDesc}";
     }
 
     public string NestedTooltipLinkId => $"Object_{Def.DefName}";

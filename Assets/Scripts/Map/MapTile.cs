@@ -113,7 +113,7 @@ public class MapTile : INestedTooltipTarget
     public MapTile TileSouthWest => Map.GetTile(Coordinates + new Vector2Int(-1, -1));
     public MapTile TileNorthWest => Map.GetTile(Coordinates + new Vector2Int(-1, 1));
 
-    public List<MapTile> GetAdjacentTiles()
+    public List<MapTile> GetAdjacentTiles(int radius = 1)
     {
         List<MapTile> adjTiles = new List<MapTile>();
         if (TileNorth != null) adjTiles.Add(TileNorth);
@@ -124,6 +124,25 @@ public class MapTile : INestedTooltipTarget
         if (TileSouthEast != null) adjTiles.Add(TileSouthEast);
         if (TileSouthWest != null) adjTiles.Add(TileSouthWest);
         if (TileNorthWest != null) adjTiles.Add(TileNorthWest);
+
+        if (radius > 1)
+        {
+            int remRadius = radius;
+            while(remRadius > 0)
+            {
+                List<MapTile> tilesToAdd = new List<MapTile>();
+                foreach (MapTile tile in adjTiles)
+                {
+                    foreach (MapTile adjTile in tile.GetAdjacentTiles())
+                    {
+                        if (!adjTiles.Contains(adjTile) && adjTile != this) tilesToAdd.Add(adjTile);
+                    }
+                }
+                adjTiles.AddRange(tilesToAdd);
+                remRadius--;
+            }
+        }
+
         return adjTiles;
     }
 
@@ -142,7 +161,7 @@ public class MapTile : INestedTooltipTarget
     #region INestedTooltipTaget
 
     public string GetTooltipTitle() => "";
-    public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
+    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
     {
         references = new List<INestedTooltipTarget>();
 
@@ -177,19 +196,23 @@ public class MapTile : INestedTooltipTarget
             references.Add(Object);
         }
 
+        // Production (only during scatter)
         if (Game.Instance.GameState == GameState.ScatterManipulation)
         {
             Dictionary<ResourceDef, ResourceProduction> tileProduction = Game.Instance.GetTileProduction(this);
 
             if (tileProduction != null)
             {
-                foreach (ResourceProduction prod in tileProduction.Values)
+                List<ResourceProduction> productionsToShow = tileProduction.Values.Where(p => p.BaseValue != 0 || p.GetValue() != 0).ToList();
+
+                if (productionsToShow.Count > 0) bodyText += "\n";
+                foreach (ResourceProduction prod in productionsToShow)
                 {
                     int baseValue = prod.BaseValue;
                     int finalValue = prod.GetValue();
                     if (baseValue != 0 || finalValue != 0) // Show breakdown when either base or final value is not 0
                     {
-                        bodyText += "\n\n" + prod.GetTooltipLink();
+                        bodyText += "\n" + prod.GetTooltipLink();
                         references.Add(prod);
                     }
                 }

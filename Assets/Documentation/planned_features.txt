@@ -1,8 +1,5 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
-epic objects:
-	3 to make draft not crash
-
 currency:
 	new currency resource
 	gained by:
@@ -129,6 +126,8 @@ ui improvements:
 	show object tier in tooltip
 	show resource type in resource tooltip
 	when selecting object, show amound of currently owned
+	in object draft, make more space for effects
+		also add bullet points for effects and make them left-attached, like in object tooltip
 
 sectors (maybe 'plots'):
 	instead of having one centralized inventory, where the objects get scattered randomly across the whole garden, the garden can be split in sectors

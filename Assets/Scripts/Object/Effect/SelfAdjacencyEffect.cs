@@ -7,9 +7,11 @@ using UnityEngine;
 /// </summary>
 public class SelfAdjacencyEffect : ObjectEffect
 {
+    public int Radius { get; init; } = 1;
+
     public override void ApplyProductionModifiers(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
     {
-        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
+        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles(Radius))
         {
             if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
 
@@ -19,7 +21,7 @@ public class SelfAdjacencyEffect : ObjectEffect
     }
     public override void ApplyObjectModifiers(MapTile sourceTile)
     {
-        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
+        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles(Radius))
         {
             if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
             EffectOutcome.ApplyModifiersTo(sourceTile);
@@ -30,7 +32,8 @@ public class SelfAdjacencyEffect : ObjectEffect
     {
         string bonusText = EffectOutcome.GetAsReadableString();
         string criteriaText = EffectCriteria.GetAsReadableString();
-        return $"{bonusText} for each adjacent {criteriaText}.";
+        string radiusText = Radius == 1 ? "" : $" in a {Radius} tile radius";
+        return $"{bonusText} for each adjacent {criteriaText}{radiusText}.";
     }
 
     public override ObjectEffect GetCopy()

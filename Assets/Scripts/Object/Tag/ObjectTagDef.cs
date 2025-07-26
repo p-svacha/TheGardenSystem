@@ -9,7 +9,7 @@ public class ObjectTagDef : Def, INestedTooltipTarget
     #region INestedTooltipTarget
 
     public string GetTooltipTitle() => LabelCapWord;
-    public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
+    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
     {
         references = new List<INestedTooltipTarget>();
         return Description;

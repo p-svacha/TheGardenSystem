@@ -16,7 +16,7 @@ public interface INestedTooltipTarget
     /// <br/>Additionally returns all references pointing to dynamic objects that can be opened from this targets tooltip.
     /// <br/>References to static objects (such as Defs) do not need to be included in the references, since these links are registered statically in the NestedTooltipManager.
     /// </summary>
-    public string GetToolTipBodyText(out List<INestedTooltipTarget> dynamicReferences);
+    public string GetTooltipBodyText(out List<INestedTooltipTarget> dynamicReferences);
 
     /// <summary>
     /// The id of the TMPro link that is used to detect a hover on the text in an existing tooltip, to allow a nested tooltip for this target. 

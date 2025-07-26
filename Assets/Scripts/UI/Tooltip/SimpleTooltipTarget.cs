@@ -22,7 +22,7 @@ public class SimpleTooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointer
     #region INestedTooltipTarget
 
     public string GetTooltipTitle() => "";
-    public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
+    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
     {
         references = new List<INestedTooltipTarget>();
         return Text;
