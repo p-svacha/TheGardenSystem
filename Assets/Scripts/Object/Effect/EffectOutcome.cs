@@ -19,12 +19,22 @@ public class EffectOutcome
     /// <summary>
     /// The modifier that gets applied to the object on the target tile.
     /// </summary>
-    public ModifierDef AppliedModifier { get; init; }
+    public ModifierDef AppliedObjectModifier { get; init; }
 
     /// <summary>
-    /// How long the applied modifier will last. Default is infinite.
+    /// How long the modifier applied to the object on the target tile will last. Default is infinite.
     /// </summary>
-    public int AppliedModifierDuration { get; init; } = -1;
+    public int AppliedObjectModifierDuration { get; init; } = -1;
+
+    /// <summary>
+    /// The modifier that gets applied to the target tile.
+    /// </summary>
+    public ModifierDef AppliedTileModifier { get; init; }
+
+    /// <summary>
+    /// How long the modifier applied to the target tile will last. Default is infinite.
+    /// </summary>
+    public int AppliedTileModifierDuration { get; init; } = -1;
 
     /// <summary>
     /// Checks if this criteria is valid the way it is defined.
@@ -33,7 +43,7 @@ public class EffectOutcome
     {
         invalidReason = "";
 
-        if(NativeProductionModifier == 0 && ResourceProductionModifier.Count == 0 && AppliedModifier == null)
+        if(NativeProductionModifier == 0 && ResourceProductionModifier.Count == 0 && AppliedObjectModifier == null && AppliedTileModifier == null)
         {
             invalidReason = "There is no outcome effect defined.";
             return false;
@@ -65,13 +75,12 @@ public class EffectOutcome
         }
     }
 
-    public void ApplyObjectModifiersTo(Object obj)
+    public void ApplyModifiersTo(MapTile tile)
     {
-        if (obj == null) throw new System.Exception("Object must not be null");
-
-        if (AppliedModifier != null)
+        if (AppliedTileModifier != null) tile.ApplyModifier(AppliedTileModifier, AppliedTileModifierDuration);
+        if (tile.HasObject)
         {
-            obj.ApplyModifier(AppliedModifier, AppliedModifierDuration);
+            if(AppliedObjectModifier != null) tile.Object.ApplyModifier(AppliedObjectModifier, AppliedObjectModifierDuration);
         }
     }
 
@@ -91,9 +100,9 @@ public class EffectOutcome
             string sign = kvp.Value > 0 ? "+" : "";
             desc += $"<nobr>{sign}{kvp.Value} {kvp.Key.GetTooltipLink()} production, </nobr>";
         }
-        if (AppliedModifier != null)
+        if (AppliedObjectModifier != null)
         {
-            desc += $"<nobr>{AppliedModifier.GetTooltipLink()}, </nobr>";
+            desc += $"<nobr>{AppliedObjectModifier.GetTooltipLink()}, </nobr>";
         }
 
         // Remove trailing ", </nobr>" if present
@@ -112,8 +121,10 @@ public class EffectOutcome
         {
             NativeProductionModifier = this.NativeProductionModifier,
             ResourceProductionModifier = new Dictionary<ResourceDef, int>(this.ResourceProductionModifier),
-            AppliedModifier = this.AppliedModifier,
-            AppliedModifierDuration = this.AppliedModifierDuration,
+            AppliedObjectModifier = this.AppliedObjectModifier,
+            AppliedObjectModifierDuration = this.AppliedObjectModifierDuration,
+            AppliedTileModifier = this.AppliedTileModifier,
+            AppliedTileModifierDuration = this.AppliedTileModifierDuration,
         };
     }
 }

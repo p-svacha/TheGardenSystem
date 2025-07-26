@@ -22,9 +22,8 @@ public class AdjacencyEffect : ObjectEffect
     {
         foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
         {
-            if (!adjacentTile.HasObject) continue;
             if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
-            EffectOutcome.ApplyObjectModifiersTo(adjacentTile.Object);
+            EffectOutcome.ApplyModifiersTo(adjacentTile);
         }
     }
 

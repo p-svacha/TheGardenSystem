@@ -15,9 +15,8 @@ public class TerrainEffect : ObjectEffect
 
     public override void ApplyObjectModifiers(MapTile sourceTile)
     {
-        if (!sourceTile.HasObject) return;
         if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(sourceTile)) return;
-        EffectOutcome.ApplyObjectModifiersTo(sourceTile.Object);
+        EffectOutcome.ApplyModifiersTo(sourceTile);
     }
 
     public override string GetDescription()

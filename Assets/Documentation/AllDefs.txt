@@ -80,6 +80,7 @@
             DefName = "VerdantlyIdolized",
             Label = "verdantly idolized",
             Description = "Blessed by the Verdant Idol. This object radiates fertile energy, enriching the soil beneath it.",
+            IsStackable = false,
             Effect = new SelfEffect()
             {
                 EffectOutcome = new EffectOutcome()
@@ -90,7 +91,24 @@
                     },
                 }
             },
+        },
+
+        new ModifierDef()
+        {
+            DefName = "Scorched",
+            Label = "scorched",
+            Description = "Was recently scorched by intense heat, reducing fertility.",
             IsStackable = false,
+            Effect = new SelfEffect()
+            {
+                EffectOutcome = new EffectOutcome()
+                {
+                    ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                    {
+                        { ResourceDefOf.Fertility, -1 },
+                    },
+                }
+            }
         },
     };
 
@@ -385,7 +403,8 @@
                         {
                             { ResourceDefOf.Food, 1 }
                         },
-                        AppliedModifier = ModifierDefOf.VerdantlyIdolized,
+                        AppliedObjectModifier = ModifierDefOf.VerdantlyIdolized,
+                        AppliedObjectModifierDuration = 3,
                     },
                 },
                 new SelfEffect()
@@ -409,7 +428,7 @@
             },
         },
         
-        /*
+        
         new ObjectDef()
         {
             DefName = "EmberCore",
@@ -446,10 +465,17 @@
                         }
                     },
                 },
-                // todo: apply scorched earch modifier to terrain: -1 fertility for 3 days
+                new SelfEffect()
+                {
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        AppliedTileModifier = ModifierDefOf.Scorched,
+                        AppliedTileModifierDuration = 3,
+                    }
+                }
             }
         },
-        */
+        
     };
 
 --- ObjectTagDefs.cs ---

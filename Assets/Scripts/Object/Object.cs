@@ -9,13 +9,15 @@ public class Object : INestedTooltipTarget
     /// <summary>
     /// The modifiers applied to this object.
     /// </summary>
-    public List<Modifier> Modifiers;
+    public List<Modifier> Modifiers { get; private set; }
 
     public Object(ObjectDef def)
     {
         Def = def;
         Modifiers = new List<Modifier>();
     }
+
+    #region Modifiers
 
     public void ApplyModifier(ModifierDef def, int duration = -1)
     {
@@ -37,6 +39,8 @@ public class Object : INestedTooltipTarget
     }
 
     public bool HasModifier(ModifierDef def) => Modifiers.Any(m => m.Def == def);
+
+    #endregion
 
     #region Getters
 

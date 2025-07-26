@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7ba4ffd9342cbc54aa8c6b40cb9c1c2c
+guid: 5ef77a5f3fcd721418c8c0c342ff50cd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3566941962793023020
-    second: VerdantIdol_0
+      213: -3686511023937247171
+    second: EmberCore_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: VerdantIdol_0
+      name: EmberCore_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1024
-        height: 1024
+        x: 167
+        y: 55
+        width: 689
+        height: 914
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4d9894dee2daf7ec0800000000000000
-      internalID: -3566941962793023020
+      spriteID: d38a8a571c1e6dcc0800000000000000
+      internalID: -3686511023937247171
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      VerdantIdol_0: -3566941962793023020
+      EmberCore_0: -3686511023937247171
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -293,8 +293,8 @@ public static class ObjectDefs
                         {
                             { ResourceDefOf.Food, 1 }
                         },
-                        AppliedModifier = ModifierDefOf.VerdantlyIdolized,
-                        AppliedModifierDuration = 3,
+                        AppliedObjectModifier = ModifierDefOf.VerdantlyIdolized,
+                        AppliedObjectModifierDuration = 3,
                     },
                 },
                 new SelfEffect()
@@ -318,7 +318,7 @@ public static class ObjectDefs
             },
         },
         
-        /*
+        
         new ObjectDef()
         {
             DefName = "EmberCore",
@@ -355,9 +355,16 @@ public static class ObjectDefs
                         }
                     },
                 },
-                // todo: apply scorched earch modifier to terrain: -1 fertility for 3 days
+                new SelfEffect()
+                {
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        AppliedTileModifier = ModifierDefOf.Scorched,
+                        AppliedTileModifierDuration = 3,
+                    }
+                }
             }
         },
-        */
+        
     };
 }

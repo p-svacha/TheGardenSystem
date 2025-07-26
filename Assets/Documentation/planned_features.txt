@@ -1,13 +1,5 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
-modifiers on tile:
-	make it possible that modifiers get added to a tile, not only object
-	should be visible in tile tooltip
-
-temporary modifiers:
-	make it possible that modifiers have a limitied timespan in amount of days
-	remaining time should be visible
-
 epic objects:
 	3 to make draft not crash
 
@@ -47,6 +39,12 @@ game phase terminology:
 		afternoon: scatter can be inspected and maybe manipulated
 		evening: the harvest happens, each tile gives the resources it produces with little animation one-by-one, no player input
 		night: end-of-day windows appear, like order delivery selection, object draft, research draft, etc.
+
+object scale:
+	make ObjectDefs have a scale value (default = 1f)
+	in maprenderer when creating tiles for objects, apply that scale
+	make some epic and legendary objects bigger
+	alternatively just lower the sprite PPU on these sprites
 
 lenses
 	add lenses during scatter manipulation

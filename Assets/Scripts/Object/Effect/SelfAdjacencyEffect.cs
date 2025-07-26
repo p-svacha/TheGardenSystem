@@ -21,9 +21,8 @@ public class SelfAdjacencyEffect : ObjectEffect
     {
         foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
         {
-            if (!adjacentTile.HasObject) continue;
             if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
-            EffectOutcome.ApplyObjectModifiersTo(sourceTile.Object);
+            EffectOutcome.ApplyModifiersTo(sourceTile);
         }
     }
 

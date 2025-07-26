@@ -253,6 +253,7 @@ public class Game
     {
         foreach (MapTile tile in Map.OwnedTiles)
         {
+            tile.DecrementModifierDurations();
             if(tile.HasObject)
             {
                 tile.Object.DecrementModifierDurations();

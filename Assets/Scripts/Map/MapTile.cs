@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapTile : INestedTooltipTarget
@@ -12,6 +13,11 @@ public class MapTile : INestedTooltipTarget
     public bool IsOwned { get; private set; }
     public int Claim { get; private set; }
 
+    /// <summary>
+    /// The modifiers applied to this tile, independent from object on it.
+    /// </summary>
+    public List<Modifier> Modifiers { get; private set; }
+
     public MapTile(Map map, Vector2Int coordinates, TerrainDef terrainDef)
     {
         Map = map;
@@ -19,6 +25,7 @@ public class MapTile : INestedTooltipTarget
         Terrain = new Terrain(this, terrainDef);
         IsOwned = false;
         Claim = 0;
+        Modifiers = new List<Modifier>();
     }
 
     public List<ObjectEffect> GetEffects()
@@ -27,6 +34,14 @@ public class MapTile : INestedTooltipTarget
 
         // Effects from terrain
         effects.AddRange(Terrain.Effects);
+
+        // Effects from tile modifiers
+        foreach (Modifier modifier in Modifiers)
+        {
+            ObjectEffect modifierEffect = modifier.Effect.GetCopy();
+            modifierEffect.EffectSource = modifier.Def;
+            effects.Add(modifierEffect);
+        }
 
         // Effects from object
         if (HasObject) effects.AddRange(Object.GetAllEffects());
@@ -57,6 +72,31 @@ public class MapTile : INestedTooltipTarget
     {
         Terrain = new Terrain(this, def);
     }
+
+    #region Modifiers
+
+    public void ApplyModifier(ModifierDef def, int duration = -1)
+    {
+        Debug.Log($"Applying modifier {def.DefName} to tile {Coordinates} with a duration of {duration}.");
+        if (!def.IsStackable && HasModifier(def))
+        {
+            Modifier existingModifier = Modifiers.First(m => m.Def == def);
+            if (existingModifier.IsInfinite) return;
+            if (duration == -1) existingModifier.MakeInfinite();
+            else if (duration > existingModifier.RemainingDuration) existingModifier.SetDuration(duration);
+        }
+        else Modifiers.Add(new Modifier(def, duration));
+    }
+
+    public void DecrementModifierDurations()
+    {
+        foreach (Modifier modifier in Modifiers) modifier.DecreaseDuration();
+        Modifiers = Modifiers.Where(m => m.RemainingDuration == -1 || m.RemainingDuration > 0).ToList();
+    }
+
+    public bool HasModifier(ModifierDef def) => Modifiers.Any(m => m.Def == def);
+
+    #endregion
 
     #region Getters
 
@@ -118,6 +158,17 @@ public class MapTile : INestedTooltipTarget
 
         // Terrain
         bodyText += $"\n\n{Terrain.GetDescriptionForTileTooltip()}";
+
+        // Modifiers
+        if (Modifiers.Count > 0)
+        {
+            bodyText += "\n\nModifiers:";
+            foreach (Modifier modifier in Modifiers)
+            {
+                string duration = modifier.IsInfinite ? "" : $" ({modifier.RemainingDuration} days remaining)";
+                bodyText += $"\n{modifier.Def.GetTooltipLink()}: {modifier.Effect.GetDescription()}{duration}";
+            }
+        }
 
         // Object
         if (HasObject)
