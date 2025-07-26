@@ -86,7 +86,6 @@ public class ResourceProduction : INestedTooltipTarget
     /// <summary>
     /// Returns the modifiers to be ordered in a way, so all additive ones come first, and all multiplicative ones after.
     /// </summary>
-    /// <returns></returns>
     private List<ProductionModifier> GetOrderedModifiers()
     {
         // First all additive modifiers (in original order), then all multiplicative (also in original order)
@@ -106,13 +105,13 @@ public class ResourceProduction : INestedTooltipTarget
     public string GetTooltipTitle() => Label;
     public string GetToolTipBodyText(out List<INestedTooltipTarget> references)
     {
-        references = Modifiers.Select(m => (INestedTooltipTarget)m.Source).ToList();
+        references = new List<INestedTooltipTarget>();
         return GetBreakdownString();
     }
 
     public string NestedTooltipLinkId => $"ResProd_{Id}";
-    public string NestedTooltipLinkText => Label;
-    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
+    public string NestedTooltipLinkText => $"{Resource.NestedTooltipLinkText} {GetValue()}";
+    public Color NestedTooltipLinkColor => Color.white;
 
     #endregion
 }

@@ -5,9 +5,12 @@ public class ObjectDef : Def, IDraftable
 {
     public ObjectTierDef Tier { get; init; } = null;
     public List<ObjectTagDef> Tags { get; init; } = new();
-    public ResourceCollection NativeProduction { get; init; } = new();
+    public Dictionary<ResourceDef, int> NativeProduction { private get; init; } = new();
     public List<ObjectEffect> Effects { get; init; } = new();
     new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Objects/" + DefName);
+
+    private ResourceCollection _NativeProduction;
+    public ResourceCollection GetNativeProduction() => _NativeProduction;
 
     public override bool Validate()
     {
@@ -18,6 +21,11 @@ public class ObjectDef : Def, IDraftable
         }
 
         return true;
+    }
+
+    public override void ResolveReferences()
+    {
+        _NativeProduction = new ResourceCollection(NativeProduction);
     }
 
     #region Getters

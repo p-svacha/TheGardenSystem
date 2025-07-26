@@ -133,7 +133,8 @@ public class MapTile : INestedTooltipTarget
                     int finalValue = prod.GetValue();
                     if (baseValue != 0 || finalValue != 0) // Show breakdown when either base or final value is not 0
                     {
-                        bodyText += "\n\n" + prod.GetBreakdownString();
+                        bodyText += "\n\n" + prod.GetTooltipLink();
+                        references.Add(prod);
                     }
                 }
             }

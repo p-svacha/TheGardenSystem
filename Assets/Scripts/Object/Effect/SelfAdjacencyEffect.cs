@@ -12,7 +12,9 @@ public class SelfAdjacencyEffect : ObjectEffect
         foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
         {
             if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
-            EffectOutcome.ApplyProductionModifiersTo(sourceTile, EffectSource, tileProductions);
+
+            string source = $"Adjacent {EffectCriteria.GetAsReadableString()}";
+            EffectOutcome.ApplyProductionModifiersTo(sourceTile, source, tileProductions);
         }
     }
     public override void ApplyObjectModifiers(MapTile sourceTile)

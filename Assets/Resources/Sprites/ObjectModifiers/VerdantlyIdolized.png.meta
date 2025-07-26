@@ -1,0 +1,1105 @@
+fileFormatVersion: 2
+guid: ead4f8ea4771bb7438d8996e2f34aaf4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2517847618933575323
+    second: VerdantlyIdolized_0
+  - first:
+      213: 2210311803945818539
+    second: VerdantlyIdolized_1
+  - first:
+      213: 7589309675780739743
+    second: VerdantlyIdolized_2
+  - first:
+      213: -5380798413345943179
+    second: VerdantlyIdolized_3
+  - first:
+      213: 2756950567768371734
+    second: VerdantlyIdolized_4
+  - first:
+      213: 6476425559421761971
+    second: VerdantlyIdolized_5
+  - first:
+      213: 2310845219923019943
+    second: VerdantlyIdolized_6
+  - first:
+      213: -4313652128233584949
+    second: VerdantlyIdolized_7
+  - first:
+      213: -9178698574590642729
+    second: VerdantlyIdolized_8
+  - first:
+      213: 1404334516425666829
+    second: VerdantlyIdolized_9
+  - first:
+      213: 3709863217631079870
+    second: VerdantlyIdolized_10
+  - first:
+      213: 1157677884003773275
+    second: VerdantlyIdolized_11
+  - first:
+      213: 8717077570186894145
+    second: VerdantlyIdolized_12
+  - first:
+      213: -8073602568672312889
+    second: VerdantlyIdolized_13
+  - first:
+      213: 1057849053744831743
+    second: VerdantlyIdolized_14
+  - first:
+      213: 773134830819261422
+    second: VerdantlyIdolized_15
+  - first:
+      213: 8032369413068144347
+    second: VerdantlyIdolized_16
+  - first:
+      213: 6210001717731615811
+    second: VerdantlyIdolized_17
+  - first:
+      213: 1569606826314399371
+    second: VerdantlyIdolized_18
+  - first:
+      213: -3040786301913362282
+    second: VerdantlyIdolized_19
+  - first:
+      213: -8094265589201709151
+    second: VerdantlyIdolized_20
+  - first:
+      213: 4009801965838288874
+    second: VerdantlyIdolized_21
+  - first:
+      213: -9140490494946914997
+    second: VerdantlyIdolized_22
+  - first:
+      213: -940011644259439411
+    second: VerdantlyIdolized_23
+  - first:
+      213: -8707373121558583886
+    second: VerdantlyIdolized_24
+  - first:
+      213: -2134303825999375132
+    second: VerdantlyIdolized_25
+  - first:
+      213: -1776583233334853195
+    second: VerdantlyIdolized_26
+  - first:
+      213: 4759426108838587392
+    second: VerdantlyIdolized_27
+  - first:
+      213: 8905824505961204467
+    second: VerdantlyIdolized_28
+  - first:
+      213: 2316011359974379736
+    second: VerdantlyIdolized_29
+  - first:
+      213: 5749468459494607243
+    second: VerdantlyIdolized_30
+  - first:
+      213: -7816341940027205671
+    second: VerdantlyIdolized_31
+  - first:
+      213: -2548900215740190557
+    second: VerdantlyIdolized_32
+  - first:
+      213: 577150047921338915
+    second: VerdantlyIdolized_33
+  - first:
+      213: -7738504090847622844
+    second: VerdantlyIdolized_34
+  - first:
+      213: 3452891292645232564
+    second: VerdantlyIdolized_35
+  - first:
+      213: 6240873108811174364
+    second: VerdantlyIdolized_36
+  - first:
+      213: 5005119169925842575
+    second: VerdantlyIdolized_37
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 1024
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: VerdantlyIdolized_0
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 120
+        width: 467
+        height: 899
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9e491db11131f220800000000000000
+      internalID: 2517847618933575323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_1
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 913
+        width: 22
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba91b0dffda9cae10800000000000000
+      internalID: 2210311803945818539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_2
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 933
+        width: 131
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f929853b0f4a25960800000000000000
+      internalID: 7589309675780739743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_3
+      rect:
+        serializedVersion: 2
+        x: 771
+        y: 672
+        width: 251
+        height: 347
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 571978c0a509355b0800000000000000
+      internalID: -5380798413345943179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_4
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 898
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61235273fe7a24620800000000000000
+      internalID: 2756950567768371734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_5
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 871
+        width: 39
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b938939bb2e0e950800000000000000
+      internalID: 6476425559421761971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_6
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 856
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a8cb60fb75c11020800000000000000
+      internalID: 2310845219923019943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_7
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 0
+        width: 627
+        height: 843
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc6870c7e34d224c0800000000000000
+      internalID: -4313652128233584949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_8
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 829
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d5f329f646be9080800000000000000
+      internalID: -9178698574590642729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_9
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 831
+        width: 13
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d013f5d5dc23d7310800000000000000
+      internalID: 1404334516425666829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_10
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 805
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebd2034d0f41c7330800000000000000
+      internalID: 3709863217631079870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_11
+      rect:
+        serializedVersion: 2
+        x: 782
+        y: 801
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5bee50e6e5e01010800000000000000
+      internalID: 1157677884003773275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_12
+      rect:
+        serializedVersion: 2
+        x: 743
+        y: 774
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14bd3827dd749f870800000000000000
+      internalID: 8717077570186894145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_13
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 739
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c10b945d3dc4ff80800000000000000
+      internalID: -8073602568672312889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_14
+      rect:
+        serializedVersion: 2
+        x: 752
+        y: 735
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffc91721c1c3eae00800000000000000
+      internalID: 1057849053744831743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_15
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 721
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eebb67a480ababa00800000000000000
+      internalID: 773134830819261422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_16
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 721
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdeb3a28c65b87f60800000000000000
+      internalID: 8032369413068144347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_17
+      rect:
+        serializedVersion: 2
+        x: 749
+        y: 664
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34465f709ab5e2650800000000000000
+      internalID: 6210001717731615811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_18
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 584
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8e7f77a71d58c510800000000000000
+      internalID: 1569606826314399371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_19
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 600
+        width: 14
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 690949c18f4fcc5d0800000000000000
+      internalID: -3040786301913362282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_20
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 616
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a7d6f5f4546baf80800000000000000
+      internalID: -8094265589201709151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_21
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 581
+        width: 39
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae74471a4ada5a730800000000000000
+      internalID: 4009801965838288874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_22
+      rect:
+        serializedVersion: 2
+        x: 786
+        y: 560
+        width: 12
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4dcadfb254762180800000000000000
+      internalID: -9140490494946914997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_23
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 32
+        width: 227
+        height: 611
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcc6f23d36864f2f0800000000000000
+      internalID: -940011644259439411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_24
+      rect:
+        serializedVersion: 2
+        x: 831
+        y: 587
+        width: 26
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b567b29742392780800000000000000
+      internalID: -8707373121558583886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_25
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 552
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e4dc807afd6162e0800000000000000
+      internalID: -2134303825999375132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_26
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 527
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b1492746fe4857e0800000000000000
+      internalID: -1776583233334853195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_27
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 448
+        width: 39
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00c2b0854d0ec0240800000000000000
+      internalID: 4759426108838587392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_28
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 408
+        width: 115
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fa49cdf338d79b70800000000000000
+      internalID: 8905824505961204467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_29
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 422
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d0da07af00242020800000000000000
+      internalID: 2316011359974379736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_30
+      rect:
+        serializedVersion: 2
+        x: 803
+        y: 365
+        width: 26
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b890d771a173acf40800000000000000
+      internalID: 5749468459494607243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_31
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 384
+        width: 29
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d7d0b51b66c68390800000000000000
+      internalID: -7816341940027205671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_32
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 312
+        width: 59
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a0b3e822cc70acd0800000000000000
+      internalID: -2548900215740190557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_33
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 306
+        width: 24
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32a737429e2720800800000000000000
+      internalID: 577150047921338915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_34
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 335
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 449ce1c978f4b9490800000000000000
+      internalID: -7738504090847622844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_35
+      rect:
+        serializedVersion: 2
+        x: 779
+        y: 279
+        width: 51
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bf882226522bef20800000000000000
+      internalID: 3452891292645232564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_36
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 230
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd15af2e6090c9650800000000000000
+      internalID: 6240873108811174364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VerdantlyIdolized_37
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 138
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f868de5ed51c57540800000000000000
+      internalID: 5005119169925842575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      VerdantlyIdolized_0: 2517847618933575323
+      VerdantlyIdolized_1: 2210311803945818539
+      VerdantlyIdolized_10: 3709863217631079870
+      VerdantlyIdolized_11: 1157677884003773275
+      VerdantlyIdolized_12: 8717077570186894145
+      VerdantlyIdolized_13: -8073602568672312889
+      VerdantlyIdolized_14: 1057849053744831743
+      VerdantlyIdolized_15: 773134830819261422
+      VerdantlyIdolized_16: 8032369413068144347
+      VerdantlyIdolized_17: 6210001717731615811
+      VerdantlyIdolized_18: 1569606826314399371
+      VerdantlyIdolized_19: -3040786301913362282
+      VerdantlyIdolized_2: 7589309675780739743
+      VerdantlyIdolized_20: -8094265589201709151
+      VerdantlyIdolized_21: 4009801965838288874
+      VerdantlyIdolized_22: -9140490494946914997
+      VerdantlyIdolized_23: -940011644259439411
+      VerdantlyIdolized_24: -8707373121558583886
+      VerdantlyIdolized_25: -2134303825999375132
+      VerdantlyIdolized_26: -1776583233334853195
+      VerdantlyIdolized_27: 4759426108838587392
+      VerdantlyIdolized_28: 8905824505961204467
+      VerdantlyIdolized_29: 2316011359974379736
+      VerdantlyIdolized_3: -5380798413345943179
+      VerdantlyIdolized_30: 5749468459494607243
+      VerdantlyIdolized_31: -7816341940027205671
+      VerdantlyIdolized_32: -2548900215740190557
+      VerdantlyIdolized_33: 577150047921338915
+      VerdantlyIdolized_34: -7738504090847622844
+      VerdantlyIdolized_35: 3452891292645232564
+      VerdantlyIdolized_36: 6240873108811174364
+      VerdantlyIdolized_37: 5005119169925842575
+      VerdantlyIdolized_4: 2756950567768371734
+      VerdantlyIdolized_5: 6476425559421761971
+      VerdantlyIdolized_6: 2310845219923019943
+      VerdantlyIdolized_7: -4313652128233584949
+      VerdantlyIdolized_8: -9178698574590642729
+      VerdantlyIdolized_9: 1404334516425666829
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

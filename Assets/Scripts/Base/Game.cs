@@ -389,7 +389,7 @@ public class Game
 
                 if (numResourcesProduced != 0)
                 {
-                    finalProduction[resource].AddModifier(new ProductionModifier(production, ProductionModifierType.Additive, production.GetValue()));
+                    finalProduction[resource].AddModifier(new ProductionModifier(production.Label, ProductionModifierType.Additive, production.GetValue()));
                 }
             }
         }

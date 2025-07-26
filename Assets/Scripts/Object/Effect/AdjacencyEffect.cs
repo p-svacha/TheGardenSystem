@@ -12,7 +12,9 @@ public class AdjacencyEffect : ObjectEffect
         foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
         {
             if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
-            EffectOutcome.ApplyProductionModifiersTo(adjacentTile, EffectSource, tileProductions);
+
+            string source = $"Adjacent {EffectSource.GetTooltipTitle()}";
+            EffectOutcome.ApplyProductionModifiersTo(adjacentTile, source, tileProductions);
         }
     }
 

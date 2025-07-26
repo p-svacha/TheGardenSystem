@@ -27,7 +27,7 @@ public static class DefDatabaseRegistry
         DefDatabase<ObjectTagDef>.AddDefs(ObjectTagDefs.Defs);
         DefDatabase<TerrainDef>.AddDefs(TerrainDefs.Defs);
         DefDatabase<ResourceDef>.AddDefs(ResourceDefs.Defs);
-        DefDatabase<ObjectModifierDef>.AddDefs(ObjectModifierDefs.Defs);
+        DefDatabase<ModifierDef>.AddDefs(ModifierDefs.Defs);
         DefDatabase<CustomerDef>.AddDefs(CustomerDefs.Defs);
         DefDatabase<ObjectDef>.AddDefs(ObjectDefs.Defs);
         DefDatabase<TownMandateDef>.AddDefs(TownMandateDefs.Defs);

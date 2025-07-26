@@ -9,159 +9,159 @@ public static class ObjectDefs
         {
             DefName = "Carrot",
             Label = "carrot",
-            Tier = ObjectTierDefOf.Common,
             Description = "Reliable and crisp. Grows underground, but always finds the light.",
+            Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Vegetable,
                 ObjectTagDefOf.Root,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 1 },
-            }),
+            },
         },
 
         new ObjectDef()
         {
             DefName = "CompostHeap",
             Label = "compost heap",
-            Tier = ObjectTierDefOf.Common,
             Description = "Old scraps, new life. Everything returns to the soil in time.",
+            Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
                 ObjectTagDefOf.Fertilizer,
                 ObjectTagDefOf.Compost,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Fertility, 1 },
-            }),
+            },
         },
 
         new ObjectDef()
         {
             DefName = "CornStalk",
             Label = "corn stalk",
-            Tier = ObjectTierDefOf.Common,
             Description = "Tall and golden, swaying in the breeze. A sign of steady growth.",
+            Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Vegetable,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 1 },
-            }),
+            },
         },
 
         new ObjectDef()
         {
             DefName = "Mint",
             Label = "mint",
-            Tier = ObjectTierDefOf.Common,
             Description = "A fresh, fragrant plant often used in teas and remedies.",
+            Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Herb,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Herbs, 1 },
-            }),
+            },
         },
 
         new ObjectDef()
         {
             DefName = "Scarecrow",
             Label = "scarecrow",
-            Tier = ObjectTierDefOf.Common,
             Description = "Stakes its ground, quietly convincing nearby soil to join the cause.",
+            Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
                 ObjectTagDefOf.Marker,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Expansion, 1 },
-            }),
+            },
         },
 
         new ObjectDef()
         {
             DefName = "FirePit",
             Label = "fire pit",
-            Tier = ObjectTierDefOf.Common,
             Description = "Burns wood into kindling but scorches the soil.",
+            Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
                 ObjectTagDefOf.Combustion,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Kindle, 2 },
                 { ResourceDefOf.Fertility, -1 },
-            }),
+            },
         },
 
         new ObjectDef()
         {
             DefName = "Wildflower",
             Label = "wildflower",
-            Tier = ObjectTierDefOf.Common,
             Description = "A wild flower with beautiful and colorful petals.",
+            Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Flower,
                 ObjectTagDefOf.Ornamental,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Ornaments, 1 },
-            }),
+            },
         },
 
         new ObjectDef()
         {
             DefName = "Flax",
             Label = "flax",
-            Tier = ObjectTierDefOf.Common,
             Description = "A pale, wiry plant that’s more useful than it looks.",
+            Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Flower,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Fiber, 1 },
-            }),
+            },
         },
 
         new ObjectDef()
         {
             DefName = "BeeHive",
             Label = "bee hive",
-            Tier = ObjectTierDefOf.Rare,
             Description = "The workers go where the flowers grow.",
+            Tier = ObjectTierDefOf.Rare,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
                 ObjectTagDefOf.Animal,
                 ObjectTagDefOf.Pollinator,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 1 },
                 { ResourceDefOf.Ornaments, 1 },
-            }),
+            },
             Effects = new List<ObjectEffect>()
             {
                 new AdjacencyEffect()
@@ -185,18 +185,18 @@ public static class ObjectDefs
         {
             DefName = "WickerFrame",
             Label = "wicker frame",
-            Tier = ObjectTierDefOf.Rare,
             Description = "Woven with care, it brings elegance to even the roughest fibers.",
+            Tier = ObjectTierDefOf.Rare,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
                 ObjectTagDefOf.Crafting,
                 ObjectTagDefOf.Ornamental,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Ornaments, 1 },
-            }),
+            },
             Effects = new List<ObjectEffect>()
             {
                 new SelfAdjacencyEffect()
@@ -223,18 +223,18 @@ public static class ObjectDefs
         {
             DefName = "CharcoalKiln",
             Label = "charcoal kiln",
-            Tier = ObjectTierDefOf.Rare,
             Description = "Where smoke lingers, value rises. It burns low and gives much.",
+            Tier = ObjectTierDefOf.Rare,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
                 ObjectTagDefOf.Combustion,
                 ObjectTagDefOf.Crafting,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Kindle, 2 },
-            }),
+            },
             Effects = new List<ObjectEffect>()
             {
                 new SelfAdjacencyEffect()
@@ -262,8 +262,8 @@ public static class ObjectDefs
         {
             DefName = "VerdantIdol",
             Label = "verdant idol",
-            Tier = ObjectTierDefOf.Epic,
             Description = "Its roots twist deeper than the soil. Growth listens when it speaks.",
+            Tier = ObjectTierDefOf.Epic,
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
@@ -271,11 +271,11 @@ public static class ObjectDefs
                 ObjectTagDefOf.Fertilizer,
                 ObjectTagDefOf.Idol,
             },
-            NativeProduction = new ResourceCollection(new Dictionary<ResourceDef, int>()
+            NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 2 },
                 { ResourceDefOf.Fertility, 1 },
-            }),
+            },
             Effects = new List<ObjectEffect>()
             {
                 new AdjacencyEffect()
@@ -293,7 +293,7 @@ public static class ObjectDefs
                         {
                             { ResourceDefOf.Food, 1 }
                         },
-                        AppliedModifier = ObjectModifierDefOf.VerdantlyIdolized,
+                        AppliedModifier = ModifierDefOf.VerdantlyIdolized,
                     },
                 },
                 new SelfEffect()
@@ -317,5 +317,46 @@ public static class ObjectDefs
             },
         },
         
+        /*
+        new ObjectDef()
+        {
+            DefName = "EmberCore",
+            Label = "ember core",
+            Description = "Still hot from wherever it came from. Burn carefully, or burn everything.",
+            Tier = ObjectTierDefOf.Epic,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Structure,
+                ObjectTagDefOf.Combustion,
+                ObjectTagDefOf.Hazard,
+            },
+            NativeProduction = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Kindle, 4 },
+                { ResourceDefOf.Fertility, -2 },
+            },
+            Effects = new List<ObjectEffect>()
+            {
+                new AdjacencyEffect()
+                {
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TagsAny = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Combustion,
+                        },
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                        {
+                            { ResourceDefOf.Kindle, 2 },
+                        }
+                    },
+                },
+                // todo: apply scorched earch modifier to terrain: -1 fertility for 3 days
+            }
+        },
+        */
     };
 }

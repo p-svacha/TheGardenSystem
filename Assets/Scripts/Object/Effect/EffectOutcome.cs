@@ -19,7 +19,7 @@ public class EffectOutcome
     /// <summary>
     /// The modifier that gets applied to the object on the target tile.
     /// </summary>
-    public ObjectModifierDef AppliedModifier { get; init; }
+    public ModifierDef AppliedModifier { get; init; }
 
     /// <summary>
     /// Checks if this criteria is valid the way it is defined.
@@ -37,7 +37,7 @@ public class EffectOutcome
         return true;
     }
 
-    public void ApplyProductionModifiersTo(MapTile tile, INestedTooltipTarget source, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
+    public void ApplyProductionModifiersTo(MapTile tile, string source, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
     {
         // Apply bonus to native resources
         if (NativeProductionModifier != 0)

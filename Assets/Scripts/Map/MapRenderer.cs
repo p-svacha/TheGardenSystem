@@ -14,6 +14,7 @@ public class MapRenderer : MonoBehaviour
     private Tilemap GridOverlayTilemap;
     private Dictionary<Direction, Tilemap> FenceTilemaps;
     public Tilemap ObjectTilemap;
+    private Tilemap[] ObjectOverlayTilemaps;
     private Tilemap ClaimTilemap;
 
     // Tile caches
@@ -24,6 +25,7 @@ public class MapRenderer : MonoBehaviour
     private Dictionary<TerrainDef, Tile> TerrainTileCache;
     private Dictionary<Direction, Tile> FenceTileCache;
     private Dictionary<ObjectDef, Tile> ObjectTileCache;
+    private Dictionary<ModifierDef, Tile> ObjectModifierTileCache;
 
     #region Initialize
 
@@ -43,6 +45,13 @@ public class MapRenderer : MonoBehaviour
         FenceTilemaps.Add(Direction.W, GameObject.Find("FenceTilemap_W").GetComponent<Tilemap>());
 
         ObjectTilemap = GameObject.Find("ObjectTilemap").GetComponent<Tilemap>();
+
+        ObjectOverlayTilemaps = new Tilemap[9];
+        for (int i = 1; i <= 9; i++)
+        {
+            ObjectOverlayTilemaps[i - 1] = GameObject.Find("ObjectModifierTilemap" + i).GetComponent<Tilemap>();
+        }
+
         ClaimTilemap = GameObject.Find("ClaimTilemap").GetComponent<Tilemap>();
     }
 
@@ -52,6 +61,7 @@ public class MapRenderer : MonoBehaviour
         InitializeOverlayTiles();
         InitializeFenceTiles();
         InitializeObjectTiles();
+        InitializeObjectModifierTiles();
         InitializeClaimTiles();
     }
 
@@ -133,6 +143,17 @@ public class MapRenderer : MonoBehaviour
         }
     }
 
+    private void InitializeObjectModifierTiles()
+    {
+        ObjectModifierTileCache = new Dictionary<ModifierDef, Tile>();
+
+        foreach (var def in DefDatabase<ModifierDef>.AllDefs)
+        {
+            Tile tile = CreateTileFromSprite(def.Sprite);
+            ObjectModifierTileCache[def] = tile;
+        }
+    }
+
     private void InitializeClaimTiles()
     {
         ClaimTiles = new Dictionary<int, Tile>();
@@ -161,6 +182,7 @@ public class MapRenderer : MonoBehaviour
         GridOverlayTilemap.ClearAllTiles();
         ClaimTilemap.ClearAllTiles();
         foreach (Tilemap tilemap in FenceTilemaps.Values) tilemap.ClearAllTiles();
+        foreach (Tilemap tilemap in ObjectOverlayTilemaps) tilemap.ClearAllTiles();
 
         foreach (MapTile mapTile in map.AllTiles)
         {
@@ -199,7 +221,18 @@ public class MapRenderer : MonoBehaviour
 
             // Object
             if (mapTile.Object == null) ObjectTilemap.SetTile(cell, null);
-            else ObjectTilemap.SetTile(cell, ObjectTileCache[mapTile.Object.Def]);
+            else
+            {
+                ObjectTilemap.SetTile(cell, ObjectTileCache[mapTile.Object.Def]);
+
+                // Object modifiers
+                int index = 0;
+                foreach (ModifierDef def in mapTile.Object.Modifiers.Keys)
+                {
+                    ObjectOverlayTilemaps[index].SetTile(cell, ObjectModifierTileCache[def]);
+                    index++;
+                }
+            }
 
             // Claim
             if (!mapTile.IsOwned && mapTile.Claim > 0)

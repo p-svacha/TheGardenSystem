@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectModifierDef : Def, INestedTooltipTarget
+public class ModifierDef : Def, INestedTooltipTarget
 {
+    new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/ObjectModifiers/" + DefName);
+
     /// <summary>
     /// The effect that may get applied to the object holding the modifier.
     /// </summary>
@@ -34,7 +36,7 @@ public class ObjectModifierDef : Def, INestedTooltipTarget
         references = new List<INestedTooltipTarget>();
 
         string desc = Description;
-        desc += $"\n{Effect.GetDescription()}";
+        desc += $"\n\n{Effect.GetDescription()}";
 
         return desc;
     }

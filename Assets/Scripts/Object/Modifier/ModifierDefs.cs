@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ObjectModifierDefs
+public static class ModifierDefs
 {
-    public static List<ObjectModifierDef> Defs => new List<ObjectModifierDef>()
+    public static List<ModifierDef> Defs => new List<ModifierDef>()
     {
-        new ObjectModifierDef()
+        new ModifierDef()
         {
             DefName = "VerdantlyIdolized",
             Label = "verdantly idolized",

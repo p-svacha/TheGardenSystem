@@ -9,15 +9,15 @@ public class Object : INestedTooltipTarget
     /// <summary>
     /// The modifiers applied to this object, with the value being how many times a specific modifier has been applied.
     /// </summary>
-    public Dictionary<ObjectModifierDef, int> Modifiers;
+    public Dictionary<ModifierDef, int> Modifiers;
 
     public Object(ObjectDef def)
     {
         Def = def;
-        Modifiers = new Dictionary<ObjectModifierDef, int>();
+        Modifiers = new Dictionary<ModifierDef, int>();
     }
 
-    public void ApplyModifier(ObjectModifierDef def)
+    public void ApplyModifier(ModifierDef def)
     {
         if (def.IsStackable) Modifiers.Increment(def);
         else if(!Modifiers.TryGetValue(def, out int value) || value < 1)
@@ -33,7 +33,7 @@ public class Object : INestedTooltipTarget
     /// </summary>
     public virtual ResourceCollection GetNativeResourceProduction()
     {
-        return new ResourceCollection(Def.NativeProduction);
+        return new ResourceCollection(Def.GetNativeProduction());
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class Object : INestedTooltipTarget
         // Effects from modifiers
         foreach (var kvp in Modifiers)
         {
-            ObjectModifierDef modifier = kvp.Key;
+            ModifierDef modifier = kvp.Key;
             int numApplied = kvp.Value;
             for(int i = 0; i < numApplied; i++)
             {

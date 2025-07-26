@@ -8,7 +8,7 @@ public class ProductionModifier
     /// <summary>
     /// The string that is displayed as the source of where this modifier comes from.
     /// </summary>
-    public INestedTooltipTarget Source { get; private set; }
+    public string Source { get; private set; }
 
     /// <summary>
     /// Type of how this modifier affects the production value (additive [+] or multiplicative [*%])
@@ -20,7 +20,7 @@ public class ProductionModifier
     /// </summary>
     public float TransformationValue { get; private set; }
 
-    public ProductionModifier(INestedTooltipTarget source, ProductionModifierType type, float transformationValue)
+    public ProductionModifier(string source, ProductionModifierType type, float transformationValue)
     {
         Source = source;
         Type = type;
@@ -50,7 +50,7 @@ public class ProductionModifier
             sign = "x";
             numberFormat = "P0";
         }
-        return $"{Source.GetTooltipTitle()}: {sign}{TransformationValue.ToString(numberFormat)}";
+        return $"{Source}: {sign}{TransformationValue.ToString(numberFormat)}";
     }
 
 }

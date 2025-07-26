@@ -1,8 +1,12 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
-visual modifier sprites
-	on tilemap above sprites
-	with transparency
+modifiers on tile:
+	make it possible that modifiers get added to a tile, not only object
+	should be visible in tile tooltip
+
+temporary modifiers:
+	make it possible that modifiers have a limitied timespan in amount of days
+	remaining time should be visible
 
 epic objects:
 	3 to make draft not crash
@@ -123,12 +127,7 @@ ui improvements:
 	in tag tooltip, show owned objects of that tag (grouped by sector)
 	show object tier in tooltip
 	show resource type in resource tooltip
-	make object production tooltip nicer, with resource icons
-		simply show final productions in tooltip
-		nested tooltip shows broken down production of that resource
 	when selecting object, show amound of currently owned
-	show flavor text in object def tooltip
-	show effects in object def tooltip (analog terrain def)
 
 sectors (maybe 'plots'):
 	instead of having one centralized inventory, where the objects get scattered randomly across the whole garden, the garden can be split in sectors

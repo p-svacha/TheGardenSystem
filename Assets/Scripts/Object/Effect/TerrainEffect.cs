@@ -10,7 +10,7 @@ public class TerrainEffect : ObjectEffect
     {
         if (EffectCriteria != null && !sourceTile.HasObject) return; // Terrain effects can only apply to objects
         if (!EffectCriteria.IsFulfilledOn(sourceTile)) return;
-        EffectOutcome.ApplyProductionModifiersTo(sourceTile, EffectSource, tileProductions);
+        EffectOutcome.ApplyProductionModifiersTo(sourceTile, EffectSource.GetTooltipTitle(), tileProductions);
     }
 
     public override void ApplyObjectModifiers(MapTile sourceTile)

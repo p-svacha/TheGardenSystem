@@ -10,7 +10,16 @@ public class SelfEffect : ObjectEffect
     public override void ApplyProductionModifiers(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
     {
         if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(sourceTile)) return;
-        EffectOutcome.ApplyProductionModifiersTo(sourceTile, EffectSource, tileProductions);
+
+        string source = "";
+        if (EffectSource is ModifierDef modifier) source += modifier.GetTooltipLink();
+        if (EffectCriteria != null)
+        {
+            string criteriaDesc = EffectCriteria.GetAsReadableString(includeObjectLiteral: false).CapitalizeFirst();
+            if (source == "") source = criteriaDesc;
+            else source += $" ({criteriaDesc})";
+        }
+        EffectOutcome.ApplyProductionModifiersTo(sourceTile, source, tileProductions);
     }
 
     public override void ApplyObjectModifiers(MapTile sourceTile)
