@@ -76,6 +76,9 @@ public class NestedTooltipManager : MonoBehaviour
         // ObjectTagDefs
         foreach (ObjectTagDef def in DefDatabase<ObjectTagDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
 
+        // ObjectModifierDefs
+        foreach (ObjectModifierDef def in DefDatabase<ObjectModifierDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
+
         // TerrainDefs
         foreach (TerrainDef def in DefDatabase<TerrainDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
     }

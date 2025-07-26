@@ -72,6 +72,28 @@
         },
     };
 
+--- ObjectModifierDefs.cs ---
+    public static List<ObjectModifierDef> Defs => new List<ObjectModifierDef>()
+    {
+        new ObjectModifierDef()
+        {
+            DefName = "VerdantlyIdolized",
+            Label = "verdantly idolized",
+            Description = "Blessed by the Verdant Idol. This object radiates fertile energy, enriching the soil beneath it.",
+            Effect = new SelfEffect()
+            {
+                EffectOutcome = new EffectOutcome()
+                {
+                    ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                    {
+                        { ResourceDefOf.Fertility, 1 },
+                    },
+                }
+            },
+            IsStackable = false,
+        },
+    };
+
 --- ObjectDefs.cs ---
     public static List<ObjectDef> Defs => new List<ObjectDef>()
     {
@@ -327,7 +349,7 @@
             },
         },
 
-        /*
+        
         new ObjectDef()
         {
             DefName = "VerdantIdol",
@@ -350,20 +372,43 @@
             {
                 new AdjacencyEffect()
                 {
-                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    EffectCriteria = new EffectCriteria()
                     {
-                        ObjectTagDefOf.Plant
+                        TagsAny = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Plant,
+                        }
                     },
-                    ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                    EffectOutcome = new EffectOutcome()
                     {
-                        { ResourceDefOf.Food, 1 }
+                        ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                        {
+                            { ResourceDefOf.Food, 1 }
+                        },
+                        AppliedModifier = ObjectModifierDefOf.VerdantlyIdolized,
                     },
                 },
-                // todo: self +1food&1ornament if on fertile soil
-                // todo: modifier to adj plants "idolized", idolized gives +1 fertility, non-stackable
+                new SelfEffect()
+                {
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TerrainAny = new List<TerrainDef>()
+                        {
+                            TerrainDefOf.FertileSoil,
+                        },
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                        {
+                            { ResourceDefOf.Food, 1 },
+                            { ResourceDefOf.Ornaments, 1 },
+                        }
+                    },
+                }
             },
         },
-        */
+        
     };
 
 --- ObjectTagDefs.cs ---
@@ -827,7 +872,7 @@
             WorseFertilityTerrainDefName = "Soil",
             Effects = new List<ObjectEffect>()
             {
-                new SelfEffect()
+                new TerrainEffect()
                 {
                     EffectCriteria = new EffectCriteria()
                     {
@@ -852,7 +897,7 @@
             BetterFertilityTerrainDefName = "Soil",
             Effects = new List<ObjectEffect>()
             {
-                new SelfEffect()
+                new TerrainEffect()
                 {
                     EffectCriteria = new EffectCriteria()
                     {

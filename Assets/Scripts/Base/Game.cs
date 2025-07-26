@@ -175,6 +175,7 @@ public class Game
 
         ApplyMarketResources();
         ApplyAbstractResources();
+        ApplyObjectModifiers();
 
         // State
         GameState = GameState.ConfirmedScatter;
@@ -228,6 +229,20 @@ public class Game
                 {
                     adjTile.AdjustClaim(expansion);
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Applies all object modifiers that got added from effects this turn.
+    /// </summary>
+    private void ApplyObjectModifiers()
+    {
+        foreach (MapTile tile in Map.OwnedTiles)
+        {
+            foreach (ObjectEffect effect in tile.GetEffects())
+            {
+                effect.ApplyObjectModifiers(tile);
             }
         }
     }
@@ -347,7 +362,7 @@ public class Game
             foreach (ObjectEffect effect in tile.GetEffects())
             {
                 if (!effect.Validate(out string invalidReason)) throw new System.Exception($"Cannot apply invalid effect of {tile}. ValidationFailReason: {invalidReason}");
-                effect.ApplyEffectTo(tile, CurrentPerTileResourceProduction);
+                effect.ApplyProductionModifiers(tile, CurrentPerTileResourceProduction);
             }
         }
 

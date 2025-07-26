@@ -25,7 +25,7 @@ public class TerrainDefs
             WorseFertilityTerrainDefName = "Soil",
             Effects = new List<ObjectEffect>()
             {
-                new SelfEffect()
+                new TerrainEffect()
                 {
                     EffectCriteria = new EffectCriteria()
                     {
@@ -50,7 +50,7 @@ public class TerrainDefs
             BetterFertilityTerrainDefName = "Soil",
             Effects = new List<ObjectEffect>()
             {
-                new SelfEffect()
+                new TerrainEffect()
                 {
                     EffectCriteria = new EffectCriteria()
                     {

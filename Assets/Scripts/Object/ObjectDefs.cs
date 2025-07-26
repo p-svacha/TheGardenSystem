@@ -257,7 +257,7 @@ public static class ObjectDefs
             },
         },
 
-        /*
+        
         new ObjectDef()
         {
             DefName = "VerdantIdol",
@@ -280,19 +280,42 @@ public static class ObjectDefs
             {
                 new AdjacencyEffect()
                 {
-                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    EffectCriteria = new EffectCriteria()
                     {
-                        ObjectTagDefOf.Plant
+                        TagsAny = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Plant,
+                        }
                     },
-                    ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                    EffectOutcome = new EffectOutcome()
                     {
-                        { ResourceDefOf.Food, 1 }
+                        ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                        {
+                            { ResourceDefOf.Food, 1 }
+                        },
+                        AppliedModifier = ObjectModifierDefOf.VerdantlyIdolized,
                     },
                 },
-                // todo: self +1food&1ornament if on fertile soil
-                // todo: modifier to adj plants "idolized", idolized gives +1 fertility, non-stackable
+                new SelfEffect()
+                {
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TerrainAny = new List<TerrainDef>()
+                        {
+                            TerrainDefOf.FertileSoil,
+                        },
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                        {
+                            { ResourceDefOf.Food, 1 },
+                            { ResourceDefOf.Ornaments, 1 },
+                        }
+                    },
+                }
             },
         },
-        */
+        
     };
 }

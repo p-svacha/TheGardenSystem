@@ -14,7 +14,7 @@ public class ObjectDef : Def, IDraftable
         if (Tier == null) throw new System.Exception($"Tier must be set of {DefName}.");
         foreach (ObjectEffect effect in Effects)
         {
-            if (!effect.Validate(out string invalidReason)) throw new System.Exception($"TerrainDef {DefName} has an invalid Effect: {invalidReason}");
+            if (!effect.Validate(out string invalidReason)) ThrowValidationError($"TerrainDef {DefName} has an invalid Effect. Reason: {invalidReason}");
         }
 
         return true;

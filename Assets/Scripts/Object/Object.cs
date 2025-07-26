@@ -6,17 +6,23 @@ public class Object : INestedTooltipTarget
 {
     public ObjectDef Def { get; private set; }
 
+    /// <summary>
+    /// The modifiers applied to this object, with the value being how many times a specific modifier has been applied.
+    /// </summary>
+    public Dictionary<ObjectModifierDef, int> Modifiers;
+
     public Object(ObjectDef def)
     {
         Def = def;
+        Modifiers = new Dictionary<ObjectModifierDef, int>();
+    }
 
-        // Initialize effects
-        Effects = new List<ObjectEffect>();
-        foreach (ObjectEffect effect in def.Effects)
+    public void ApplyModifier(ObjectModifierDef def)
+    {
+        if (def.IsStackable) Modifiers.Increment(def);
+        else if(!Modifiers.TryGetValue(def, out int value) || value < 1)
         {
-            ObjectEffect instanceEffect = effect.GetCopy();
-            instanceEffect.EffectSource = this;
-            Effects.Add(instanceEffect);
+            Modifiers.Increment(def);
         }
     }
 
@@ -43,12 +49,46 @@ public class Object : INestedTooltipTarget
     public bool HasAllTags(List<ObjectTagDef> tags) => tags.All(t => Tags.Contains(t));
 
     public virtual List<ObjectTagDef> Tags => Def.Tags;
-    public virtual List<ObjectEffect> Effects { get; private set; }
     public virtual string Label => Def.Label;
     public string LabelCap => Def.LabelCap;
     public string LabelCapWord => Def.LabelCapWord;
     public virtual string Description => Def.Description;
     public virtual Sprite Sprite => Def.Sprite;
+
+    public List<ObjectEffect> GetAllEffects()
+    {
+        List<ObjectEffect> effects = new List<ObjectEffect>();
+
+        // Native effects from ObjectDef
+        effects.AddRange(GetNativeEffects());
+
+        // Effects from modifiers
+        foreach (var kvp in Modifiers)
+        {
+            ObjectModifierDef modifier = kvp.Key;
+            int numApplied = kvp.Value;
+            for(int i = 0; i < numApplied; i++)
+            {
+                ObjectEffect modifierEffect = modifier.Effect.GetCopy();
+                modifierEffect.EffectSource = modifier;
+                effects.Add(modifierEffect);
+            }
+        }
+
+        return effects;
+    }
+
+    private List<ObjectEffect> GetNativeEffects()
+    {
+        List<ObjectEffect> effects = new List<ObjectEffect>();
+        foreach (ObjectEffect effect in Def.Effects)
+        {
+            ObjectEffect instanceEffect = effect.GetCopy();
+            instanceEffect.EffectSource = this;
+            effects.Add(instanceEffect);
+        }
+        return effects;
+    }
 
     #endregion
 
@@ -60,6 +100,7 @@ public class Object : INestedTooltipTarget
     {
         dynamicReferences = new List<INestedTooltipTarget>();
 
+        // Tags
         string tags = "";
         foreach(ObjectTagDef tag in Tags)
         {
@@ -67,7 +108,37 @@ public class Object : INestedTooltipTarget
         }
         tags = tags.TrimEnd(' ');
 
-        return $"{tags}\n\n{Description}";
+        // Native production
+        string nativeProd = "";
+        if (!GetNativeResourceProduction().IsEmpty)
+        {
+            nativeProd += $"\n\nNative Production: {GetNativeResourceProduction().GetAsSingleLinkedString()}";
+        }
+
+        // Effects
+        string effectDescriptions = "";
+        List<ObjectEffect> effects = GetNativeEffects();
+        if (effects.Count > 0)
+        {
+            effectDescriptions += "\n";
+            foreach (ObjectEffect effect in effects) effectDescriptions += "\n" + effect.GetDescription();
+        }
+
+        // Modifiers
+        string modifiersDesc = "";
+        if (Modifiers.Count > 0)
+        {
+            modifiersDesc += "\n\nModifiers:";
+            foreach (var kvp in Modifiers)
+            {
+                string amount = kvp.Value > 1 ? $"{kvp.Value}x " : "";
+                string mod = kvp.Key.LabelCapWord;
+                string effect = kvp.Key.Effect.GetDescription();
+                modifiersDesc += $"\n{amount}{mod}: {effect}";
+            }
+        }
+
+        return $"{tags}\n\n<color=#999999>{Description}</color>{nativeProd}{effectDescriptions}{modifiersDesc}";
     }
 
     public string NestedTooltipLinkId => $"Object_{Def.DefName}";

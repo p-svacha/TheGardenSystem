@@ -36,7 +36,7 @@ public class TerrainDef : Def, INestedTooltipTarget
     {
         foreach (ObjectEffect effect in Effects)
         {
-            if (!effect.Validate(out string invalidReason)) throw new System.Exception($"TerrainDef {DefName} has an invalid Effect: {invalidReason}");
+            if (!effect.Validate(out string invalidReason)) ThrowValidationError($"TerrainDef {DefName} has an invalid Effect: {invalidReason}");
         }
 
         return true;
@@ -44,7 +44,7 @@ public class TerrainDef : Def, INestedTooltipTarget
 
     public bool IsAffectedByFertility => NextFertilityTerrain != null || PrevFertilityTerrain != null;
 
-    #region
+    #region INestedTooltipTarget
 
     public string GetTooltipTitle() => LabelCapWord;
     public string GetToolTipBodyText(out List<INestedTooltipTarget> references)

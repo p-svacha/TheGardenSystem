@@ -29,7 +29,7 @@ public class MapTile : INestedTooltipTarget
         effects.AddRange(Terrain.Effects);
 
         // Effects from object
-        if (HasObject) effects.AddRange(Object.Effects);
+        if (HasObject) effects.AddRange(Object.GetAllEffects());
 
         return effects;
     }

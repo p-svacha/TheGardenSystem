@@ -7,12 +7,21 @@ using UnityEngine;
 /// </summary>
 public class SelfAdjacencyEffect : ObjectEffect
 {
-    public override void ApplyEffectTo(MapTile tile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
+    public override void ApplyProductionModifiers(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
     {
-        foreach (MapTile adjacentTile in tile.GetAdjacentTiles())
+        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
         {
-            if (!EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
-            EffectOutcome.ApplyTo(tile, EffectSource, tileProductions);
+            if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
+            EffectOutcome.ApplyProductionModifiersTo(sourceTile, EffectSource, tileProductions);
+        }
+    }
+    public override void ApplyObjectModifiers(MapTile sourceTile)
+    {
+        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles())
+        {
+            if (!adjacentTile.HasObject) continue;
+            if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
+            EffectOutcome.ApplyObjectModifiersTo(sourceTile.Object);
         }
     }
 

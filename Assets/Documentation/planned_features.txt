@@ -1,13 +1,8 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
-effect critera terrain:
-	only applies on one of these terrains
-
-object modifiers:
-	object can apply modifiers to other objects
-	modifiers apply new effects to objects
-	modifiers have a visual representation
-	modifiers can be stackable or non-stackable
+visual modifier sprites
+	on tilemap above sprites
+	with transparency
 
 epic objects:
 	3 to make draft not crash

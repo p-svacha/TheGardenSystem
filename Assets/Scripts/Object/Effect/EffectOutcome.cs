@@ -17,15 +17,27 @@ public class EffectOutcome
     public Dictionary<ResourceDef, int> ResourceProductionModifier { get; init; } = new();
 
     /// <summary>
+    /// The modifier that gets applied to the object on the target tile.
+    /// </summary>
+    public ObjectModifierDef AppliedModifier { get; init; }
+
+    /// <summary>
     /// Checks if this criteria is valid the way it is defined.
     /// </summary>
     public bool Validate(out string invalidReason)
     {
         invalidReason = "";
+
+        if(NativeProductionModifier == 0 && ResourceProductionModifier.Count == 0 && AppliedModifier == null)
+        {
+            invalidReason = "There is no outcome effect defined.";
+            return false;
+        }
+
         return true;
     }
 
-    public void ApplyTo(MapTile tile, INestedTooltipTarget source, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
+    public void ApplyProductionModifiersTo(MapTile tile, INestedTooltipTarget source, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions)
     {
         // Apply bonus to native resources
         if (NativeProductionModifier != 0)
@@ -48,6 +60,16 @@ public class EffectOutcome
         }
     }
 
+    public void ApplyObjectModifiersTo(Object obj)
+    {
+        if (obj == null) throw new System.Exception("Object must not be null");
+
+        if (AppliedModifier != null)
+        {
+            obj.ApplyModifier(AppliedModifier);
+        }
+    }
+
     /// <summary>
     /// Returns the generalized "+1 to all native production" "-2 to food and fiber production" string.
     /// </summary>
@@ -63,6 +85,10 @@ public class EffectOutcome
         {
             string sign = kvp.Value > 0 ? "+" : "";
             desc += $"<nobr>{sign}{kvp.Value} {kvp.Key.GetTooltipLink()} production, </nobr>";
+        }
+        if (AppliedModifier != null)
+        {
+            desc += $"<nobr>{AppliedModifier.GetTooltipLink()}, </nobr>";
         }
 
         // Remove trailing ", </nobr>" if present
@@ -81,6 +107,7 @@ public class EffectOutcome
         {
             NativeProductionModifier = this.NativeProductionModifier,
             ResourceProductionModifier = new Dictionary<ResourceDef, int>(this.ResourceProductionModifier),
+            AppliedModifier = this.AppliedModifier,
         };
     }
 }

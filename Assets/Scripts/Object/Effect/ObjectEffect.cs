@@ -24,9 +24,14 @@ public abstract class ObjectEffect
     public EffectOutcome EffectOutcome { get; set; }
 
     /// <summary>
-    /// Applies all resource production modifiers that originate from this effect.
+    /// Applies all resource production modifiers that originate from this effect, if the criteria is fulfilled.
     /// </summary>
-    public abstract void ApplyEffectTo(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions);
+    public abstract void ApplyProductionModifiers(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions);
+
+    /// <summary>
+    /// Applies all object modifiers that originate from this effect, if the criteria is fulfilled.
+    /// </summary>
+    public abstract void ApplyObjectModifiers(MapTile sourceTile);
 
     /// <summary>
     /// Returns what this effect does as a human-readable string including TMPro tooltip links.
@@ -38,20 +43,16 @@ public abstract class ObjectEffect
     /// </summary>
     public bool Validate(out string invalidReason)
     {
-        invalidReason = "";
-
-        if(EffectCriteria == null)
+        if(EffectCriteria != null)
         {
-            invalidReason = "No effect criteria has been defined.";
-            return false;
+            if (!EffectCriteria.Validate(out invalidReason)) return false;
         }
+
         if (EffectOutcome == null)
         {
             invalidReason = "No effect outcome has been defined.";
             return false;
         }
-
-        if (!EffectCriteria.Validate(out invalidReason)) return false;
         if (!EffectOutcome.Validate(out invalidReason)) return false;
 
         return true;
@@ -61,7 +62,7 @@ public abstract class ObjectEffect
 
     protected void SetValuesFrom(ObjectEffect orig)
     {
-        EffectCriteria = orig.EffectCriteria.GetCopy();
+        if(orig.EffectCriteria != null) EffectCriteria = orig.EffectCriteria.GetCopy();
         EffectOutcome = orig.EffectOutcome.GetCopy();
     }
 

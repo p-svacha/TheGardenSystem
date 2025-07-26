@@ -92,11 +92,16 @@ public class EffectCriteria
     /// <summary>
     /// Returns the generalized "plant or flower object", "crafting structure object", "honey producing object" string.
     /// </summary>
-    public string GetAsReadableString(bool plural = false)
+    public string GetAsReadableString(bool includeObjectLiteral = true, bool plural = false)
     {
         string desc = "";
 
-        string objString = plural ? "objects" : "object";
+        string objString = "";
+        if (includeObjectLiteral)
+        {
+            if (plural) objString = "objects";
+            else objString = "object";
+        }
         if (TagsAny.Count > 0)
         {
             var links = TagsAny.Select(t => t.GetTooltipLink());
@@ -114,7 +119,8 @@ public class EffectCriteria
         }
         if (TerrainAny.Count > 0)
         {
-            string prefix = desc == "" ? $"{objString} " : "";
+            string prefix = "";
+            if (includeObjectLiteral && desc == "") prefix = $"{objString} ";
             var links = TerrainAny.Select(r => r.GetTooltipLink());
             desc += $"<nobr>{prefix}on {string.Join(" or ", links)} terrain, </nobr>";
         }

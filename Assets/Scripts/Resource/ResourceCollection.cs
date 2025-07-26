@@ -45,6 +45,8 @@ public class ResourceCollection : MonoBehaviour
         Resources.DecrementMultiple(other.Resources, allowNegativeValues: AllowNegativeValues);
     }
 
+    public bool IsEmpty => Resources == null || Resources.Count == 0 || Resources.All(x => x.Value == 0);
+
     /// <summary>
     /// Checks and returns if this collection has at least all the resources in the provided collection.
     /// </summary>

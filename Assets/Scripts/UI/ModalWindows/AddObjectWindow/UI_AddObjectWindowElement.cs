@@ -15,7 +15,7 @@ public class UI_AddObjectWindowElement : MonoBehaviour
 
     private void AddObject(ObjectDef def)
     {
-        Debug.Log($"{def.DefName} was added to inventory.");
+        Debug.Log($"{def.DefName} was added to inventory through dev mode.");
         Game.Instance.AddObjectToInventory(def);
     }
 }
