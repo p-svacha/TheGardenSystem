@@ -20,7 +20,7 @@ public class UI_ObjectDraftOption : UI_DraftOption
         TagsText.text = objectDef.GetTagsAsLinkedString();
         Image.sprite = objectDef.Sprite;
         EffectText.text = objectDef.GetEffectDescription();
-        ResourcesText.text = objectDef.BaseResources.GetAsSingleLinkedString();
+        ResourcesText.text = objectDef.NativeProduction.GetAsSingleLinkedString();
     }
 
     public override void SetSelected(bool value)

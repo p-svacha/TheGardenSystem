@@ -1,18 +1,53 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
+effect critera terrain:
+	only applies on one of these terrains
+
+object modifiers:
+	object can apply modifiers to other objects
+	modifiers apply new effects to objects
+	modifiers have a visual representation
+	modifiers can be stackable or non-stackable
+
 epic objects:
 	3 to make draft not crash
 
-trading:
-	add trading mechanic
+currency:
+	new currency resource
+	gained by:
+		object production
+		fulfilled orders
+
+change claim system to make tiles buyable with currency:
+	cost increases every "ring" of tiles
+
+add shop:
+	in the shop you buy and sell resources
 	all resources can be sold for 1 and bought for 2 gold
+	the shop also has a selection of objects of different tiers that can be bought
+		common,rare,epic,legendary,special
+	shop stock refreshes each month
+
+shed:
+	each garden sector has a shed, a permanent object
+	shed can be clicked on to open, showing the sectors inventory
 
 ordered scatter:
 	instead of full scatter all at once, objects get scattered one by one with slight delay in between
 	this will also make merging nicer (see next chapter)
-
-visual combo feedback:
 	add a little jingle, particles, shake or effect when an effect triggers
+
+resource giving animations:
+	confirming scatter shows tiles giving resources one-by-one with little animation of resources moving the their ui element
+
+game phase terminology:
+	change time ui to show part of day, weekday, week num, month, (year)
+	part of day is according to game state
+		morning: empty garden, useful to inspect or buy new tiles
+		noon: the scatter happens, with one-by-one animation out of the shed, no player input
+		afternoon: scatter can be inspected and maybe manipulated
+		evening: the harvest happens, each tile gives the resources it produces with little animation one-by-one, no player input
+		night: end-of-day windows appear, like order delivery selection, object draft, research draft, etc.
 
 lenses
 	add lenses during scatter manipulation
@@ -79,15 +114,6 @@ prestige orders:
 	these do not lose the game if not completed
 	but they give an extra reward if completed (draft of rare or epic object, research points, free expansion)
 
-currency:
-	new currency resource
-	gained by:
-		object production
-		fulfilled orders
-	used for:
-		buying garden tiles
-		buying objects from a store with common/rare/epic/legendary/special objects that changes stock each month
-
 change of acquiring new tiles:
 	claim stat of unowned tiles gets removed
 	tiles have a cost and can be bought at the start/end of days with currency
@@ -99,7 +125,7 @@ game over logic:
 		add this as a note somehwere
 
 ui improvements:
-	in tag tooltip, show owned objects of that tag
+	in tag tooltip, show owned objects of that tag (grouped by sector)
 	show object tier in tooltip
 	show resource type in resource tooltip
 	make object production tooltip nicer, with resource icons

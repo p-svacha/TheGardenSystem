@@ -123,5 +123,37 @@ public static class ObjectTagDefs
             Description = "Objects related to manual creation, shaping, or preparation of materials for construction or trade.",
             Color = new Color(0.65f, 0.5f, 0.3f),
         },
+
+        new ObjectTagDef()
+        {
+            DefName = "Idol",
+            Label = "idol",
+            Description = "Symbolic or sacred structures that influence nearby growth through unique and often passive effects.",
+            Color = new Color(0.7f, 0.6f, 0.25f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Hazard",
+            Label = "hazard",
+            Description = "Objects that have harmful or destabilizing effects on their environment. Use with caution.",
+            Color = new Color(0.85f, 0.25f, 0.25f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Prestige",
+            Label = "prestige",
+            Description = "Rare, sought-after objects valued for their uniqueness, influence, or symbolic importance. Often tied to major rewards or milestones.",
+            Color = new Color(0.9f, 0.75f, 0.4f),
+        },
+
+        new ObjectTagDef()
+        {
+            DefName = "Luxury",
+            Label = "luxury",
+            Description = "High-value, non-essential objects prized for beauty or refinement. Often generate Ornaments or synergize with aesthetic effects.",
+            Color = new Color(0.85f, 0.65f, 0.8f),
+        },
     };
 }

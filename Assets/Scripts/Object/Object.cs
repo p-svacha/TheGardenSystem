@@ -18,7 +18,7 @@ public class Object : INestedTooltipTarget
     /// </summary>
     public virtual ResourceCollection GetNativeResourceProduction()
     {
-        return new ResourceCollection(Def.BaseResources);
+        return new ResourceCollection(Def.NativeProduction);
     }
 
     /// <summary>

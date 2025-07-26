@@ -13,7 +13,7 @@ public class MapRenderer : MonoBehaviour
     private Tilemap TerrainOverlayTilemap;
     private Tilemap GridOverlayTilemap;
     private Dictionary<Direction, Tilemap> FenceTilemaps;
-    private Tilemap ObjectTilemap;
+    public Tilemap ObjectTilemap;
     private Tilemap ClaimTilemap;
 
     // Tile caches

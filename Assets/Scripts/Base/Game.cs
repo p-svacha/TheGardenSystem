@@ -111,6 +111,34 @@ public class Game
             else if (GameState == GameState.ScatterManipulation) ConfirmScatter();
             else if (GameState == GameState.ConfirmedScatter) StartPostScatter();
         }
+
+        // Dev mode - Terrain
+        if (UI_DevModePanel.Instance.IsChangeTerrainActive)
+        {
+            // Compute which cell the mouse is over
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int cell = MapRenderer.Instance.ObjectTilemap.WorldToCell(worldPos);
+            MapTile currentTile = Game.Instance.Map.GetTile(cell.x, cell.y);
+
+            if (currentTile != null && !HelperFunctions.IsMouseOverUi())
+            {
+                int currentTerrainIndex = DefDatabase<TerrainDef>.AllDefs.IndexOf(currentTile.Terrain.Def);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    int nextIndex = currentTerrainIndex + 1;
+                    if (nextIndex == DefDatabase<TerrainDef>.AllDefs.Count) nextIndex = 0;
+                    TerrainDef newTerrain = DefDatabase<TerrainDef>.AllDefs[nextIndex];
+                    SetTerrain(currentTile.Coordinates, newTerrain);
+                }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    int prevIndex = currentTerrainIndex - 1;
+                    if (prevIndex == -1) prevIndex = DefDatabase<TerrainDef>.AllDefs.Count - 1;
+                    TerrainDef newTerrain = DefDatabase<TerrainDef>.AllDefs[prevIndex];
+                    SetTerrain(currentTile.Coordinates, newTerrain);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -357,6 +385,7 @@ public class Game
     public void EndDay()
     {
         Day++;
+        Debug.Log($"Starting Day {Day}.");
 
         Map.ClearAllObjects();
         DrawFullMap();
