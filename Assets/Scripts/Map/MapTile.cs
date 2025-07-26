@@ -104,7 +104,7 @@ public class MapTile : INestedTooltipTarget
         string bodyText = "";
 
         // Title (terrain + coordinates)
-        bodyText += $"{Terrain.Def.GetNestedTooltipLink()} {Coordinates}";
+        bodyText += $"{Terrain.Def.GetTooltipLink()} {Coordinates}";
 
         // Ownage info
         int ownedInfoSize = 14;
@@ -117,7 +117,7 @@ public class MapTile : INestedTooltipTarget
         // Object
         if (HasObject)
         {
-            bodyText += $"\n\n{Object.GetNestedTooltipLink()}";
+            bodyText += $"\n\n{Object.GetTooltipLink()}";
             references.Add(Object);
         }
 

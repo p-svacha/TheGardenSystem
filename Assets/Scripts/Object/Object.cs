@@ -9,6 +9,15 @@ public class Object : INestedTooltipTarget
     public Object(ObjectDef def)
     {
         Def = def;
+
+        // Initialize effects
+        Effects = new List<ObjectEffect>();
+        foreach (ObjectEffect effect in def.Effects)
+        {
+            ObjectEffect instanceEffect = effect.GetCopy();
+            instanceEffect.EffectSource = this;
+            Effects.Add(instanceEffect);
+        }
     }
 
     #region Getters
@@ -34,7 +43,7 @@ public class Object : INestedTooltipTarget
     public bool HasAllTags(List<ObjectTagDef> tags) => tags.All(t => Tags.Contains(t));
 
     public virtual List<ObjectTagDef> Tags => Def.Tags;
-    public virtual List<ObjectEffect> Effects => Def.Effects;
+    public virtual List<ObjectEffect> Effects { get; private set; }
     public virtual string Label => Def.Label;
     public string LabelCap => Def.LabelCap;
     public string LabelCapWord => Def.LabelCapWord;
@@ -54,7 +63,7 @@ public class Object : INestedTooltipTarget
         string tags = "";
         foreach(ObjectTagDef tag in Tags)
         {
-            tags += $"{tag.GetNestedTooltipLink()} ";
+            tags += $"{tag.GetTooltipLink()} ";
         }
         tags = tags.TrimEnd(' ');
 

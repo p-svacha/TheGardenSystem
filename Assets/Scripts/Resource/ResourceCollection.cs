@@ -73,7 +73,7 @@ public class ResourceCollection : MonoBehaviour
         foreach (var kvp in Resources)
         {
             string valueText = kvp.Value >= 0 ? kvp.Value.ToString() : $"<color=#E07568>{kvp.Value}</color>";
-            s += $"{kvp.Key.GetNestedTooltipLink()} {valueText}";
+            s += $"{kvp.Key.GetTooltipLink()} {valueText}";
             for (int i = 0; i < numSpacesBetweenResources; i++) s += " ";
         }
         s = s.TrimEnd(' ');

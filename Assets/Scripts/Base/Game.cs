@@ -347,7 +347,7 @@ public class Game
             foreach (ObjectEffect effect in tile.GetEffects())
             {
                 if (!effect.Validate(out string invalidReason)) throw new System.Exception($"Cannot apply invalid effect of {tile}. ValidationFailReason: {invalidReason}");
-                effect.ApplyEffect(tile, CurrentPerTileResourceProduction);
+                effect.ApplyEffectTo(tile, CurrentPerTileResourceProduction);
             }
         }
 

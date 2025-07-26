@@ -27,6 +27,7 @@ public class TerrainDef : Def, INestedTooltipTarget
 
     public override void ResolveReferences()
     {
+        foreach (ObjectEffect effect in Effects) effect.EffectSource = this;
         if (BetterFertilityTerrainDefName != "") NextFertilityTerrain = DefDatabase<TerrainDef>.GetNamed(BetterFertilityTerrainDefName);
         if (WorseFertilityTerrainDefName != "") PrevFertilityTerrain = DefDatabase<TerrainDef>.GetNamed(WorseFertilityTerrainDefName);
     }
@@ -59,8 +60,8 @@ public class TerrainDef : Def, INestedTooltipTarget
         }
 
         if (IsAffectedByFertility) desc += "\n";
-        if (NextFertilityTerrain != null) desc += $"\nTurns into {NextFertilityTerrain.GetNestedTooltipLink()} at 10 Fertility.";
-        if (PrevFertilityTerrain != null) desc += $"\nTurns into {PrevFertilityTerrain.GetNestedTooltipLink()} at -10 Fertility.";
+        if (NextFertilityTerrain != null) desc += $"\nTurns into {NextFertilityTerrain.GetTooltipLink()} at 10 Fertility.";
+        if (PrevFertilityTerrain != null) desc += $"\nTurns into {PrevFertilityTerrain.GetTooltipLink()} at -10 Fertility.";
 
         return desc;
     }

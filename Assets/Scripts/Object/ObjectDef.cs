@@ -44,7 +44,7 @@ public class ObjectDef : Def, IDraftable
     public string GetTagsAsLinkedString()
     {
         string tags = "";
-        foreach (ObjectTagDef tag in Tags) tags += $"{tag.GetNestedTooltipLink()}   ";
+        foreach (ObjectTagDef tag in Tags) tags += $"{tag.GetTooltipLink()}   ";
         tags = tags.TrimEnd(' ');
 
         return tags;

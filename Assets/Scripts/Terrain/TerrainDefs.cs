@@ -27,11 +27,17 @@ public class TerrainDefs
             {
                 new SelfEffect()
                 {
-                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    EffectCriteria = new EffectCriteria()
                     {
-                        ObjectTagDefOf.Plant,
+                        TagsAny = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Plant,
+                        },
                     },
-                    NativeProductionModifier = 1,
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        NativeProductionModifier = 1,
+                    },
                 },
             },
         },
@@ -46,11 +52,17 @@ public class TerrainDefs
             {
                 new SelfEffect()
                 {
-                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    EffectCriteria = new EffectCriteria()
                     {
-                        ObjectTagDefOf.Plant,
+                        TagsAny = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Plant,
+                        },
                     },
-                    NativeProductionModifier = -1,
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        NativeProductionModifier = -1,
+                    },
                 },
             },
         },

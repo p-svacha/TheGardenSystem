@@ -166,11 +166,17 @@ public static class ObjectDefs
             {
                 new AdjacencyEffect()
                 {
-                    EffectCriteria_TagsAny = new List<ObjectTagDef>()
+                    EffectCriteria = new EffectCriteria()
                     {
-                        ObjectTagDefOf.Flower,
+                        TagsAny = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Flower,
+                        },
                     },
-                    NativeProductionModifier = 1
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        NativeProductionModifier = 1
+                    },
                 },
             },
         },
@@ -195,13 +201,19 @@ public static class ObjectDefs
             {
                 new SelfAdjacencyEffect()
                 {
-                    EffectCriteria_NativeProduction_Any = new List<ResourceDef>()
+                    EffectCriteria = new EffectCriteria()
                     {
-                        ResourceDefOf.Fiber,
+                        NativeProductionAny = new List<ResourceDef>()
+                        {
+                            ResourceDefOf.Fiber,
+                        },
                     },
-                    ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                    EffectOutcome = new EffectOutcome()
                     {
-                        { ResourceDefOf.Ornaments, 1 },
+                        ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                        {
+                            { ResourceDefOf.Ornaments, 1 },
+                        },
                     },
                 },
             },
@@ -227,13 +239,19 @@ public static class ObjectDefs
             {
                 new SelfAdjacencyEffect()
                 {
-                    EffectCriteria_NativeProduction_Any = new List<ResourceDef>()
+                    EffectCriteria = new EffectCriteria()
                     {
-                        ResourceDefOf.Food,
+                        NativeProductionAny = new List<ResourceDef>()
+                        {
+                            ResourceDefOf.Food,
+                        },
                     },
-                    ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                    EffectOutcome = new EffectOutcome()
                     {
-                        { ResourceDefOf.Kindle, 1 },
+                        ResourceProductionModifier = new Dictionary<ResourceDef, int>()
+                        {
+                            { ResourceDefOf.Kindle, 1 },
+                        },
                     },
                 },
             },
