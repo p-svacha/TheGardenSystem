@@ -25,6 +25,9 @@ public class CameraHandler : MonoBehaviour
     // Bounds
     protected float MinX, MinY, MaxX, MaxY;
 
+    public float ZoomLevel => Camera.orthographicSize;
+    public event System.Action OnCameraChanged;
+
     public void FocusPosition(Vector2 pos)
     {
         transform.position = new Vector3(pos.x, pos.y, transform.position.z);
@@ -52,6 +55,8 @@ public class CameraHandler : MonoBehaviour
             // Zoom Boundaries
             if (Camera.orthographicSize < MIN_CAMERA_SIZE) Camera.orthographicSize = MIN_CAMERA_SIZE;
             if (Camera.orthographicSize > MAX_CAMERA_SIZE) Camera.orthographicSize = MAX_CAMERA_SIZE;
+
+            OnCameraChanged?.Invoke();
         }
 
         // Dragging with right/middle mouse button
@@ -63,13 +68,31 @@ public class CameraHandler : MonoBehaviour
         {
             float speed = DRAG_SPEED * Camera.orthographicSize;
             transform.position += new Vector3(-Input.GetAxis("Mouse X") * speed, -Input.GetAxis("Mouse Y") * speed, 0f);
+
+            OnCameraChanged?.Invoke();
         }
 
         // Panning with WASD
-        if (Input.GetKey(KeyCode.W)) transform.position += new Vector3(0f, PAN_SPEED * Time.deltaTime, 0f);
-        if (Input.GetKey(KeyCode.A)) transform.position += new Vector3(-PAN_SPEED * Time.deltaTime, 0f, 0f);
-        if (Input.GetKey(KeyCode.S)) transform.position += new Vector3(0f, -PAN_SPEED * Time.deltaTime, 0f);
-        if (Input.GetKey(KeyCode.D)) transform.position += new Vector3(PAN_SPEED * Time.deltaTime, 0f, 0f);
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.position += new Vector3(0f, PAN_SPEED * Time.deltaTime, 0f);
+            OnCameraChanged?.Invoke();
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.position += new Vector3(-PAN_SPEED * Time.deltaTime, 0f, 0f);
+            OnCameraChanged?.Invoke();
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.position += new Vector3(0f, -PAN_SPEED * Time.deltaTime, 0f);
+            OnCameraChanged?.Invoke();
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.position += new Vector3(PAN_SPEED * Time.deltaTime, 0f, 0f);
+            OnCameraChanged?.Invoke();
+        }
 
         // Drag triggers
         if (Input.GetKeyDown(KeyCode.Mouse0) && !IsLeftMouseDown)

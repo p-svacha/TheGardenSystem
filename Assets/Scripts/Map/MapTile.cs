@@ -11,7 +11,7 @@ public class MapTile : INestedTooltipTarget
 
     // Ownage properties
     public bool IsOwned { get; private set; }
-    public int Claim { get; private set; }
+    public ResourceCollection AcquireCost { get; private set; }
 
     /// <summary>
     /// The modifiers applied to this tile, independent from object on it.
@@ -24,7 +24,7 @@ public class MapTile : INestedTooltipTarget
         Coordinates = coordinates;
         Terrain = new Terrain(this, terrainDef);
         IsOwned = false;
-        Claim = 0;
+        AcquireCost = GetOriginalAcquireCost();
         Modifiers = new List<Modifier>();
     }
 
@@ -49,22 +49,15 @@ public class MapTile : INestedTooltipTarget
         return effects;
     }
 
-    public void AdjustClaim(int amount)
-    {
-        Claim += amount;
-        if (Claim >= Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES) Game.Instance.AddTileToGarden(this);
-        if (Claim < 0) Claim = 0;
-    }
-
     public void Acquire()
     {
         IsOwned = true;
-        Claim = Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES;
+        AcquireCost = new ResourceCollection();
     }
     public void Unacquire()
     {
         IsOwned = false;
-        Claim = 0;
+        AcquireCost = GetOriginalAcquireCost();
     }
     public void PlaceObject(Object obj) => Object = obj;
     public void ClearObject() => Object = null;
@@ -156,6 +149,16 @@ public class MapTile : INestedTooltipTarget
         return adjTiles;
     }
 
+    public ResourceCollection GetOriginalAcquireCost()
+    {
+        int ringIndex = Mathf.Max(Mathf.Abs(Coordinates.x), Mathf.Abs(Coordinates.y)) - 1;
+        int goldCost = Game.COST_PER_TILE_RING * ringIndex;
+        return new ResourceCollection(new Dictionary<ResourceDef, int>()
+        {
+            { ResourceDefOf.Gold, goldCost },
+        });
+    }
+
     #endregion
 
     #region INestedTooltipTaget
@@ -172,7 +175,7 @@ public class MapTile : INestedTooltipTarget
 
         // Ownage info
         int ownedInfoSize = 14;
-        string ownedText = IsOwned ? "Owned" : $"Unowned ({Claim}/{Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES} Claim)";
+        string ownedText = IsOwned ? "Owned" : $"Unowned ({AcquireCost.GetAsSingleLinkedString()})";
         bodyText += $"\n<size={ownedInfoSize}>{ownedText}</size>";
 
         // Terrain

@@ -2,9 +2,11 @@ FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
 currency:
 	new currency resource
-	gained by:
+	customer defs have a new currency value that defines how much they pay per order level
+	currency is gained by:
 		object production
 		fulfilled orders
+		selling resources in shop
 
 change claim system to make tiles buyable with currency:
 	cost increases every "ring" of tiles
@@ -13,11 +15,11 @@ add shop:
 	in the shop you buy and sell resources
 	all resources can be sold for 1 and bought for 2 gold
 	the shop also has a selection of objects of different tiers that can be bought
-		common,rare,epic,legendary,special
+		common,rare,epic,legendary
 	shop stock refreshes each month
 
 shed:
-	each garden sector has a shed, a permanent object
+	each garden sector has a shed, a permanent object with special tier
 	shed can be clicked on to open, showing the sectors inventory
 
 ordered scatter:
@@ -189,14 +191,14 @@ sectors (maybe 'plots'):
 		- complex resources that are "crafted" from basic resources (i.e. object with -1 food, -1 herbs, +1 premium food)
 		- mechanic and resource to change town mandate. When used, you get a new option and can choose to stick to the old mandate or take the new one
 
-campaign:
-	different levels
-	each level is the garden of a different town
-	garden map generation is unique per town
-	town mandates are unique per town
-
 main menu:
 	just a small main menu instead of starting game directly
 
 load/save game:
 	logic to save and load games
+
+campaign:
+	different levels
+	each level is the garden of a different town
+	garden map generation is unique per town
+	town mandates are unique per town

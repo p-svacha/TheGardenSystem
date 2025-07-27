@@ -11,8 +11,8 @@ public class Game
     public const int MONTHS_PER_YEAR = 12;
     public const int DAYS_PER_MONTH = DAYS_PER_WEEK * WEEKS_PER_MONTH;
     public const int DAYS_PER_YEAR = MONTHS_PER_YEAR * DAYS_PER_MONTH;
-    public const int CLAIMS_NEEDED_TO_ACQUIRE_TILES = 5;
     public const int CUSTOMER_ORDER_MISSES_IN_A_ROW_TO_LOSE_GAME = 2;
+    public const int COST_PER_TILE_RING = 5;
 
     // State
     public GameState GameState { get; private set; }
@@ -42,13 +42,13 @@ public class Game
     {
         Instance = this;
         Day = 1;
-        Map = MapGenerator.GenerateMap(21);
+        Map = MapGenerator.GenerateMap(23);
         CurrentFinalResourceProduction = new Dictionary<ResourceDef, ResourceProduction>();
         CurrentPerTileResourceProduction = new Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>>();
 
         // Initialize resources
         Resources = new ResourceCollection();
-        foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs.Where(r => r.Type == ResourceType.MarketResource)) Resources.Resources.Add(def, 0);
+        foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs.Where(r => r.Type == ResourceType.Currency || r.Type == ResourceType.MarketResource)) Resources.Resources.Add(def, 0);
 
         // Starting garden area
         int gardenStartAreaSize = 3;
@@ -97,6 +97,8 @@ public class Game
 
         // State
         GameState = GameState.BeforeScatter;
+
+        UI_TileOverlayContainer.Instance.ShowTileCostOverlay();
     }
 
     #endregion
@@ -232,16 +234,6 @@ public class Game
             if (tileProduction.TryGetValue(ResourceDefOf.Fertility, out ResourceProduction fertilityProduction) && fertilityProduction.GetValue() != 0)
             {
                 tile.Terrain.AdjustFertility(fertilityProduction.GetValue());
-            }
-
-            // Expansion
-            if (tileProduction.TryGetValue(ResourceDefOf.Expansion, out ResourceProduction expansionProduction) && expansionProduction.GetValue() != 0)
-            {
-                int expansion = expansionProduction.GetValue();
-                foreach(MapTile adjTile in tile.GetOrthogonalAdjacentTiles().Where(t => !t.IsOwned))
-                {
-                    adjTile.AdjustClaim(expansion);
-                }
             }
         }
     }

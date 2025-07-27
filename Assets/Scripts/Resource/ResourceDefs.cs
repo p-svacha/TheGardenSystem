@@ -5,6 +5,15 @@ public static class ResourceDefs
 {
     public static List<ResourceDef> Defs => new List<ResourceDef>()
     {
+        // Currency
+        new ResourceDef()
+        {
+            DefName = "Gold",
+            Label = "gold",
+            Description = "The currency of this world. Can be used to buy new garden tiles or to buy resources and objects in the shop.\nGold is gained by completing orders and more inefficiently by selling resources at the shop.",
+            Type = ResourceType.Currency,
+        },
+
         // Market resources
         new ResourceDef()
         {
@@ -52,14 +61,6 @@ public static class ResourceDefs
             DefName = "Fertility",
             Label = "fertility",
             Description = "Enriches or depletes the soil fertility the object lands on. Terrain may change at certain fertility threshholds.",
-            Type = ResourceType.AbstractResource,
-        },
-
-        new ResourceDef()
-        {
-            DefName = "Expansion",
-            Label = "expansion",
-            Description = $"Increases the claim of all 4-way adjacent unowned tiles. When a tile reaches {Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES} claim, it gets added to your garden.",
             Type = ResourceType.AbstractResource,
         },
     };

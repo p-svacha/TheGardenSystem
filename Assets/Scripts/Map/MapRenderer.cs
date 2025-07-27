@@ -9,7 +9,7 @@ public class MapRenderer : MonoBehaviour
     public static MapRenderer Instance;
 
     // Tilemaps
-    private Grid TilemapGrid;
+    public Grid TilemapGrid;
     private Tilemap TerrainTilemap;
     private Tilemap TerrainOverlayTilemap;
     private Tilemap[] TileModifierTilemaps;
@@ -17,7 +17,6 @@ public class MapRenderer : MonoBehaviour
     private Dictionary<Direction, Tilemap> FenceTilemaps;
     public Tilemap ObjectTilemap;
     private Tilemap[] ObjectOverlayTilemaps;
-    private Tilemap ClaimTilemap;
 
     // Tile caches
     private Tile GridOverlayTile;
@@ -56,8 +55,6 @@ public class MapRenderer : MonoBehaviour
         {
             ObjectOverlayTilemaps[i - 1] = GameObject.Find("ObjectModifierTilemap" + i).GetComponent<Tilemap>();
         }
-
-        ClaimTilemap = GameObject.Find("ClaimTilemap").GetComponent<Tilemap>();
     }
 
     private void Start()
@@ -67,7 +64,6 @@ public class MapRenderer : MonoBehaviour
         InitializeFenceTiles();
         InitializeObjectTiles();
         InitializeModifierTiles();
-        InitializeClaimTiles();
     }
 
     /// <summary>
@@ -159,15 +155,6 @@ public class MapRenderer : MonoBehaviour
         }
     }
 
-    private void InitializeClaimTiles()
-    {
-        ClaimTiles = new Dictionary<int, Tile>();
-        for(int i = 1; i <= Game.CLAIMS_NEEDED_TO_ACQUIRE_TILES; i++)
-        {
-            ClaimTiles.Add(i, CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Overlays/Claim_" + i)));
-        }
-    }
-
     private Tile CreateTileFromSprite(Sprite sprite)
     {
         var tile = ScriptableObject.CreateInstance<Tile>();
@@ -185,7 +172,6 @@ public class MapRenderer : MonoBehaviour
         TerrainTilemap.ClearAllTiles();
         TerrainOverlayTilemap.ClearAllTiles();
         GridOverlayTilemap.ClearAllTiles();
-        ClaimTilemap.ClearAllTiles();
         foreach (Tilemap tilemap in FenceTilemaps.Values) tilemap.ClearAllTiles();
         foreach (Tilemap tilemap in ObjectOverlayTilemaps) tilemap.ClearAllTiles();
         foreach (Tilemap tilemap in TileModifierTilemaps) tilemap.ClearAllTiles();
@@ -249,12 +235,6 @@ public class MapRenderer : MonoBehaviour
                     index++;
                 }
             }
-
-            // Claim
-            if (!mapTile.IsOwned && mapTile.Claim > 0)
-            {
-                ClaimTilemap.SetTile(cell, ClaimTiles[mapTile.Claim]);
-            }
         }
 
         // Force a redraw
@@ -266,10 +246,10 @@ public class MapRenderer : MonoBehaviour
 
     private void DrawFencesAround(MapTile tile)
     {
-        if (!tile.TileNorth.IsOwned) DrawFence(tile, Direction.N);
-        if (!tile.TileEast.IsOwned) DrawFence(tile, Direction.E);
-        if (!tile.TileSouth.IsOwned) DrawFence(tile, Direction.S);
-        if (!tile.TileWest.IsOwned) DrawFence(tile, Direction.W);
+        if (tile.TileNorth == null || !tile.TileNorth.IsOwned) DrawFence(tile, Direction.N);
+        if (tile.TileEast == null || !tile.TileEast.IsOwned) DrawFence(tile, Direction.E);
+        if (tile.TileSouth == null || !tile.TileSouth.IsOwned) DrawFence(tile, Direction.S);
+        if (tile.TileWest == null || !tile.TileWest.IsOwned) DrawFence(tile, Direction.W);
     }
 
     private void DrawFence(MapTile tile, Direction dir)

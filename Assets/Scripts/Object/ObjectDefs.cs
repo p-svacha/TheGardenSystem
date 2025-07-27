@@ -77,23 +77,6 @@ public static class ObjectDefs
 
         new ObjectDef()
         {
-            DefName = "Scarecrow",
-            Label = "scarecrow",
-            Description = "Stakes its ground, quietly convincing nearby soil to join the cause.",
-            Tier = ObjectTierDefOf.Common,
-            Tags = new List<ObjectTagDef>()
-            {
-                ObjectTagDefOf.Structure,
-                ObjectTagDefOf.Marker,
-            },
-            NativeProduction = new Dictionary<ResourceDef, int>()
-            {
-                { ResourceDefOf.Expansion, 1 },
-            },
-        },
-
-        new ObjectDef()
-        {
             DefName = "FirePit",
             Label = "fire pit",
             Description = "Burns wood into kindling but scorches the soil.",
