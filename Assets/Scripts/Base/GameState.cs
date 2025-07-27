@@ -3,10 +3,11 @@ using UnityEngine;
 public enum GameState
 {
     Uninitialized,
-    BeforeScatter,
-    ScatterManipulation,
-    ConfirmedScatter,
-    OrderSelection, // only at end of week
-    ObjectDraft,
+    Morning,
+    Noon,
+    Afternoon,
+    Evening,
+    Night_OrderSelection, // only at end of week
+    Night_ObjectDraft,
     GameOver,
 }

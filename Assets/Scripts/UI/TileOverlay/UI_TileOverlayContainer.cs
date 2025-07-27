@@ -29,9 +29,12 @@ public class UI_TileOverlayContainer : MonoBehaviour
 
     public void ShowTileCostOverlay()
     {
+        Clear();
         foreach (MapTile tile in Game.Instance.Map.UnownedTiles)
         {
-            ShowOverlay(tile, tile.AcquireCost.GetAsSingleLinkedString(), showBackground: false);
+            bool canBuy = Game.Instance.Resources.HasResources(tile.AcquireCost);
+            string textColorHex = canBuy ? ResourceManager.WhiteTextColorHex : ResourceManager.RedTextColorHex;
+            ShowOverlay(tile, tile.AcquireCost.GetAsSingleLinkedString(textColorHex: textColorHex), showBackground: false);
         }
     }
 

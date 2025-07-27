@@ -200,7 +200,7 @@ public class MapTile : INestedTooltipTarget
         }
 
         // Production (only during scatter)
-        if (Game.Instance.GameState == GameState.ScatterManipulation)
+        if (Game.Instance.GameState == GameState.Afternoon)
         {
             Dictionary<ResourceDef, ResourceProduction> tileProduction = Game.Instance.GetTileProduction(this);
 

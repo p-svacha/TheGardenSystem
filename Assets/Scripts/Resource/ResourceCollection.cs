@@ -69,12 +69,16 @@ public class ResourceCollection : MonoBehaviour
     /// <summary>
     /// Returns this collection as a single string, with TMPro link tooltip references to the resources.
     /// </summary>
-    public string GetAsSingleLinkedString(int numSpacesBetweenResources = 2)
+    public string GetAsSingleLinkedString(int numSpacesBetweenResources = 2, string textColorHex = "")
     {
         string s = "";
         foreach (var kvp in Resources)
         {
-            string valueText = kvp.Value >= 0 ? kvp.Value.ToString() : $"<color=#E07568>{kvp.Value}</color>";
+            string valueTextColor = ResourceManager.WhiteTextColorHex;
+            if (textColorHex != "") valueTextColor = textColorHex;
+            else if (kvp.Value < 0) valueTextColor = ResourceManager.RedTextColorHex;
+
+            string valueText = $"<color={valueTextColor}>{kvp.Value}</color>";
             s += $"{kvp.Key.GetTooltipLink()} {valueText}";
             for (int i = 0; i < numSpacesBetweenResources; i++) s += " ";
         }

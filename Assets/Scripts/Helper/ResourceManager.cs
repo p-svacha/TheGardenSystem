@@ -13,6 +13,9 @@ public static class ResourceManager
     public static Color UiBackgroundLighter1 => new Color(0.165f, 0.169f, 0.176f);
     public static Color UiBackgroundLighter2 => new Color(0.251f, 0.255f, 0.263f);
 
+    public static string WhiteTextColorHex = "#C7CBCE";
+    public static string RedTextColorHex = "#E07568";
+
     private static Dictionary<string, Material> CachedMaterials = new Dictionary<string, Material>();
     public static Material LoadMaterial(string resourcePath)
     {

@@ -19,6 +19,7 @@ public class GameUI : MonoBehaviour
     public UI_DatePanel DatePanel;
     public UI_ResourcePanel ResourcePanel;
     public UI_OrderPanel OrderPanel;
+    public UI_Toggle AcquireTilesToggle;
 
     private void Awake()
     {

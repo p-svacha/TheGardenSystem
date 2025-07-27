@@ -18,6 +18,7 @@ public class Game
     public GameState GameState { get; private set; }
     public int Day { get; private set; }
     public Map Map { get; private set; }
+    public bool IsAcquiringTiles { get; private set; }
 
     // Production
     public ResourceCollection Resources { get; private set; }
@@ -30,10 +31,13 @@ public class Game
     public List<Order> ActiveOrders { get; private set; }
     public Customer TownCouncil { get; private set; }
     public List<TownMandate> TownMandates { get; private set; }
-    public TownMandate NextTownMandate => (IsLastDayOfMonth && Game.Instance.GameState > GameState.ConfirmedScatter) ? TownMandates[Month + 1] : TownMandates[Month];
+    public TownMandate NextTownMandate => (IsLastDayOfMonth && Game.Instance.GameState > GameState.Evening) ? TownMandates[Month + 1] : TownMandates[Month];
 
     // Visual
     public bool IsShowingGridOverlay { get; private set; }
+
+    // Inputs
+    private MapTile HoveredTile;
 
 
     #region Initialization
@@ -41,7 +45,7 @@ public class Game
     public Game()
     {
         Instance = this;
-        Day = 1;
+        Day = 0;
         Map = MapGenerator.GenerateMap(23);
         CurrentFinalResourceProduction = new Dictionary<ResourceDef, ResourceProduction>();
         CurrentPerTileResourceProduction = new Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>>();
@@ -91,14 +95,9 @@ public class Game
         CameraHandler.Instance.FocusPosition(new Vector2(0f, 0f));
 
         // UI
-        GameUI.Instance.DatePanel.Refresh();
-        GameUI.Instance.ResourcePanel.Refresh();
-        GameUI.Instance.OrderPanel.Refresh();
+        GameUI.Instance.AcquireTilesToggle.OnToggle += SetAcquireTilesMode;
 
-        // State
-        GameState = GameState.BeforeScatter;
-
-        UI_TileOverlayContainer.Instance.ShowTileCostOverlay();
+        StartNewDay();
     }
 
     #endregion
@@ -107,49 +106,66 @@ public class Game
 
     public void HandleInputs()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (GameState == GameState.BeforeScatter) StartDay();
-            else if (GameState == GameState.ScatterManipulation) ConfirmScatter();
-            else if (GameState == GameState.ConfirmedScatter) StartPostScatter();
-        }
-
-        // Dev mode - Terrain
-        // Compute which cell the mouse is over
+        // Update Hover
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int cell = MapRenderer.Instance.ObjectTilemap.WorldToCell(worldPos);
-        MapTile currentTile = Game.Instance.Map.GetTile(cell.x, cell.y);
+        HoveredTile = Game.Instance.Map.GetTile(cell.x, cell.y);
 
+        // Buy Tiles
+        if (IsAcquiringTiles)
+        {
+            if (HoveredTile != null && !HelperFunctions.IsMouseOverUi())
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    TryToBuyTile(HoveredTile);
+                }
+            }
+        }
+
+        // Game Loop
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (GameState == GameState.Morning) StartScatter();
+            else if (GameState == GameState.Afternoon) ConfirmScatter();
+            else if (GameState == GameState.Evening) StartPostScatter();
+        }
+
+        UpdateDevModeInputs();
+    }
+
+    private void UpdateDevModeInputs()
+    {
         // Terrain
         if (UI_DevModePanel.Instance.IsChangeTerrainActive)
         {
-            if (currentTile != null && !HelperFunctions.IsMouseOverUi())
+            if (HoveredTile != null && !HelperFunctions.IsMouseOverUi())
             {
-                int currentTerrainIndex = DefDatabase<TerrainDef>.AllDefs.IndexOf(currentTile.Terrain.Def);
+                int currentTerrainIndex = DefDatabase<TerrainDef>.AllDefs.IndexOf(HoveredTile.Terrain.Def);
                 if (Input.GetMouseButtonDown(0))
                 {
                     int nextIndex = currentTerrainIndex + 1;
                     if (nextIndex == DefDatabase<TerrainDef>.AllDefs.Count) nextIndex = 0;
                     TerrainDef newTerrain = DefDatabase<TerrainDef>.AllDefs[nextIndex];
-                    SetTerrain(currentTile.Coordinates, newTerrain);
+                    SetTerrain(HoveredTile.Coordinates, newTerrain);
                 }
                 if (Input.GetMouseButtonDown(1))
                 {
                     int prevIndex = currentTerrainIndex - 1;
                     if (prevIndex == -1) prevIndex = DefDatabase<TerrainDef>.AllDefs.Count - 1;
                     TerrainDef newTerrain = DefDatabase<TerrainDef>.AllDefs[prevIndex];
-                    SetTerrain(currentTile.Coordinates, newTerrain);
+                    SetTerrain(HoveredTile.Coordinates, newTerrain);
                 }
             }
         }
 
         // Ownership
-        if ( UI_DevModePanel.Instance.IsToggleOwnershipActive)
+        if (UI_DevModePanel.Instance.IsToggleOwnershipActive)
         {
-            if (currentTile != null && !HelperFunctions.IsMouseOverUi())
+            if (HoveredTile != null && !HelperFunctions.IsMouseOverUi())
             {
-                if (Input.GetMouseButtonDown(0)) AddTileToGarden(currentTile);
-                if (Input.GetMouseButtonDown(1)) RemoveTileFromGarden(currentTile);
+                if (Input.GetMouseButtonDown(0)) AddTileToGarden(HoveredTile);
+                if (Input.GetMouseButtonDown(1)) RemoveTileFromGarden(HoveredTile);
             }
         }
     }
@@ -157,8 +173,12 @@ public class Game
     /// <summary>
     /// Scatters the objects around the garden.
     /// </summary>
-    public void StartDay()
+    public void StartScatter()
     {
+        GameState = GameState.Noon;
+
+        GameUI.Instance.DatePanel.Refresh();
+
         List<Object> remainingObjects = new List<Object>(Objects);
         List<MapTile> shuffledGardenTiles = Map.OwnedTiles.GetShuffledList();
 
@@ -175,11 +195,13 @@ public class Game
 
         DrawFullMap();
 
-        GameState = GameState.ScatterManipulation;
+        GameState = GameState.Afternoon;
 
         // UI
+        GameUI.Instance.DatePanel.Refresh();
         GameUI.Instance.ResourcePanel.Refresh();
         NestedTooltipManager.Instance.ResetTooltips();
+        GameUI.Instance.AcquireTilesToggle.Hide();
     }
 
     private void ConfirmScatter()
@@ -193,10 +215,11 @@ public class Game
         ApplyNewModifiers();
 
         // State
-        GameState = GameState.ConfirmedScatter;
+        GameState = GameState.Evening;
 
         // UI
         DrawFullMap();
+        GameUI.Instance.DatePanel.Refresh();
         GameUI.Instance.ResourcePanel.Refresh();
         NestedTooltipManager.Instance.ResetTooltips();
     }
@@ -277,6 +300,7 @@ public class Game
                 Resources.RemoveResources(NextTownMandate.OrderedResources);
 
                 // UI
+                GameUI.Instance.DatePanel.Refresh();
                 GameUI.Instance.ResourcePanel.Refresh();
                 GameUI.Instance.OrderPanel.Refresh();
 
@@ -419,22 +443,56 @@ public class Game
 
     public void EndDay()
     {
+        Map.ClearAllObjects();
+        DrawFullMap();
+        CurrentFinalResourceProduction.Clear();
+
+        StartNewDay();
+    }
+
+    #endregion
+
+    #region Morning
+
+    private void StartNewDay()
+    {
         Day++;
         Debug.Log($"Starting Day {Day}.");
 
-        Map.ClearAllObjects();
-        DrawFullMap();
-
-        CurrentFinalResourceProduction.Clear();
-
-        GameState = GameState.BeforeScatter;
+        GameState = GameState.Morning;
 
         // UI
         GameUI.Instance.DatePanel.Refresh();
         GameUI.Instance.ResourcePanel.Refresh();
         GameUI.Instance.OrderPanel.Refresh();
         NestedTooltipManager.Instance.ResetTooltips();
+        GameUI.Instance.AcquireTilesToggle.Show();
     }
+
+    public void SetAcquireTilesMode(bool value)
+    {
+        IsAcquiringTiles = value;
+        RefreshAcquiringTilesOverlays();
+    }
+
+    private void RefreshAcquiringTilesOverlays()
+    {
+        if (IsAcquiringTiles) UI_TileOverlayContainer.Instance.ShowTileCostOverlay();
+        else UI_TileOverlayContainer.Instance.Clear();
+    }
+
+    private void TryToBuyTile(MapTile tile)
+    {
+        if (!Resources.HasResources(tile.AcquireCost)) return; // not enough money
+
+        Resources.RemoveResources(tile.AcquireCost);
+        AddTileToGarden(tile);
+
+        // UI
+        GameUI.Instance.ResourcePanel.Refresh();
+        RefreshAcquiringTilesOverlays();
+    }
+
 
     #endregion
 
@@ -442,7 +500,7 @@ public class Game
 
     private void StartObjectDraft(string title, ObjectTierDef tier)
     {
-        GameState = GameState.ObjectDraft;
+        GameState = GameState.Night_ObjectDraft;
 
         // Get options
         List<ObjectDef> draftOptions = GetDraftOptions(tier);
@@ -451,6 +509,9 @@ public class Game
         string draftWindowTitle = title;
         string draftWindowSubtitle = $"Choose a {tier.Label} object to add to your inventory";
         UI_ObjectDraftWindow.Instance.ShowObjectDraft(draftWindowTitle, draftWindowSubtitle, draftOptions, OnObjectDrafted);
+
+        // UI
+        GameUI.Instance.DatePanel.Refresh();
     }
 
     private void OnObjectDrafted(List<IDraftable> selectedOptions)
@@ -486,7 +547,7 @@ public class Game
     /// </summary>
     private void StartOrderSelection()
     {
-        GameState = GameState.OrderSelection;
+        GameState = GameState.Night_OrderSelection;
 
         // Get options
         List<Order> orderOptions = DueOrders;
@@ -496,6 +557,10 @@ public class Game
         string draftWindowSubtitle = "Select the orders you want to deliver.";
         if (IsLastDayOfMonth) draftWindowSubtitle += "\nThe town mandate has already been payed.";
         UI_OrderSelectionWindow.Instance.ShowOrderSelection(draftWindowTitle, draftWindowSubtitle, orderOptions, OnOrdersSelected);
+
+
+        // UI
+        GameUI.Instance.DatePanel.Refresh();
     }
 
     private void OnOrdersSelected(List<IDraftable> selectedOptions)
@@ -549,7 +614,9 @@ public class Game
     {
         Resources.AddResources(res);
 
+        // UI
         GameUI.Instance.ResourcePanel.Refresh();
+        if (IsAcquiringTiles) RefreshAcquiringTilesOverlays();
     }
 
     public void AddOrUpgradeCustomer(CustomerDef def)
@@ -602,6 +669,15 @@ public class Game
         return monthNames[monthIndex];
     }
     public string CurrentMonthName => GetMonthName(Month);
+
+    public string GetCurrentTimeOfDay()
+    {
+        if (GameState == GameState.Morning) return "Morning";
+        if (GameState == GameState.Noon) return "Noon";
+        if (GameState == GameState.Afternoon) return "Afternoon";
+        if (GameState == GameState.Evening) return "Evening";
+        return "Night";
+    }
 
     public int GetWeekNumber()
     {
