@@ -18,7 +18,7 @@ public class TilemapTooltipController : MonoBehaviour
         {
             if (LastTile != null)
             {
-                NestedTooltipManager.Instance.NotifyObjectUnhovered(LastTile);
+                TooltipManager.Instance.NotifyObjectUnhovered(LastTile);
                 LastTile = null;
             }
             
@@ -33,8 +33,8 @@ public class TilemapTooltipController : MonoBehaviour
         // If we moved to a different cell or tile changed, reset timer & state
         if (currentTile != LastTile)
         {
-            if (LastTile != null) NestedTooltipManager.Instance.NotifyObjectUnhovered(LastTile);
-            if (currentTile != null) NestedTooltipManager.Instance.NotifyObjectHovered(currentTile);
+            if (LastTile != null) TooltipManager.Instance.NotifyObjectUnhovered(LastTile);
+            if (currentTile != null) TooltipManager.Instance.NotifyObjectHovered(currentTile);
 
             LastTile = currentTile;
         }

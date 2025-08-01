@@ -27,7 +27,7 @@ public class UI_Order : MonoBehaviour
         {
             GameObject.Instantiate(MissedOrderPrefab, MissedOrdersContainer.transform);
         }
-        MissedOrdersContainer.GetComponent<SimpleTooltipTarget>().Text = $"You have failed to deliver {numMissedOrders} orders in a row this customer. You will lose the game when failing to deliver {Game.CUSTOMER_ORDER_MISSES_IN_A_ROW_TO_LOSE_GAME} orders in a row.";
+        MissedOrdersContainer.GetComponent<UI_TooltipTarget_Simple>().Text = $"You have failed to deliver {numMissedOrders} orders in a row this customer. You will lose the game when failing to deliver {Game.CUSTOMER_ORDER_MISSES_IN_A_ROW_TO_LOSE_GAME} orders in a row.";
     }
 
     public void Init(TownMandate mandate)

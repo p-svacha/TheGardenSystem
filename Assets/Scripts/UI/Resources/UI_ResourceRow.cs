@@ -18,15 +18,15 @@ public class UI_ResourceRow : MonoBehaviour
         {
             ResourceProduction production = Game.Instance.CurrentFinalResourceProduction[res];
             PlusValueText.text = $"(+{production.GetValue()})";
-            PlusValueText.GetComponent<TooltipTarget>().Init(production);
+            PlusValueText.GetComponent<UI_TooltipTarget_Reference>().Init(production);
         }
         else
         {
             PlusValueText.text = "";
-            PlusValueText.GetComponent<TooltipTarget>().Disabled = true;
+            PlusValueText.GetComponent<UI_TooltipTarget_Reference>().Disabled = true;
         }
 
         // Tooltips
-        Icon.GetComponent<TooltipTarget>().Init(res);
+        Icon.GetComponent<UI_TooltipTarget_Reference>().Init(res);
     }
 }

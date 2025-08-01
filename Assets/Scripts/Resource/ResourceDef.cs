@@ -1,20 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceDef : Def, INestedTooltipTarget
+public class ResourceDef : Def, ITooltipTarget
 {
     new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Resources/" + DefName);
     public ResourceType Type { get; init; }
 
-    // INestedTooltipTaget
+    #region ITooltipTarget
+
     public string GetTooltipTitle() => LabelCap;
-    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
-    {
-        references = new List<INestedTooltipTarget>();
-        return Description;
-    }
+    public string GetTooltipBodyText(List<ITooltipTarget> dynamicReferences) => Description;
 
     public string NestedTooltipLinkId => $"Resource_{DefName}";
     public string NestedTooltipLinkText => $"<sprite name=\"{DefName}\">";
     public Color NestedTooltipLinkColor => Color.white;
+
+    #endregion
 }

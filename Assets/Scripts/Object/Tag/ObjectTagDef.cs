@@ -1,19 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectTagDef : Def, INestedTooltipTarget
+public class ObjectTagDef : Def, ITooltipTarget
 {
     public Color Color { get; init; } = new Color(1f, 0.5f, 0.5f);
     public string ColorHex => "#" + ColorUtility.ToHtmlStringRGB(Color);
 
-    #region INestedTooltipTarget
+    #region ITooltipTarget
 
     public string GetTooltipTitle() => LabelCapWord;
-    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
-    {
-        references = new List<INestedTooltipTarget>();
-        return Description;
-    }
+    public string GetTooltipBodyText(List<ITooltipTarget> dynamicReferences) => Description;
 
     public string NestedTooltipLinkId => $"ObjectTag_{DefName}";
     public string NestedTooltipLinkText => LabelCapWord;

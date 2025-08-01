@@ -200,7 +200,7 @@ public class Game
         // UI
         GameUI.Instance.DatePanel.Refresh();
         GameUI.Instance.ResourcePanel.Refresh();
-        NestedTooltipManager.Instance.ResetTooltips();
+        TooltipManager.Instance.ResetTooltips();
         GameUI.Instance.AcquireTilesToggle.Hide();
     }
 
@@ -221,7 +221,7 @@ public class Game
         DrawFullMap();
         GameUI.Instance.DatePanel.Refresh();
         GameUI.Instance.ResourcePanel.Refresh();
-        NestedTooltipManager.Instance.ResetTooltips();
+        TooltipManager.Instance.ResetTooltips();
     }
 
     /// <summary>
@@ -467,7 +467,7 @@ public class Game
         GameUI.Instance.DatePanel.Refresh();
         GameUI.Instance.ResourcePanel.Refresh();
         GameUI.Instance.OrderPanel.Refresh();
-        NestedTooltipManager.Instance.ResetTooltips();
+        TooltipManager.Instance.ResetTooltips();
         GameUI.Instance.AcquireTilesToggle.Show();
     }
 

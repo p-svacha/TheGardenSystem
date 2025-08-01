@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModifierDef : Def, INestedTooltipTarget
+public class ModifierDef : Def, ITooltipTarget
 {
     new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/ObjectModifiers/" + DefName);
 
@@ -28,13 +28,11 @@ public class ModifierDef : Def, INestedTooltipTarget
     }
 
 
-    #region INestedTooltipTarget
+    #region ITooltipTarget
 
     public string GetTooltipTitle() => LabelCapWord;
-    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
+    public string GetTooltipBodyText(List<ITooltipTarget> dynamicReferences)
     {
-        references = new List<INestedTooltipTarget>();
-
         string desc = Description;
         desc += $"\n\n{Effect.GetDescription()}";
 
@@ -43,7 +41,7 @@ public class ModifierDef : Def, INestedTooltipTarget
 
     public string NestedTooltipLinkId => $"ObjectModifierDef_{DefName}";
     public string NestedTooltipLinkText => LabelCapWord;
-    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
+    public Color NestedTooltipLinkColor => TooltipManager.DEFAULT_NESTED_LINK_COLOR;
 
     #endregion
 }

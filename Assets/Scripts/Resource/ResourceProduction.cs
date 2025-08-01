@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// An object storing information of how much of a specific resource is produced by an obect or a collection of objects.
 /// </summary>
-public class ResourceProduction : INestedTooltipTarget
+public class ResourceProduction : ITooltipTarget
 {
     /// <summary>
     /// Unique identifier that only this instance of ResourceProduction has.
@@ -100,14 +100,10 @@ public class ResourceProduction : INestedTooltipTarget
         return ordered;
     }
 
-    #region INestedTooltipTaget
+    #region ITooltipTaget
 
     public string GetTooltipTitle() => Label;
-    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
-    {
-        references = new List<INestedTooltipTarget>();
-        return GetBreakdownString();
-    }
+    public string GetTooltipBodyText(List<ITooltipTarget> dynamicReferences) => GetBreakdownString();
 
     public string NestedTooltipLinkId => $"ResProd_{Id}";
     public string NestedTooltipLinkText => $"{Resource.NestedTooltipLinkText} {GetValue()}";

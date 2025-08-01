@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 7234497042075388735}
   - component: {fileID: 3670121551408788513}
   - component: {fileID: 5642618993851640721}
-  - component: {fileID: 3731566162363701638}
+  - component: {fileID: 214588577443266328}
   m_Layer: 5
   m_Name: PlusValue
   m_TagString: Untagged
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &3731566162363701638
+--- !u!114 &214588577443266328
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3668811264160139550}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08c5335f527197142907ca5bcd2b1bce, type: 3}
+  m_Script: {fileID: 11500000, guid: f0da11a10724bfc41b5bcfeb0e1bb6e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Disabled: 0
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 191154700871766892}
   - component: {fileID: 3377405967121404507}
   - component: {fileID: 1072591618205576743}
-  - component: {fileID: 4332189630509467210}
+  - component: {fileID: 4789403760575079812}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -477,7 +477,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4332189630509467210
+--- !u!114 &4789403760575079812
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -486,7 +486,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6277577994869868988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08c5335f527197142907ca5bcd2b1bce, type: 3}
+  m_Script: {fileID: 11500000, guid: f0da11a10724bfc41b5bcfeb0e1bb6e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Disabled: 0

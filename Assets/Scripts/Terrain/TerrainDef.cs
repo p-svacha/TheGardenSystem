@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TerrainDef : Def, INestedTooltipTarget
+public class TerrainDef : Def, ITooltipTarget
 {
     new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Terrain/" + DefName);
 
@@ -44,13 +44,11 @@ public class TerrainDef : Def, INestedTooltipTarget
 
     public bool IsAffectedByFertility => NextFertilityTerrain != null || PrevFertilityTerrain != null;
 
-    #region INestedTooltipTarget
+    #region ITooltipTarget
 
     public string GetTooltipTitle() => LabelCapWord;
-    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
+    public string GetTooltipBodyText(List<ITooltipTarget> references)
     {
-        references = new List<INestedTooltipTarget>();
-
         string desc = Description;
 
         if (Effects.Count > 0)
@@ -68,7 +66,7 @@ public class TerrainDef : Def, INestedTooltipTarget
 
     public string NestedTooltipLinkId => $"TerrainDef_{DefName}";
     public string NestedTooltipLinkText => LabelCapWord;
-    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
+    public Color NestedTooltipLinkColor => TooltipManager.DEFAULT_NESTED_LINK_COLOR;
 
     #endregion
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MapTile : INestedTooltipTarget
+public class MapTile : ITooltipTarget
 {
     public Map Map { get; private set; }
     public Vector2Int Coordinates { get; private set; }
@@ -161,13 +161,11 @@ public class MapTile : INestedTooltipTarget
 
     #endregion
 
-    #region INestedTooltipTaget
+    #region ITooltipTaget
 
     public string GetTooltipTitle() => "";
-    public string GetTooltipBodyText(out List<INestedTooltipTarget> references)
+    public string GetTooltipBodyText(List<ITooltipTarget> dynamicReferences)
     {
-        references = new List<INestedTooltipTarget>();
-
         string bodyText = "";
 
         // Title (terrain + coordinates)
@@ -196,7 +194,7 @@ public class MapTile : INestedTooltipTarget
         if (HasObject)
         {
             bodyText += $"\n\n{Object.GetTooltipLink()}";
-            references.Add(Object);
+            dynamicReferences.Add(Object);
         }
 
         // Production (only during scatter)
@@ -216,7 +214,7 @@ public class MapTile : INestedTooltipTarget
                     if (baseValue != 0 || finalValue != 0) // Show breakdown when either base or final value is not 0
                     {
                         bodyText += "\n" + prod.GetTooltipLink();
-                        references.Add(prod);
+                        dynamicReferences.Add(prod);
                     }
                 }
             }
@@ -227,7 +225,7 @@ public class MapTile : INestedTooltipTarget
 
     public string NestedTooltipLinkId => $"MapTile_{Coordinates}";
     public string NestedTooltipLinkText => Terrain.LabelCap;
-    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
+    public Color NestedTooltipLinkColor => TooltipManager.DEFAULT_NESTED_LINK_COLOR;
 
     #endregion
 }

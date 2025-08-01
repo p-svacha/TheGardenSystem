@@ -6,21 +6,21 @@ using UnityEngine.EventSystems;
 
 
 /// <summary>
-/// Attach this to a UI element that should show a tooltip when hovered
+/// Attach this to a UI element that should show a tooltip of a specific referenced ITooltipTarget when hovered.
 /// </summary>
-public class TooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UI_TooltipTarget_Reference : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     /// <summary>
     /// The object the tooltip is shown for.
     /// </summary>
-    public INestedTooltipTarget TooltipObject { get; private set; }
+    public ITooltipTarget TooltipObject { get; private set; }
 
     public bool Disabled;
 
     /// <summary>
     /// Should be called once.
     /// </summary>
-    public void Init(INestedTooltipTarget target)
+    public void Init(ITooltipTarget target)
     {
         TooltipObject = target;
     }
@@ -29,13 +29,13 @@ public class TooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (Disabled) return;
-        NestedTooltipManager.Instance.NotifyObjectHovered(TooltipObject);
+        TooltipManager.Instance.NotifyObjectHovered(TooltipObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (Disabled) return;
-        NestedTooltipManager.Instance.NotifyObjectUnhovered(TooltipObject);
+        TooltipManager.Instance.NotifyObjectUnhovered(TooltipObject);
     }
 }
 

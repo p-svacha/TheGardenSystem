@@ -4,17 +4,18 @@ using UnityEngine.EventSystems;
 using TMPro;
 
 /// <summary>
+/// Actual tooltip window that gets spawned and managed by the TooltipManager.
 /// IMPORTANT: UI Element holding this script must have:
 ///   > Anchor and Pivot at 0/0
 ///   > A NestedTooltipTextEventHandler script attached to the BodyText
 /// </summary>
-public class TooltipWindow : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UI_Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Image OuterFrame;
     public TextMeshProUGUI TitleText;
     public TextMeshProUGUI BodyText;
 
-    public INestedTooltipTarget Target;
+    public ITooltipTarget Target;
     public Vector3 MousePosition { get; private set; }
     public bool IsPositioned { get; set; }
     public float CreatedAt { get; private set; }

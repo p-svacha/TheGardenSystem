@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ObjectDef : Def, IDraftable, INestedTooltipTarget
+public class ObjectDef : Def, IDraftable, ITooltipTarget
 {
     public float Scale { get; init; } = 1f;
     public ObjectTierDef Tier { get; init; } = null;
@@ -65,13 +65,11 @@ public class ObjectDef : Def, IDraftable, INestedTooltipTarget
 
     #endregion
 
-    #region INestedTooltipTarget
+    #region ITooltipTarget
 
     public string GetTooltipTitle() => LabelCapWord;
-    public string GetTooltipBodyText(out List<INestedTooltipTarget> dynamicReferences)
+    public string GetTooltipBodyText(List<ITooltipTarget> dynamicReferences)
     {
-        dynamicReferences = new List<INestedTooltipTarget>();
-
         // Tags
         string tags = "";
         foreach (ObjectTagDef tag in Tags)
@@ -101,7 +99,7 @@ public class ObjectDef : Def, IDraftable, INestedTooltipTarget
 
     public string NestedTooltipLinkId => $"ObjectDef_{DefName}";
     public string NestedTooltipLinkText => LabelCapWord;
-    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
+    public Color NestedTooltipLinkColor => TooltipManager.DEFAULT_NESTED_LINK_COLOR;
 
     #endregion
 }

@@ -11,7 +11,7 @@ public abstract class ObjectEffect
     /// The object that is the source of this effect, as a tooltip target.
     /// Should be set in ResolveReferences of the Def holding the effect.
     /// </summary>
-    public INestedTooltipTarget EffectSource { get; set; }
+    public ITooltipTarget EffectSource { get; set; }
 
     /// <summary>
     /// The criteria of when this effect should be triggered.

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Object : INestedTooltipTarget
+public class Object : ITooltipTarget
 {
     public ObjectDef Def { get; private set; }
 
@@ -104,14 +104,12 @@ public class Object : INestedTooltipTarget
     #endregion
 
 
-    #region INestedTooltipTaget
+    #region ITooltipTaget
 
     public string GetTooltipTitle() => LabelCapWord;
-    public string GetTooltipBodyText(out List<INestedTooltipTarget> dynamicReferences)
+    public string GetTooltipBodyText(List<ITooltipTarget> dynamicReferences)
     {
-        dynamicReferences = new List<INestedTooltipTarget>();
-
-        string defDesc = Def.GetTooltipBodyText(out dynamicReferences);
+        string defDesc = Def.GetTooltipBodyText(dynamicReferences);
 
         // Modifiers
         string modifiersDesc = "";
@@ -130,7 +128,7 @@ public class Object : INestedTooltipTarget
 
     public string NestedTooltipLinkId => $"Object_{Def.DefName}";
     public string NestedTooltipLinkText => LabelCapWord;
-    public Color NestedTooltipLinkColor => NestedTooltipManager.DEFAULT_NESTED_LINK_COLOR;
+    public Color NestedTooltipLinkColor => TooltipManager.DEFAULT_NESTED_LINK_COLOR;
 
     #endregion
 }

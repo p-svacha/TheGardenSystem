@@ -6,26 +6,26 @@ using System.Linq;
 
 /// <summary>
 /// Attach this to the container in the UI canvas that will hold all tooltips.
+/// <br/>The TooltipManager handles the spawning and removing of all tooltips, including nested tooltips.
 /// </summary>
-public class NestedTooltipManager : MonoBehaviour
+public class TooltipManager : MonoBehaviour
 {
-    public static NestedTooltipManager Instance;
+    public static TooltipManager Instance;
     private bool DEBUG_ENABLED = false;
 
     private const float TOOLTIP_DELAY = 1f; // The time in seconds that something needs to get hovered to spawn a tooltip
-    private const float PIN_DELAY = 1.5f; // The time in seconds it takes for a tooltip to become pinned, allowing to hover into it and spawn nested tooltips
     public static Color DEFAULT_NESTED_LINK_COLOR = new Color(0.624f, 0.478f, 0.325f);
     private const int MOUSE_OFFSET = 2; // px
     private const int SCREEN_EDGE_OFFSET = 5; // px
 
     [Header("Prefabs")]
-    public TooltipWindow TooltipPrefab;
+    public UI_Tooltip TooltipPrefab;
 
 
     /// <summary>
-    /// The INestedTooltipTarget that is currently being hovered, may be null
+    /// The ITooltipTarget that is currently being hovered, may be null
     /// </summary>
-    private INestedTooltipTarget CurrentHoveredTarget;
+    private ITooltipTarget CurrentHoveredTarget;
 
     /// <summary>
     /// Flag if CurrentHoveredTarget will spawn a new root tooltip if hovered long enough.
@@ -39,19 +39,19 @@ public class NestedTooltipManager : MonoBehaviour
     private float HoverTimer;
 
     // Stack of open windows in order of creation
-    private readonly List<TooltipWindow> Windows = new List<TooltipWindow>();
+    private readonly List<UI_Tooltip> Windows = new List<UI_Tooltip>();
 
     /// <summary>
-    /// Dictionary holding information about which TMPro link id's belong to which INestedTooltipTargets.
+    /// Dictionary holding information about which TMPro link id's belong to which ITooltipTargets.
     /// <br/>Targets referenced here are always the same and never change (usually Defs).
     /// </summary>
-    private static Dictionary<string, INestedTooltipTarget> StaticLinkTargets;
+    private static Dictionary<string, ITooltipTarget> StaticLinkTargets;
 
     /// <summary>
-    /// Dictionary holding information about which TMPro link id's, that are currently active in a shown tooltip, belong to which INestedTooltipTargets.
+    /// Dictionary holding information about which TMPro link id's, that are currently active in a shown tooltip, belong to which ITooltipTargets.
     /// <br/>Targets referenced here may be temporary objects that only exist in the current context.
     /// </summary>
-    private static Dictionary<string, INestedTooltipTarget> DynamicLinkTargets;
+    private static Dictionary<string, ITooltipTarget> DynamicLinkTargets;
 
     private void Awake()
     {
@@ -63,12 +63,12 @@ public class NestedTooltipManager : MonoBehaviour
     private void Start()
     {
         InitStaticLinkTargets();
-        DynamicLinkTargets = new Dictionary<string, INestedTooltipTarget>();
+        DynamicLinkTargets = new Dictionary<string, ITooltipTarget>();
     }
 
     private void InitStaticLinkTargets()
     {
-        StaticLinkTargets = new Dictionary<string, INestedTooltipTarget>();
+        StaticLinkTargets = new Dictionary<string, ITooltipTarget>();
 
         // ObjectDefs
         foreach (ObjectDef def in DefDatabase<ObjectDef>.AllDefs) StaticLinkTargets.Add(def.NestedTooltipLinkId, def);
@@ -121,7 +121,7 @@ public class NestedTooltipManager : MonoBehaviour
 
     #region Positioning
 
-    private void PositionTooltip(TooltipWindow tooltip)
+    private void PositionTooltip(UI_Tooltip tooltip)
     {
         RectTransform rect = tooltip.GetComponent<RectTransform>();
         Vector3 originalPosition = tooltip.MousePosition + new Vector3(MOUSE_OFFSET, MOUSE_OFFSET, 0);
@@ -152,7 +152,7 @@ public class NestedTooltipManager : MonoBehaviour
 
     #region Internal Tooltip Handling
 
-    private void ShowRootTooltip(INestedTooltipTarget target)
+    private void ShowRootTooltip(ITooltipTarget target)
     {
         // Always destroy all previous tooltips since this a new root tooltip
         if(Windows.Count > 0) DestroyAllWindows();
@@ -164,18 +164,19 @@ public class NestedTooltipManager : MonoBehaviour
     /// <summary>
     /// Shows a tooltip without destroying existing tooltips.
     /// </summary>
-    private void ShowTooltip(INestedTooltipTarget target)
+    private void ShowTooltip(ITooltipTarget target)
     {
         // Create new tooltip
-        TooltipWindow tooltip = Instantiate(TooltipPrefab, transform);
+        UI_Tooltip tooltip = Instantiate(TooltipPrefab, transform);
         string titleText = target.GetTooltipTitle();
-        string bodyText = target.GetTooltipBodyText(out List<INestedTooltipTarget> dynamicTooltipReferences);
+        List<ITooltipTarget> dynamicTooltipReferences = new List<ITooltipTarget>();
+        string bodyText = target.GetTooltipBodyText(dynamicTooltipReferences);
         tooltip.Init(titleText, bodyText);
         tooltip.Target = target;
         Windows.Add(tooltip);
 
         // Register tooltip references
-        foreach (INestedTooltipTarget referencedTarget in dynamicTooltipReferences)
+        foreach (ITooltipTarget referencedTarget in dynamicTooltipReferences)
         {
             string linkId = referencedTarget.NestedTooltipLinkId;
             if (DynamicLinkTargets.ContainsKey(linkId))
@@ -219,9 +220,9 @@ public class NestedTooltipManager : MonoBehaviour
     #region Events
 
     /// <summary>
-    /// Gets called when a INestedTooltipTarget starts getting hovered on any GameObject (UI element, tilemap tile or 3D object).
+    /// Gets called when a ITooltipTarget starts getting hovered on any GameObject (UI element, tilemap tile or 3D object).
     /// </summary>
-    public void NotifyObjectHovered(INestedTooltipTarget target, bool isRoot = true)
+    public void NotifyObjectHovered(ITooltipTarget target, bool isRoot = true)
     {
         if (CurrentHoveredTarget != null)
         {
@@ -235,9 +236,9 @@ public class NestedTooltipManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets called when a INestedTooltipTarget stops getting hovered on any GameObject (UI element, tilemap tile or 3D object).
+    /// Gets called when a ITooltipTarget stops getting hovered on any GameObject (UI element, tilemap tile or 3D object).
     /// </summary>
-    public void NotifyObjectUnhovered(INestedTooltipTarget target)
+    public void NotifyObjectUnhovered(ITooltipTarget target)
     {
         CurrentHoveredTarget = null;
         HoverTimer = 0f;
@@ -252,7 +253,7 @@ public class NestedTooltipManager : MonoBehaviour
         {
             throw new System.Exception($"The provided linkId {linkId} is neither registered in StaticLinkTargets nor in DynamicLinkTargets. If it's a reference to a static object, such as a Def, make sure to register it in NestedTooltipManager.InitStaticLinkTargets(). If it's a reference to a dynamic object from another tooltip, make sure to add it to the out List references of that ITooltipTargets GetToolTipBodyText().\n\nStatic Links:\n{StaticLinkTargets.Keys.ToList().DebugList()}");
         }
-        INestedTooltipTarget target = StaticLinkTargets.ContainsKey(linkId) ? StaticLinkTargets[linkId] : DynamicLinkTargets[linkId];
+        ITooltipTarget target = StaticLinkTargets.ContainsKey(linkId) ? StaticLinkTargets[linkId] : DynamicLinkTargets[linkId];
 
         // Redirect to default notify
         NotifyObjectHovered(target, isRoot);
@@ -267,7 +268,7 @@ public class NestedTooltipManager : MonoBehaviour
         {
             throw new System.Exception($"The provided linkId {linkId} is neither registered in StaticLinkTargets nor in DynamicLinkTargets. If it's a reference to a static object, such as a Def, make sure to register it in NestedTooltipManager.InitStaticLinkTargets(). If it's a reference to a dynamic object from another tooltip, make sure to add it to the out List references of that ITooltipTargets GetToolTipBodyText().\n\nStatic Links:\n{StaticLinkTargets.Keys.ToList().DebugList()}");
         }
-        INestedTooltipTarget target = StaticLinkTargets.ContainsKey(linkId) ? StaticLinkTargets[linkId] : DynamicLinkTargets[linkId];
+        ITooltipTarget target = StaticLinkTargets.ContainsKey(linkId) ? StaticLinkTargets[linkId] : DynamicLinkTargets[linkId];
 
         // Redirect to default notify
         NotifyObjectUnhovered(target);

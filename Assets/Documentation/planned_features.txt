@@ -9,6 +9,7 @@ add shop:
 	discount on 1 random object
 
 lenses:
+	use already implemented tile ui (used for buying tiles)
 	improve tile ui overlay performance
 		maybe instantiate once at start for every tile and then just show/hide/update text?
 	add lenses during scatter manipulation
@@ -111,12 +112,15 @@ game over logic:
 		add this as a note somehwere
 
 ui improvements:
+	use more bullet points like in object tooltip
+		centralize color and ascii thing for easy use
+		use in terrain for "turns into x at y fertility"
+		use in object draft effect section, left attached
 	in tag tooltip, show owned objects of that tag (grouped by sector)
 	show object tier in tooltip
 	show resource type in resource tooltip
 	when selecting object, show amound of currently owned
 	in object draft, make more space for effects
-		also add bullet points for effects and make them left-attached, like in object tooltip
 
 sectors (maybe 'plots'):
 	instead of having one centralized inventory, where the objects get scattered randomly across the whole garden, the garden can be split in sectors
