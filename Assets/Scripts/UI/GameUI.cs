@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
@@ -20,10 +21,16 @@ public class GameUI : MonoBehaviour
     public UI_ResourcePanel ResourcePanel;
     public UI_OrderPanel OrderPanel;
     public UI_Toggle AcquireTilesToggle;
+    public Button ShopButton;
 
     private void Awake()
     {
         Instance = this;
         _TMPResourceSpriteAsset = null;
+    }
+
+    private void OnEnable()
+    {
+        ShopButton.onClick.AddListener(UI_ShopWindow.Instance.Show);
     }
 }

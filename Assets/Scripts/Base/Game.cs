@@ -13,6 +13,8 @@ public class Game
     public const int DAYS_PER_YEAR = MONTHS_PER_YEAR * DAYS_PER_MONTH;
     public const int CUSTOMER_ORDER_MISSES_IN_A_ROW_TO_LOSE_GAME = 2;
     public const int COST_PER_TILE_RING = 5;
+    public const float RESOURCE_SELL_VALUE = 0.5f;
+    public const float RESOURCE_BUY_PRICE = 2f;
 
     // State
     public GameState GameState { get; private set; }
@@ -32,6 +34,10 @@ public class Game
     public Customer TownCouncil { get; private set; }
     public List<TownMandate> TownMandates { get; private set; }
     public TownMandate NextTownMandate => (IsLastDayOfMonth && Game.Instance.GameState > GameState.Evening) ? TownMandates[Month + 1] : TownMandates[Month];
+
+    // Shop
+    public ResourceCollection ShopResources { get; private set; }
+    public Dictionary<ObjectDef, int> ShopObjects { get; private set; }
 
     // Visual
     public bool IsShowingGridOverlay { get; private set; }
@@ -460,6 +466,7 @@ public class Game
     {
         Day++;
         Debug.Log($"Starting Day {Day}.");
+        if (Day % DAYS_PER_MONTH == 1) StartNewMonth();
 
         GameState = GameState.Morning;
 
@@ -469,6 +476,15 @@ public class Game
         GameUI.Instance.OrderPanel.Refresh();
         TooltipManager.Instance.ResetTooltips();
         GameUI.Instance.AcquireTilesToggle.Show();
+    }
+
+    private void StartNewMonth()
+    {
+        Debug.Log($"Starting Month {CurrentMonthName}.");
+
+        // Shop restock
+        ShopResources = new ResourceCollection(ResourceType.MarketResource);
+        ShopObjects = new Dictionary<ObjectDef, int>();
     }
 
     public void SetAcquireTilesMode(bool value)

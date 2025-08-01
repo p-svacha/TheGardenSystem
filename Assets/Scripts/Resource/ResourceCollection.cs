@@ -21,10 +21,24 @@ public class ResourceCollection : MonoBehaviour
         Resources = res;
     }
 
+    /// <summary>
+    /// New resource collection with an empty entry for each resource of the given category.
+    /// </summary>
+    public ResourceCollection(ResourceType type)
+    {
+        Resources = new Dictionary<ResourceDef, int>();
+        foreach (ResourceDef res in DefDatabase<ResourceDef>.AllDefs.Where(r => r.Type == type)) Resources.Add(res, 0);
+    }
+
     public ResourceCollection(ResourceCollection orig)
     {
         Resources = new Dictionary<ResourceDef, int>();
         foreach (var kvp in orig.Resources) Resources.Increment(kvp.Key, kvp.Value);
+    }
+
+    public Dictionary<ResourceDef, int> GetResourcesOfType(ResourceType type)
+    {
+        return Resources.Where(r => r.Key.Type == type).ToDictionary(x => x.Key, x => x.Value);
     }
 
     public void AddResource(ResourceDef def, int amount)
