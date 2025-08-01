@@ -246,6 +246,7 @@ public static class ObjectDefs
             DefName = "VerdantIdol",
             Label = "verdant idol",
             Description = "Its roots twist deeper than the soil. Growth listens when it speaks.",
+            Scale = 1.1f,
             Tier = ObjectTierDefOf.Epic,
             Tags = new List<ObjectTagDef>()
             {
@@ -307,6 +308,7 @@ public static class ObjectDefs
             DefName = "EmberCore",
             Label = "ember core",
             Description = "Still hot from wherever it came from. Burn carefully, or burn everything.",
+            Scale = 1.1f,
             Tier = ObjectTierDefOf.Epic,
             Tags = new List<ObjectTagDef>()
             {
@@ -354,6 +356,7 @@ public static class ObjectDefs
             DefName = "BloomingPavillon",
             Label = "blooming pavillon",
             Description = "Built for nothing but beauty.",
+            Scale = 1.1f,
             Tier = ObjectTierDefOf.Epic,
             Tags = new List<ObjectTagDef>()
             {
@@ -404,6 +407,57 @@ public static class ObjectDefs
                     },
                 },
             },
+        },
+
+        new ObjectDef()
+        {
+            DefName = "BronzeCoin",
+            Label = "bronze coin",
+            Description = "An old coin that's not worth a lot, but better than nothing.",
+            Scale = 0.8f,
+            Tier = ObjectTierDefOf.Common,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Metal,
+            },
+            NativeProduction = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Gold, 1 },
+            }
+        },
+
+        new ObjectDef()
+        {
+            DefName = "SilverCoin",
+            Label = "silver coin",
+            Description = "A valuable coin providing some income.",
+            Scale = 1f,
+            Tier = ObjectTierDefOf.Rare,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Metal,
+            },
+            NativeProduction = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Gold, 2 },
+            }
+        },
+
+        new ObjectDef()
+        {
+            DefName = "GoldCoin",
+            Label = "gold coin",
+            Description = "A precious coin worth a lot.",
+            Scale = 1.1f,
+            Tier = ObjectTierDefOf.Epic,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Metal,
+            },
+            NativeProduction = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Gold, 3 },
+            }
         },
     };
 }

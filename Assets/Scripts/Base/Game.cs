@@ -208,7 +208,7 @@ public class Game
     {
         CurrentFinalResourceProduction = GetCurrentScatterProduction();
 
-        ApplyMarketResources();
+        ApplyMarketResourcesAndCurrency();
         ApplyAbstractResources();
 
         DecrementModifierDurations();
@@ -227,7 +227,7 @@ public class Game
     /// <summary>
     /// Adds all market resources produced today to the resource pool.
     /// </summary>
-    private void ApplyMarketResources()
+    private void ApplyMarketResourcesAndCurrency()
     {
         ResourceCollection marketResourcesToAdd = new ResourceCollection();
         foreach (var kvp in CurrentFinalResourceProduction)
@@ -235,7 +235,7 @@ public class Game
             ResourceDef resource = kvp.Key;
             ResourceProduction production = kvp.Value;
 
-            if (resource.Type == ResourceType.MarketResource)
+            if (resource.Type == ResourceType.MarketResource || resource.Type == ResourceType.Currency)
             {
                 marketResourcesToAdd.AddResource(resource, production.GetValue());
             }

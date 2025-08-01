@@ -362,6 +362,7 @@
             DefName = "VerdantIdol",
             Label = "verdant idol",
             Description = "Its roots twist deeper than the soil. Growth listens when it speaks.",
+            Scale = 1.1f,
             Tier = ObjectTierDefOf.Epic,
             Tags = new List<ObjectTagDef>()
             {
@@ -423,6 +424,7 @@
             DefName = "EmberCore",
             Label = "ember core",
             Description = "Still hot from wherever it came from. Burn carefully, or burn everything.",
+            Scale = 1.1f,
             Tier = ObjectTierDefOf.Epic,
             Tags = new List<ObjectTagDef>()
             {
@@ -470,6 +472,7 @@
             DefName = "BloomingPavillon",
             Label = "blooming pavillon",
             Description = "Built for nothing but beauty.",
+            Scale = 1.1f,
             Tier = ObjectTierDefOf.Epic,
             Tags = new List<ObjectTagDef>()
             {
@@ -520,6 +523,57 @@
                     },
                 },
             },
+        },
+
+        new ObjectDef()
+        {
+            DefName = "BronzeCoin",
+            Label = "bronze coin",
+            Description = "An old coin that's not worth a lot, but better than nothing.",
+            Scale = 0.8f,
+            Tier = ObjectTierDefOf.Common,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Metal,
+            },
+            NativeProduction = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Gold, 1 },
+            }
+        },
+
+        new ObjectDef()
+        {
+            DefName = "SilverCoin",
+            Label = "silver coin",
+            Description = "A valuable coin providing some income.",
+            Scale = 1f,
+            Tier = ObjectTierDefOf.Rare,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Metal,
+            },
+            NativeProduction = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Gold, 2 },
+            }
+        },
+
+        new ObjectDef()
+        {
+            DefName = "GoldCoin",
+            Label = "gold coin",
+            Description = "A precious coin worth a lot.",
+            Scale = 1.1f,
+            Tier = ObjectTierDefOf.Epic,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Metal,
+            },
+            NativeProduction = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Gold, 3 },
+            }
         },
     };
 
@@ -677,6 +731,14 @@
             Description = "High-value, non-essential objects prized for beauty or refinement. Often generate Ornaments or synergize with aesthetic effects.",
             Color = new Color(0.85f, 0.65f, 0.8f),
         },
+
+        new ObjectTagDef()
+        {
+            DefName = "Metal",
+            Label = "metal",
+            Description = "Forged or naturally occurring metallic objects. Often conductive, durable, or valuable.",
+            Color = new Color(0.75f, 0.75f, 0.8f),
+        }
     };
 
 --- ObjectTierDefs.cs ---
@@ -687,6 +749,7 @@
             DefName = "Common",
             Label = "common",
             Description = "Most common objects that are drafted at the end of each week.",
+            MarketValue = 10,
             // Power level guideline: 100%
         },
 
@@ -695,6 +758,7 @@
             DefName = "Rare",
             Label = "rare",
             Description = "Powerful rare objects that are harder to acquire. A Rare object is drafted at the end of each week.",
+            MarketValue = 20,
             // Power level guideline: 200% 
         },
 
@@ -703,6 +767,7 @@
             DefName = "Epic",
             Label = "epic",
             Description = "Very powerful but rare objects. An epic object is drafted at the end of each month (every 4th week).",
+            MarketValue = 40,
             // Power level guideline: 400% 
         },
 
@@ -711,6 +776,7 @@
             DefName = "Legendary",
             Label = "legendary",
             Description = "The most powerful objects. Legendary objects cannot be acquired through drafting.",
+            MarketValue = 80,
             // Power level guideline: 800% 
         },
 
@@ -727,6 +793,7 @@
             DefName = "Special",
             Label = "special",
             Description = "Extraordinary objects with extraordinary origin, effects and purposes. Special objects cannot be acquired through drafting.",
+            MarketValue = 30,
             // Power level guideline: Variable, depending on object
         },
     };

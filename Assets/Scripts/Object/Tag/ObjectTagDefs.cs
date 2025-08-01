@@ -155,5 +155,13 @@ public static class ObjectTagDefs
             Description = "High-value, non-essential objects prized for beauty or refinement. Often generate Ornaments or synergize with aesthetic effects.",
             Color = new Color(0.85f, 0.65f, 0.8f),
         },
+
+        new ObjectTagDef()
+        {
+            DefName = "Metal",
+            Label = "metal",
+            Description = "Forged or naturally occurring metallic objects. Often conductive, durable, or valuable.",
+            Color = new Color(0.75f, 0.75f, 0.8f),
+        }
     };
 }

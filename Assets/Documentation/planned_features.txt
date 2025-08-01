@@ -1,21 +1,14 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
-currency:
-	add objects to produce gold
-
-change claim system to make tiles buyable with currency:
-	cost increases every "ring" of tiles
-	clicking on tile during morning acquires it if can afford
-	make cost overlay red when cant afford
-
 add shop:
 	in the shop you buy and sell resources
 	all resources can be sold for 1 and bought for 2 gold
 	the shop also has a selection of objects of different tiers that can be bought
 		common,rare,epic,legendary
 	shop stock refreshes each month
+	discount on 1 random object
 
-lenses
+lenses:
 	improve tile ui overlay performance
 		maybe instantiate once at start for every tile and then just show/hide/update text?
 	add lenses during scatter manipulation
@@ -44,12 +37,6 @@ game phase terminology:
 		afternoon: scatter can be inspected and maybe manipulated
 		evening: the harvest happens, each tile gives the resources it produces with little animation one-by-one, no player input
 		night: end-of-day windows appear, like order delivery selection, object draft, research draft, etc.
-
-object scale:
-	make ObjectDefs have a scale value (default = 1f)
-	in maprenderer when creating tiles for objects, apply that scale
-	make some epic and legendary objects bigger
-	alternatively just lower the sprite PPU on these sprites
 
 rework town mandates to be more dynamic:	
 	include list of months they can appear

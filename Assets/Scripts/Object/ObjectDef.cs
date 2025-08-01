@@ -3,11 +3,14 @@ using System.Collections.Generic;
 
 public class ObjectDef : Def, IDraftable, INestedTooltipTarget
 {
+    public float Scale { get; init; } = 1f;
     public ObjectTierDef Tier { get; init; } = null;
     public List<ObjectTagDef> Tags { get; init; } = new();
     public Dictionary<ResourceDef, int> NativeProduction { private get; init; } = new();
     public List<ObjectEffect> Effects { get; init; } = new();
-    new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Objects/" + DefName);
+
+    private Sprite _Sprite;
+    new public Sprite Sprite => _Sprite;
 
     private ResourceCollection _NativeProduction;
     public ResourceCollection GetNativeProduction() => _NativeProduction;
@@ -25,6 +28,8 @@ public class ObjectDef : Def, IDraftable, INestedTooltipTarget
 
     public override void ResolveReferences()
     {
+        Sprite origSprite = ResourceManager.LoadSprite("Sprites/Objects/" + DefName);
+        _Sprite = Sprite.Create(origSprite.texture, origSprite.rect, new Vector2(0.5f, 0.5f), 1024 / Scale);
         _NativeProduction = new ResourceCollection(NativeProduction);
     }
 
