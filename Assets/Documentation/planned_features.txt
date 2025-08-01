@@ -2,7 +2,6 @@ FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
 currency:
 	add objects to produce gold
-	add gold reward value to customer defs (as gold per order level)
 
 change claim system to make tiles buyable with currency:
 	cost increases every "ring" of tiles

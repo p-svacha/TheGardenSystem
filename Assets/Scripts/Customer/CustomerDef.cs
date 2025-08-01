@@ -27,6 +27,11 @@ public class CustomerDef : Def
     /// </summary>
     public Dictionary<int, ResourceCollection> OrderIncreases { get; init; }
 
+    /// <summary>
+    /// The amount of gold the player receives for completing an order per order level.
+    /// </summary>
+    public int GoldRewardPerLevel { get; init; }
+
     public override bool Validate()
     {
         if (IsWeeklyCustomer)

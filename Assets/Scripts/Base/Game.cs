@@ -340,6 +340,7 @@ public class Game
             if (deliveredOrders.Contains(order))
             {
                 Resources.RemoveResources(order.OrderedResources);
+                Resources.AddResources(order.Reward);
                 order.Customer.ResetMissedOrders();
             }
             else
@@ -372,8 +373,9 @@ public class Game
         foreach (Customer customer in WeeklyCustomers)
         {
             ResourceCollection customerOrder = customer.GetCurrentLevelOrder();
+            ResourceCollection reward = customer.GetCurrentLevelReward();
             int targetWeek = isFirstWeekOrder ? 1 : GetWeekNumber() + 1;
-            ActiveOrders.Add(new Order(customer, targetWeek * DAYS_PER_WEEK, customerOrder));
+            ActiveOrders.Add(new Order(customer, targetWeek * DAYS_PER_WEEK, customerOrder, reward));
         }
     }
 

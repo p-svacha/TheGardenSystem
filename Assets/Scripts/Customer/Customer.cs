@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -46,6 +47,14 @@ public class Customer
         }
 
         return total;
+    }
+
+    public ResourceCollection GetCurrentLevelReward()
+    {
+        return new ResourceCollection(new Dictionary<ResourceDef, int>()
+        {
+            { ResourceDefOf.Gold, Def.GoldRewardPerLevel * OrderLevel }
+        });
     }
 
     public string Label => Def.Label;

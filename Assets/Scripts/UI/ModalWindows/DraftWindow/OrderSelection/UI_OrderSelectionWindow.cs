@@ -52,6 +52,7 @@ public class UI_OrderSelectionWindow : UI_WindowBase
         foreach(Order order in ordersToDeliver)
         {
             RemainingResources.RemoveResources(order.OrderedResources);
+            RemainingResources.AddResources(order.Reward);
         }
 
         // Display

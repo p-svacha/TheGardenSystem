@@ -10,7 +10,6 @@ public class UI_OrderPanel : MonoBehaviour
     public TextMeshProUGUI DueResourcesText;
 
     public TextMeshProUGUI WeeklyDueText;
-    public TextMeshProUGUI WeeklyResourcesText;
     public GameObject WeeklyContainer;
 
     public TextMeshProUGUI MandateDueText;
@@ -45,15 +44,11 @@ public class UI_OrderPanel : MonoBehaviour
         DueResourcesText.text = dueResources.GetAsSingleLinkedString();
 
         // Weekly orders
-        ResourceCollection weeklyRes = new ResourceCollection();
-        foreach (Order order in dueWeeklyOrders) weeklyRes.AddResources(order.OrderedResources);
-        WeeklyResourcesText.text = weeklyRes.GetAsSingleLinkedString();
-
         int daysToNextWeekly = nextDueDay - Game.Instance.Day + 1;
         WeeklyDueText.text = $"Due in {daysToNextWeekly} days";
         if (daysToNextWeekly == 1) WeeklyDueText.text = "Due today";
 
-        HelperFunctions.DestroyAllChildredImmediately(WeeklyContainer, skipElements: 3);
+        HelperFunctions.DestroyAllChildredImmediately(WeeklyContainer, skipElements: 2);
         foreach (Order order in dueWeeklyOrders)
         {
             UI_Order elem = GameObject.Instantiate(OrderPrefab, WeeklyContainer.transform);

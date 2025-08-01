@@ -21,12 +21,18 @@ public class Order : IDraftable
     /// </summary>
     public ResourceCollection OrderedResources { get; protected set; }
 
+    /// <summary>
+    /// The resources that the player receives upon completion of this order.
+    /// </summary>
+    public ResourceCollection Reward { get; protected set; }
+
     public Order() { }
-    public Order(Customer customer, int day, ResourceCollection orderedResources)
+    public Order(Customer customer, int day, ResourceCollection orderedResources, ResourceCollection reward)
     {
         Customer = customer;
         DueDay = day;
         OrderedResources = orderedResources;
+        Reward = reward;
     }
 
     public virtual string Label => Customer.LabelCapWord;

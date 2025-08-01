@@ -7,6 +7,7 @@ public class UI_OrderSelectionOption : UI_DraftOption
     [Header("Elements")]
     public TextMeshProUGUI CustomerNameText;
     public TextMeshProUGUI ResourcesText;
+    public TextMeshProUGUI RewardText;
     public Image CheckmarkImage;
 
     public override void OnInit(IDraftable option)
@@ -15,6 +16,7 @@ public class UI_OrderSelectionOption : UI_DraftOption
 
         CustomerNameText.text = order.Customer.LabelCapWord;
         ResourcesText.text = order.OrderedResources.GetAsSingleLinkedString();
+        RewardText.text = order.Reward.GetAsSingleLinkedString();
     }
 
     public override void SetSelected(bool value)
