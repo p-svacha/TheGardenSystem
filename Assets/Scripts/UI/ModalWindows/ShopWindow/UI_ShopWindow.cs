@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System;
+using System.Collections.Generic;
 
 public class UI_ShopWindow : UI_WindowBase
 {
@@ -17,6 +19,11 @@ public class UI_ShopWindow : UI_WindowBase
     public TextMeshProUGUI SummaryText;
     public Button CloseButton;
 
+    /// <summary>
+    /// Positive means player gets gold, negative player pays gold.
+    /// </summary>
+    public int CurrentFinalBalance { get; private set; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -27,39 +34,66 @@ public class UI_ShopWindow : UI_WindowBase
 
     public void Show()
     {
+        // Header
+        RestockText.text = $"Next restock in {Game.Instance.DaysUntilNextMonth()} days";
+
+        // Sell
         string sellText = $"sell for {Game.RESOURCE_SELL_VALUE} {ResourceDefOf.Gold.GetTooltipLink()} / resource";
-        YourGoods.Init(this, sellText, Game.Instance.Resources.GetResourcesOfType(ResourceType.MarketResource), showObjects: false, new(), Selling);
+        YourGoods.Init(this, showEmptyResources: true, sellText, Game.Instance.Resources.GetResourcesOfType(ResourceType.MarketResource), showObjects: false, new(), Selling);
         ResourceCollection sellResources = new ResourceCollection(ResourceType.MarketResource);
-        Selling.Init(this, "", sellResources.Resources, showObjects: false, new(), YourGoods);
+        Selling.Init(this, showEmptyResources: false, "", sellResources, showObjects: false, new(), YourGoods);
 
+        // Buy
         string buyText = $"buy for {Game.RESOURCE_BUY_PRICE} {ResourceDefOf.Gold.GetTooltipLink()} / resource";
-        ShopGoods.Init(this, buyText, Game.Instance.ShopResources.Resources, showObjects: true, Game.Instance.ShopObjects, Buying);
+        ShopGoods.Init(this, showEmptyResources: true, buyText, Game.Instance.ShopResources, showObjects: true, new Dictionary<ObjectDef, int>(Game.Instance.ShopObjects), Buying);
         ResourceCollection buyResources = new ResourceCollection(ResourceType.MarketResource);
-        Buying.Init(this, "", buyResources.Resources, showObjects: true, new(), ShopGoods);
+        Buying.Init(this, showEmptyResources: false, "", buyResources, showObjects: true, new(), ShopGoods);
 
-        RefreshSummaryText();
+        RecalculateFinalBalance();
 
         gameObject.SetActive(true);
     }
 
     public void MoveResource(ResourceDef resource, int amount, UI_ShopContainer source, UI_ShopContainer target)
     {
-        if (source.Resources[resource] <= amount) amount = source.Resources[resource];
+        if (source.Resources.Resources[resource] <= amount) amount = source.Resources.Resources[resource];
         source.RemoveResource(resource, amount);
         target.AddResource(resource, amount);
-        RefreshSummaryText();
+        RecalculateFinalBalance();
     }
 
     public void MoveObject(ObjectDef objectDef, int price, UI_ShopContainer source, UI_ShopContainer target)
     {
         source.RemoveObject(objectDef);
         target.AddObject(objectDef, price);
-        RefreshSummaryText();
+        RecalculateFinalBalance();
     }
 
-    private void RefreshSummaryText()
+    private void RecalculateFinalBalance()
     {
+        // Balance calculation
+        float exactBalance = 0f;
 
+        foreach (var res in Buying.Resources.Resources) exactBalance -= res.Value * Game.RESOURCE_BUY_PRICE;
+        foreach (var obj in Buying.Objects) exactBalance -= obj.Value;
+
+        foreach (var res in Selling.Resources.Resources) exactBalance += res.Value * Game.RESOURCE_SELL_VALUE;
+
+        CurrentFinalBalance = (int)exactBalance;
+
+        // Summary text
+        if (CurrentFinalBalance < 0) SummaryText.text = $"You will pay {Mathf.Abs(CurrentFinalBalance)} {ResourceDefOf.Gold.GetTooltipLink()}.";
+        else SummaryText.text = $"You will receive {CurrentFinalBalance} {ResourceDefOf.Gold.GetTooltipLink()}";
+        SummaryText.color = CanCompleteTrade() ? ResourceManager.UiTextDefault : ResourceManager.UiTextRed;
+
+        // Enable / Disable confirm
+        ConfirmButton.interactable = CanCompleteTrade();
+    }
+
+    public bool CanCompleteTrade()
+    {
+        if (CurrentFinalBalance < 0 && Mathf.Abs(CurrentFinalBalance) > Game.Instance.Resources.Resources[ResourceDefOf.Gold]) return false;
+        return true;
     }
 
     private void Close()
@@ -69,6 +103,10 @@ public class UI_ShopWindow : UI_WindowBase
 
     private void Confirm()
     {
+        if (!CanCompleteTrade()) return;
+
+        Game.Instance.CompleteTrade();
+
         gameObject.SetActive(false);
     }
 }

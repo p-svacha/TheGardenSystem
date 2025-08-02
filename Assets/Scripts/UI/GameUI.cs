@@ -31,6 +31,12 @@ public class GameUI : MonoBehaviour
 
     private void OnEnable()
     {
-        ShopButton.onClick.AddListener(UI_ShopWindow.Instance.Show);
+        ShopButton.onClick.AddListener(ShopButton_OnClick);
+    }
+
+    private void ShopButton_OnClick()
+    {
+        if (UI_ShopWindow.Instance.gameObject.activeSelf) return;
+        UI_ShopWindow.Instance.Show();
     }
 }

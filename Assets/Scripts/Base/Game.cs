@@ -484,7 +484,24 @@ public class Game
 
         // Shop restock
         ShopResources = new ResourceCollection(ResourceType.MarketResource);
+        foreach (ResourceDef res in ShopResources.Resources.Keys.ToList())
+        {
+            ShopResources.AddResource(res, Random.Range(0, 4) * 10);
+        } 
+
         ShopObjects = new Dictionary<ObjectDef, int>();
+        Dictionary<ObjectTierDef, int> numObjectsByTier = new Dictionary<ObjectTierDef, int>()
+        {
+            { ObjectTierDefOf.Common, 3 },
+            { ObjectTierDefOf.Rare, 2 },
+            { ObjectTierDefOf.Epic, 1 },
+        };
+
+        foreach(var tier in numObjectsByTier)
+        {
+            List<ObjectDef> commonObjects = DefDatabase<ObjectDef>.AllDefs.Where(x => x.Tier == tier.Key).ToList().RandomElements(tier.Value);
+            foreach (ObjectDef obj in commonObjects) ShopObjects.Add(obj, tier.Key.MarketValue);
+        }
     }
 
     public void SetAcquireTilesMode(bool value)
@@ -661,6 +678,30 @@ public class Game
         UI_GameOverWindow.Instance.Show("You Lose.");
     }
 
+    public void CompleteTrade()
+    {
+        // Resources
+        Resources.RemoveResources(UI_ShopWindow.Instance.Selling.Resources);
+        Resources.AddResources(UI_ShopWindow.Instance.Buying.Resources);
+
+        ShopResources.RemoveResources(UI_ShopWindow.Instance.Buying.Resources);
+        ShopResources.AddResources(UI_ShopWindow.Instance.Selling.Resources);
+
+        // Objects
+        foreach (ObjectDef obj in UI_ShopWindow.Instance.Buying.Objects.Keys)
+        {
+            AddObjectToInventory(obj);
+            ShopObjects.Remove(obj);
+        }
+
+        // Payment
+        if (UI_ShopWindow.Instance.CurrentFinalBalance < 0) Resources.RemoveResource(ResourceDefOf.Gold, Mathf.Abs(UI_ShopWindow.Instance.CurrentFinalBalance));
+        else Resources.AddResource(ResourceDefOf.Gold, UI_ShopWindow.Instance.CurrentFinalBalance);
+
+        // UI
+        GameUI.Instance.ResourcePanel.Refresh();
+    }
+
     #endregion
 
     #region Render
@@ -707,6 +748,12 @@ public class Game
     public bool IsLastDayOfWeek => (Day - 1) % DAYS_PER_WEEK == DAYS_PER_WEEK - 1;
     public bool IsLastDayOfMonth => (Day - 1) % DAYS_PER_MONTH == DAYS_PER_MONTH - 1;
     public bool IsLastDayOfYear => (Day - 1) % DAYS_PER_YEAR == DAYS_PER_YEAR - 1;
+
+    public int DaysUntilNextMonth()
+    {
+        int nextMandateDueDay = NextTownMandate.DueDay;
+        return nextMandateDueDay - Day + 1;
+    }
 
     public Dictionary<ResourceDef, ResourceProduction> GetTileProduction(MapTile tile)
     {

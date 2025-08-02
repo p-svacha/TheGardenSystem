@@ -5,6 +5,7 @@ using TMPro;
 /// <summary>
 /// Attach this script to a GameObject with a TMPro UI Text component to automatically detect tooltip links in it and spawn tooltips for them.
 /// <br/>Specifically, this detects when "<link>" links in a TMPro UI Text are hovered and unhovered, and informs the TooltipManager.
+/// <br/>Also necessary that custom sprites work since it attaches the correct sprite sheet to the text.
 /// </summary>
 public class UI_TooltipLinkHolder : MonoBehaviour
 {

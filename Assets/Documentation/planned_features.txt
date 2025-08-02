@@ -1,12 +1,13 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
 add shop:
-	in the shop you buy and sell resources
-	all resources can be sold for 1 and bought for 2 gold
-	the shop also has a selection of objects of different tiers that can be bought
-		common,rare,epic,legendary
-	shop stock refreshes each month
 	discount on 1 random object
+		with indicator
+	hide shop button if not morning
+	shift click to move 10
+	fix that the whole trader size moves slightly when adding first object to "buying"
+	add helper/tutorial button "questionmark" icon
+
 
 lenses:
 	use already implemented tile ui (used for buying tiles)
@@ -53,7 +54,7 @@ mergeable objects:
 	i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
 	merging happens during scatter, and other objects can occupy the 2 tiles that become free through the merging
 
-resource progression:
+[maybe] resource progression:
 	not all resources are active from the start
 	only get added once first time produced or ordered
 	only active get shown in resource panel and remaining res
@@ -96,16 +97,10 @@ new content:
 game over:
 	real game over screen with stats
 
-prestige orders:
+[maybe] prestige orders:
 	additional optional prestige orders may appear
 	these do not lose the game if not completed
 	but they give an extra reward if completed (draft of rare or epic object, research points, free expansion)
-
-change of acquiring new tiles:
-	claim stat of unowned tiles gets removed
-	tiles have a cost and can be bought at the start/end of days with currency
-	further out tile are more expensive
-	"expansion" resources still exists, but instead of increasing claim, it reduces cost (and acquires when reaching 0)
 
 game over logic:
 	if an order can't be completed, the customer will expect NOT the resources of that missed order on top of the expected resources of the next week, but you will not get payment for that order

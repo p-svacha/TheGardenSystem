@@ -12550,6 +12550,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1507797857 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2721029652568027004, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
+  m_PrefabInstance: {fileID: 2007848296642565241}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1519933688 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3460089030935150038, guid: e7c2dcdf8254941458f2f681b7751f2e, type: 3}
@@ -16502,6 +16507,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c68efb74e9e9a5d49a87397c46972349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WindowTitle: {fileID: 0}
+  ConfirmButton: {fileID: 1209453033}
   RestockText: {fileID: 1522332936}
   YourGoods: {fileID: 129942689}
   Selling: {fileID: 1649353055}
@@ -16509,7 +16516,6 @@ MonoBehaviour:
   Buying: {fileID: 1041266122}
   SummaryText: {fileID: 2007848296642565243}
   CloseButton: {fileID: 1519933689}
-  ConfirmButton: {fileID: 1209453033}
 --- !u!1 &2090434805
 GameObject:
   m_ObjectHideFlags: 0
@@ -18172,7 +18178,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2721029652568027004, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2007848296642565245}
   m_SourcePrefab: {fileID: 100100000, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
 --- !u!224 &2007848296642565242 stripped
 RectTransform:
@@ -18184,12 +18193,25 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2936265355799832287, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
   m_PrefabInstance: {fileID: 2007848296642565241}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1507797857}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2007848296642565245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507797857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f70375b81efc44e95e703134822245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsOnTooltipWindow: 0
 --- !u!114 &2117092455979026607
 MonoBehaviour:
   m_ObjectHideFlags: 0

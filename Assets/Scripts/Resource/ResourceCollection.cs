@@ -36,9 +36,9 @@ public class ResourceCollection : MonoBehaviour
         foreach (var kvp in orig.Resources) Resources.Increment(kvp.Key, kvp.Value);
     }
 
-    public Dictionary<ResourceDef, int> GetResourcesOfType(ResourceType type)
+    public ResourceCollection GetResourcesOfType(ResourceType type)
     {
-        return Resources.Where(r => r.Key.Type == type).ToDictionary(x => x.Key, x => x.Value);
+        return new ResourceCollection(Resources.Where(r => r.Key.Type == type).ToDictionary(x => x.Key, x => x.Value));
     }
 
     public void AddResource(ResourceDef def, int amount)
