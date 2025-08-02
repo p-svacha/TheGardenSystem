@@ -15,6 +15,7 @@ public static class ResourceManager
 
     public static Color UiTextDefault => new Color (0.780f, 0.796f, 0.808f);
     public static Color UiTextRed => new Color(0.878f, 0.459f, 0.408f);
+    public static Color UiTextGreen => new Color(0.47f, 0.83f, 0.45f);
 
     public static string WhiteTextColorHex = "#C7CBCE";
     public static string RedTextColorHex = "#E07568";

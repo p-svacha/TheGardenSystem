@@ -8,10 +8,11 @@ using UnityEngine.EventSystems;
 public class UI_TooltipTarget_Simple : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ITooltipTarget
 {
     public string Text;
+    public bool SpawnsInstantTooltip;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        TooltipManager.Instance.NotifyObjectHovered(this);
+        TooltipManager.Instance.NotifyObjectHovered(this, spawnsInstantTooltip: SpawnsInstantTooltip);
     }
 
     public void OnPointerExit(PointerEventData eventData)

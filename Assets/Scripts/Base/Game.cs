@@ -15,6 +15,7 @@ public class Game
     public const int COST_PER_TILE_RING = 5;
     public const float RESOURCE_SELL_VALUE = 0.5f;
     public const float RESOURCE_BUY_PRICE = 2f;
+    public const float SHOP_DISCOUNT = 0.50f; // in % of original price
 
     // State
     public GameState GameState { get; private set; }
@@ -38,6 +39,7 @@ public class Game
     // Shop
     public ResourceCollection ShopResources { get; private set; }
     public Dictionary<ObjectDef, int> ShopObjects { get; private set; }
+    public ObjectDef ShopDiscountedObject { get; private set; }
 
     // Visual
     public bool IsShowingGridOverlay { get; private set; }
@@ -208,6 +210,7 @@ public class Game
         GameUI.Instance.ResourcePanel.Refresh();
         TooltipManager.Instance.ResetTooltips();
         GameUI.Instance.AcquireTilesToggle.Hide();
+        GameUI.Instance.ShopButton.transform.parent.gameObject.SetActive(false);
     }
 
     private void ConfirmScatter()
@@ -476,6 +479,7 @@ public class Game
         GameUI.Instance.OrderPanel.Refresh();
         TooltipManager.Instance.ResetTooltips();
         GameUI.Instance.AcquireTilesToggle.Show();
+        GameUI.Instance.ShopButton.transform.parent.gameObject.SetActive(true);
     }
 
     private void StartNewMonth()
@@ -502,6 +506,8 @@ public class Game
             List<ObjectDef> commonObjects = DefDatabase<ObjectDef>.AllDefs.Where(x => x.Tier == tier.Key).ToList().RandomElements(tier.Value);
             foreach (ObjectDef obj in commonObjects) ShopObjects.Add(obj, tier.Key.MarketValue);
         }
+        ShopDiscountedObject = ShopObjects.Keys.ToList().RandomElement();
+        ShopObjects[ShopDiscountedObject] = (int)(ShopObjects[ShopDiscountedObject] * SHOP_DISCOUNT);
     }
 
     public void SetAcquireTilesMode(bool value)

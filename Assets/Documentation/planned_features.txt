@@ -1,14 +1,5 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
-add shop:
-	discount on 1 random object
-		with indicator
-	hide shop button if not morning
-	shift click to move 10
-	fix that the whole trader size moves slightly when adding first object to "buying"
-	add helper/tutorial button "questionmark" icon
-
-
 lenses:
 	use already implemented tile ui (used for buying tiles)
 	improve tile ui overlay performance

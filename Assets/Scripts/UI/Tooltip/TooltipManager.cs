@@ -222,7 +222,7 @@ public class TooltipManager : MonoBehaviour
     /// <summary>
     /// Gets called when a ITooltipTarget starts getting hovered on any GameObject (UI element, tilemap tile or 3D object).
     /// </summary>
-    public void NotifyObjectHovered(ITooltipTarget target, bool isRoot = true)
+    public void NotifyObjectHovered(ITooltipTarget target, bool isRoot = true, bool spawnsInstantTooltip = false)
     {
         if (CurrentHoveredTarget != null)
         {
@@ -233,6 +233,7 @@ public class TooltipManager : MonoBehaviour
 
         CurrentHoveredTarget = target;
         IsCurrentHoveredTargetRoot = isRoot;
+        if (spawnsInstantTooltip) HoverTimer = TOOLTIP_DELAY;
     }
 
     /// <summary>

@@ -11,6 +11,7 @@ public class UI_ShopWindow : UI_WindowBase
 
     [Header("Elements")]
     public TextMeshProUGUI RestockText;
+    public Image HelpButton;
     public UI_ShopContainer YourGoods;
     public UI_ShopContainer Selling;
     public UI_ShopContainer ShopGoods;
@@ -30,6 +31,18 @@ public class UI_ShopWindow : UI_WindowBase
         Instance = this;
         CloseButton.onClick.AddListener(Close);
         ConfirmButton.onClick.AddListener(Confirm);
+        InitHelpButton();
+    }
+
+    private void InitHelpButton()
+    {
+        HelpButton.GetComponent<UI_TooltipTarget_Simple>().SpawnsInstantTooltip = true;
+        HelpButton.GetComponent<UI_TooltipTarget_Simple>().Text = "Welcome to the shop." +
+            "\nHere you can sell and buy resources, as well as buy a selection of objects." +
+            "\nThe shops stock will refill and change at the start of each month. Each month one object will be on sale." +
+            "\nClick on any resource or object to add or remove it from the current trade. Hold shift to move 10 resources at a time." +
+            "\nSold resources will stay in the shops inventory until the end of the month and can be bought back at a loss." +
+            "\nComplete the trade by clicking 'Confirm'. You see the amount of gold will pay or receive next to the button.";
     }
 
     public void Show()
@@ -54,8 +67,10 @@ public class UI_ShopWindow : UI_WindowBase
         gameObject.SetActive(true);
     }
 
-    public void MoveResource(ResourceDef resource, int amount, UI_ShopContainer source, UI_ShopContainer target)
+    public void MoveResource(ResourceDef resource, UI_ShopContainer source, UI_ShopContainer target)
     {
+        int amount = 1;
+        if (Input.GetKey(KeyCode.LeftShift)) amount = 10;
         if (source.Resources.Resources[resource] <= amount) amount = source.Resources.Resources[resource];
         source.RemoveResource(resource, amount);
         target.AddResource(resource, amount);
@@ -82,7 +97,7 @@ public class UI_ShopWindow : UI_WindowBase
         CurrentFinalBalance = (int)exactBalance;
 
         // Summary text
-        if (CurrentFinalBalance < 0) SummaryText.text = $"You will pay {Mathf.Abs(CurrentFinalBalance)} {ResourceDefOf.Gold.GetTooltipLink()}.";
+        if (CurrentFinalBalance < 0) SummaryText.text = $"You will pay {Mathf.Abs(CurrentFinalBalance)} {ResourceDefOf.Gold.GetTooltipLink()}";
         else SummaryText.text = $"You will receive {CurrentFinalBalance} {ResourceDefOf.Gold.GetTooltipLink()}";
         SummaryText.color = CanCompleteTrade() ? ResourceManager.UiTextDefault : ResourceManager.UiTextRed;
 

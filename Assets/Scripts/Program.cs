@@ -6,6 +6,7 @@ public class Program : MonoBehaviour
 
     private void Awake()
     {
+        ResourceManager.ClearCache();
         DefDatabaseRegistry.AddAllDefs();
         DefDatabaseRegistry.ResolveAllReferences();
         DefDatabaseRegistry.OnLoadingDone();

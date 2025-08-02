@@ -9,7 +9,7 @@ public class UI_ShopContainer : MonoBehaviour
     [Header("Elements")]
     public TextMeshProUGUI ResourceValueText;
     public GameObject ResourceContainer;
-    public GameObject ObjectCategory;
+    public TextMeshProUGUI ObjectCategoryTitle;
     public GameObject ObjectContainer;
 
     [Header("Prefabs")]
@@ -40,10 +40,9 @@ public class UI_ShopContainer : MonoBehaviour
         // Objects
         Objects = objects;
         ObjectElements = new Dictionary<ObjectDef, UI_ShopElement>();
-        ObjectCategory.SetActive(showObjects);
+        HelperFunctions.DestroyAllChildredImmediately(ObjectContainer);
         if (showObjects)
         {
-            HelperFunctions.DestroyAllChildredImmediately(ObjectContainer);
             foreach (var obj in objects)
             {
                 UI_ShopElement elem = GameObject.Instantiate(ShopElementPrefab, ObjectContainer.transform);
@@ -51,6 +50,7 @@ public class UI_ShopContainer : MonoBehaviour
                 ObjectElements[obj.Key] = elem;
             }
         }
+        else ObjectCategoryTitle.text = "";
     }
 
 
@@ -71,7 +71,7 @@ public class UI_ShopContainer : MonoBehaviour
         {
             if (!ShowEmptyResources && res.Value == 0) continue;
             UI_ShopElement elem = GameObject.Instantiate(ShopElementPrefab, ResourceContainer.transform);
-            elem.Init(res.Key, res.Value, () => ShopWindow.MoveResource(res.Key, 1, this, TargetContainer));
+            elem.Init(res.Key, res.Value, () => ShopWindow.MoveResource(res.Key, this, TargetContainer));
             ResourceElements[res.Key] = elem;
         }
     }
