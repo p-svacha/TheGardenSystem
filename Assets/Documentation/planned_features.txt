@@ -1,15 +1,5 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
-lenses:
-	use already implemented tile ui (used for buying tiles)
-	improve tile ui overlay performance
-		maybe instantiate once at start for every tile and then just show/hide/update text?
-	add lenses during scatter manipulation
-	hovering resources enables the lens while hovering
-	active lens shows a small UI element over each tile with its production of that resource
-	active lens shows line renderers between tiles giving an effect relevant for that resource
-	overlay should only be shown if resource in question is != 0
-
 shed:
 	each garden sector has a shed, a permanent object with special tier
 	shed can be clicked on to open, showing the sectors inventory
@@ -61,7 +51,21 @@ new customer draft:
 fiber:
 	make a customer buying fiber
 
-obstacles:
+tooltip improvement:
+	add a new "info text" element to tooltip in top right corner
+	use it to display the type of thing that is displayed in the tooltip, i.e:
+		"rare object" for objects
+		"market resource" for resources
+		"terrain" for terrian
+
+affection arrows in production overlays:
+	when a production overlay is active, also show moving animated arrows where one object affects the production of another
+	the more the affection, the fast/bigger the arrow
+	arrow like this: > > > > >
+	maybe for ProductionModifiersource, aditionally the coordinate is needed from where the effect originates from
+	use ^ ^ ^ on tile if source is from same tile
+
+[maybe] obstacles:
 	some tiles may have obstacles on them
 	to start, just take a rock
 	objects will not be scattered on tiles with obstacles on them, until they are removed
@@ -107,6 +111,8 @@ ui improvements:
 	show resource type in resource tooltip
 	when selecting object, show amound of currently owned
 	in object draft, make more space for effects
+	in shop, objects should be bigger
+	in shop, discount indicator should be clearer
 
 sectors (maybe 'plots'):
 	instead of having one centralized inventory, where the objects get scattered randomly across the whole garden, the garden can be split in sectors
@@ -137,6 +143,10 @@ sectors (maybe 'plots'):
 	important design considerations:
 		techs should mostly not give "general" or plain stat bonuses, but rather amplify specific strategies or help in specific situations
 	ideas for specific researches
+		- unlock shop (buying res only)
+		- unlock selling resources in shop
+		- unlock buy objects in shop
+		- more and better shop discounts (+1 obj, +1 res, higher discount)
 		- you get an additional option when drafting an object (3 -> 4)
 		- you get an additional option when drafting a customer (2 -> 3)
 		- you get an additional option when drafting a customer (3 -> 4)

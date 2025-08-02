@@ -8,12 +8,14 @@ public class UI_TileOverlayContainer : MonoBehaviour
     [Header("Prefabs")]
     public UI_TileOverlay OverlayPrefab;
 
-    private List<UI_TileOverlay> ActiveOverlays;
+    private Dictionary<MapTile, UI_TileOverlay> Overlays;
+    private List<MapTile> ActiveOverlays;
 
     private void Awake()
     {
         Instance = this;
-        ActiveOverlays = new List<UI_TileOverlay>();
+
+        ActiveOverlays = new List<MapTile>();
     }
 
     private void Start()
@@ -21,32 +23,67 @@ public class UI_TileOverlayContainer : MonoBehaviour
         CameraHandler.Instance.OnCameraChanged += OnCameraChanged;
     }
 
-    public void Clear()
+    public void InitOverlays()
     {
-        HelperFunctions.DestroyAllChildredImmediately(gameObject);
+        // Create one overlay for each tile
+        Overlays = new Dictionary<MapTile, UI_TileOverlay>();
+        foreach(MapTile tile in Game.Instance.Map.AllTiles)
+        {
+            UI_TileOverlay overlay = GameObject.Instantiate(OverlayPrefab, transform);
+            overlay.Init(tile);
+            Overlays[tile] = overlay;
+        }
+    }
+
+    public void HideAllOverlays()
+    {
+        foreach (MapTile tile in ActiveOverlays) Overlays[tile].Hide();
         ActiveOverlays.Clear();
     }
 
     public void ShowTileCostOverlay()
     {
-        Clear();
+        if(ActiveOverlays.Count > 0) HideAllOverlays();
         foreach (MapTile tile in Game.Instance.Map.UnownedTiles)
         {
             bool canBuy = Game.Instance.Resources.HasResources(tile.AcquireCost);
             string textColorHex = canBuy ? ResourceManager.WhiteTextColorHex : ResourceManager.RedTextColorHex;
             ShowOverlay(tile, tile.AcquireCost.GetAsSingleLinkedString(textColorHex: textColorHex), showBackground: false);
         }
+        UpdateOverlays();
+    }
+
+    public void ShowResourceProductionOverlay(ResourceDef resource)
+    {
+        if (ActiveOverlays.Count > 0) HideAllOverlays();
+        foreach (MapTile tile in Game.Instance.Map.OwnedTiles)
+        {
+            int production = Game.Instance.CurrentPerTileResourceProduction[tile][resource].GetValue();
+            if (production != 0)
+            {
+                string text = $"{resource.GetTooltipLink()} {production}";
+                ShowOverlay(tile, text, showBackground: true);
+            }
+        }
+        UpdateOverlays();
     }
 
     private void ShowOverlay(MapTile tile, string text, bool showBackground = true)
     {
-        UI_TileOverlay overlay = GameObject.Instantiate(OverlayPrefab, transform);
-        overlay.Init(tile, text, showBackground);
-        ActiveOverlays.Add(overlay);
+        Overlays[tile].Show(text, showBackground);
+        ActiveOverlays.Add(tile);
     }
 
     private void OnCameraChanged()
     {
-        foreach (UI_TileOverlay overlay in ActiveOverlays) overlay.UpdateSizeAndPosition();
+        UpdateOverlays();
+    }
+
+    /// <summary>
+    /// Updates the size and position of all overlays based on camera position and zoom.
+    /// </summary>
+    private void UpdateOverlays()
+    {
+        foreach (MapTile tile in ActiveOverlays) Overlays[tile].UpdateSizeAndPosition();
     }
 }

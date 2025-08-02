@@ -8,6 +8,7 @@ public class UI_ResourceRow : MonoBehaviour
     public Image Icon;
     public TextMeshProUGUI ValueText;
     public TextMeshProUGUI PlusValueText;
+    public UI_ResourceProductionOverlayActivator ProductionLensActivator;
 
     public void Init(ResourceDef res)
     {
@@ -25,6 +26,8 @@ public class UI_ResourceRow : MonoBehaviour
             PlusValueText.text = "";
             PlusValueText.GetComponent<UI_TooltipTarget_Reference>().Disabled = true;
         }
+
+        ProductionLensActivator.Init(res);
 
         // Tooltips
         Icon.GetComponent<UI_TooltipTarget_Reference>().Init(res);

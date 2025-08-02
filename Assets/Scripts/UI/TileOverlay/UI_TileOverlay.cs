@@ -11,16 +11,27 @@ public class UI_TileOverlay : MonoBehaviour
     public Image InnerFrame;
     public TextMeshProUGUI Text;
 
-    public void Init(MapTile tile, string text, bool showBackground = true)
+    public void Init(MapTile tile)
     {
         Tile = tile;
+        gameObject.SetActive(false);
+    }
+
+    public void Show(string text, bool showBackground = true)
+    {
         Text.text = text;
         if (!showBackground)
         {
-            OuterFrame.enabled = false;
-            InnerFrame.enabled = false;
+            if(OuterFrame.enabled) OuterFrame.enabled = false;
+            if(InnerFrame.enabled) InnerFrame.enabled = false;
         }
-        UpdateSizeAndPosition();
+
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 
     public void UpdateSizeAndPosition()

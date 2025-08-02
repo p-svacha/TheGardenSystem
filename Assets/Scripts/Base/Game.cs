@@ -104,6 +104,7 @@ public class Game
 
         // UI
         GameUI.Instance.AcquireTilesToggle.OnToggle += SetAcquireTilesMode;
+        UI_TileOverlayContainer.Instance.InitOverlays();
 
         StartNewDay();
     }
@@ -400,7 +401,7 @@ public class Game
             CurrentPerTileResourceProduction.Add(tile, new Dictionary<ResourceDef, ResourceProduction>());
 
             ResourceCollection baseProduction = tile.HasObject ? tile.Object.GetNativeResourceProduction() : new();
-            string label = tile.HasObject ? tile.Object.LabelCap : "Empty Tile";
+            string label = tile.HasObject ? tile.Object.LabelCapWord : "Empty Tile";
 
             foreach (ResourceDef resource in DefDatabase<ResourceDef>.AllDefs)
             {
@@ -519,7 +520,7 @@ public class Game
     private void RefreshAcquiringTilesOverlays()
     {
         if (IsAcquiringTiles) UI_TileOverlayContainer.Instance.ShowTileCostOverlay();
-        else UI_TileOverlayContainer.Instance.Clear();
+        else UI_TileOverlayContainer.Instance.HideAllOverlays();
     }
 
     private void TryToBuyTile(MapTile tile)
