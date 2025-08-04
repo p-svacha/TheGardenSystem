@@ -12,7 +12,10 @@ public class Game
     public const int DAYS_PER_MONTH = DAYS_PER_WEEK * WEEKS_PER_MONTH;
     public const int DAYS_PER_YEAR = MONTHS_PER_YEAR * DAYS_PER_MONTH;
     public const int CUSTOMER_ORDER_MISSES_IN_A_ROW_TO_LOSE_GAME = 2;
-    public const int COST_PER_TILE_RING = 5;
+
+    public const int FIRST_TILE_RING_COST = 10;
+    public const float COST_INCREASE_PER_TILE_RING = 2f;
+
     public const float RESOURCE_SELL_VALUE = 0.5f;
     public const float RESOURCE_BUY_PRICE = 2f;
     public const float SHOP_DISCOUNT = 0.50f; // in % of original price
@@ -76,6 +79,10 @@ public class Game
         // Starting objects
         Objects = new List<Object>();
         AddObjectToInventory(ObjectDefOf.Carrot);
+
+        // Shed
+        Object shed = new Object(ObjectDefOf.Shed);
+        Map.GetTile(0, 0).PlaceObject(shed);
 
         // Weekly orders
         WeeklyCustomers = new List<Customer>();
@@ -455,7 +462,7 @@ public class Game
 
     public void EndDay()
     {
-        Map.ClearAllObjects();
+        Map.ClearAllNonPermanentObjects();
         DrawFullMap();
         CurrentFinalResourceProduction.Clear();
 
@@ -721,6 +728,8 @@ public class Game
     #endregion
 
     #region Getters
+
+    public bool IsNight => GameState == GameState.Night_ObjectDraft || GameState == GameState.Night_OrderSelection;
 
     public string GetWeekdayName()
     {

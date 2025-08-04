@@ -22,8 +22,13 @@ public class UI_TileOverlay : MonoBehaviour
         Text.text = text;
         if (!showBackground)
         {
-            if(OuterFrame.enabled) OuterFrame.enabled = false;
-            if(InnerFrame.enabled) InnerFrame.enabled = false;
+            if (OuterFrame.enabled) OuterFrame.enabled = false;
+            if (InnerFrame.enabled) InnerFrame.enabled = false;
+        }
+        else
+        {
+            if (!OuterFrame.enabled) OuterFrame.enabled = true;
+            if (!InnerFrame.enabled) InnerFrame.enabled = true;
         }
 
         gameObject.SetActive(true);

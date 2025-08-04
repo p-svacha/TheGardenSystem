@@ -25,24 +25,30 @@ public class UI_MandateWindow : UI_WindowBase
     {
         gameObject.SetActive(true);
 
+        // Get current month
+        int currentMonth = Game.Instance.Month;
+        if (Game.Instance.IsLastDayOfMonth && Game.Instance.IsNight) currentMonth++;
+
         // Mandates
         HelperFunctions.DestroyAllChildredImmediately(MandateContainer);
         int index = 0;
         GameObject column = null;
         foreach (TownMandate mandate in Game.Instance.TownMandates)
         {
+            bool isCompleted = mandate.MonthIndex < currentMonth;
             if (index % NUM_MANDATES_PER_COLUMN == 0)
             {
                 column = GameObject.Instantiate(ColumnPrefab, MandateContainer.transform);
             }
             UI_MandateWindowRow elem = GameObject.Instantiate(MandatePrefab, column.transform);
-            elem.Init(mandate);
+            elem.Init(mandate, isCompleted);
             index++;
         }
 
         // Resources
         ResourceCollection remainingRes = new ResourceCollection();
-        for (int i = Game.Instance.Month; i < Game.Instance.TownMandates.Count ; i++)
+        if (Game.Instance.IsLastDayOfMonth && Game.Instance.IsNight) currentMonth++;
+        for (int i = currentMonth; i < Game.Instance.TownMandates.Count ; i++)
         {
             remainingRes.AddResources(Game.Instance.TownMandates[i].OrderedResources);
         }

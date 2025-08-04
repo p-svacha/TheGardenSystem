@@ -1,23 +1,31 @@
-Objects:
-- Each object is iconic and isolated, sized to fit on one square tile.
-- Sprite is 1024x1024 px in size.
-- Background is transparent.
-- Objects should have unique silhouettes and high visual contrast.
-- Visual metaphors should be clear (e.g. a carrot is unmistakably a carrot).
-- Slight exaggeration encouraged for readability.
+TILEMAP
 
-Resource Icons:
-- Each resource icon is iconic and easily readable.
-- Sprite is 1024x1024 px in size.
-- Background is transparent.
-- Objects should have unique silhouettes and high visual contrast.
-- Visual metaphors should be clear.
-- Slight exaggeration encouraged for readability.
+General:
+- Pixel Art
+- 64x64 pixels per tile
+
+Objects:
+- Saturation (~80%)
+- Bright colors (50%-100%)
+- View details
+- Not more than 3 shades for details per "area" (i.e. carrot body is one area in orange, and carrot hair is one area in green)
+	- Shadows excluded
+- Outline 1px (only straight adjacent pixels, not diagonal)
+- Outline color same as inside color with ~50% reduces darkness
+- Outline everywhere outside object and where objects intersect
+	- Exception is when the object should seamlessy touch ground (i.e. semi-buried carrot)
+- Light source always top left => shadowy area lower right
+- Shadow area is single black overlay with ~20% opacity over shadowed area
 
 Terrain:
-- Sprite is 1024x1024 px in size with no transparency.
-- Flat-shaded, natural textures — Use minimal shading with soft gradients or gentle noise; avoid harsh highlights or outlines.
-- Earthy, muted colors — Favor desaturated browns, greens, and greys that sit quietly under brighter object sprites.
-- Soft, organic shapes — Terrain details (like cracks, clumps, or texture) should feel natural and hand-shaped, not geometric or stylized.
-- Seamless edge blending — Ensure all terrain tiles are looped or designed to seamlessly tile in all directions.
-- No strong borders or high contrast — Avoid comic-style edging or anything that pulls visual attention away from objects.
+- Rough, noisy
+- Downscaled nearest neighbour texture
+
+----------------------------------------------------
+
+RESOURCE ICONS
+
+- 16x16 pixels
+- no outline
+
+----------------------------------------------------

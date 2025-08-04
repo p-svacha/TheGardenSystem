@@ -9,10 +9,10 @@ public class UI_MandateWindowRow : MonoBehaviour
     public TextMeshProUGUI ResourceText;
     public Image DeliveredIcon;
 
-    public void Init(TownMandate mandate)
+    public void Init(TownMandate mandate, bool isCompleted)
     {
         MonthText.text = $"<b>{Game.Instance.GetMonthName(mandate.MonthIndex)}</b> - {mandate.Def.Label}";
         ResourceText.text = mandate.OrderedResources.GetAsSingleLinkedString();
-        DeliveredIcon.gameObject.SetActive(mandate.MonthIndex < Game.Instance.Month);
+        DeliveredIcon.gameObject.SetActive(isCompleted);
     }
 }

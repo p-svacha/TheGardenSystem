@@ -1,8 +1,21 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
+(T) "total resource still to deliver" in town mandate overview should already be refreshed at night of last day of month
+
 shed:
 	each garden sector has a shed, a permanent object with special tier
 	shed can be clicked on to open, showing the sectors inventory
+	in inventory winow lists all objects
+	during scatter only shows remaining objects
+	show number on shed with how many objects are in it
+	add an indicator of how many tiles are in the garden
+
+affection arrows in production overlays:
+	when a production overlay is active, also show moving animated arrows where one object affects the production of another
+	the more the affection, the fast/bigger the arrow
+	arrow like this: > > > > >
+	maybe for ProductionModifiersource, aditionally the coordinate is needed from where the effect originates from
+	use ^ ^ ^ on tile if source is from same tile
 
 ordered scatter:
 	instead of full scatter all at once, objects get scattered one by one with slight delay in between
@@ -12,14 +25,10 @@ ordered scatter:
 resource giving animations:
 	confirming scatter shows tiles giving resources one-by-one with little animation of resources moving the their ui element
 
-game phase terminology:
-	change time ui to show part of day, weekday, week num, month, (year)
-	part of day is according to game state
-		morning: empty garden, useful to inspect or buy new tiles
-		noon: the scatter happens, with one-by-one animation out of the shed, no player input
-		afternoon: scatter can be inspected and maybe manipulated
-		evening: the harvest happens, each tile gives the resources it produces with little animation one-by-one, no player input
-		night: end-of-day windows appear, like order delivery selection, object draft, research draft, etc.
+allow going to shop during order selection:
+	allow player to go to shop during order selection
+	also make sure that player can buy resources for town mandate before the check, after the harvest
+	adjust game loop description.txt
 
 rework town mandates to be more dynamic:	
 	include list of months they can appear
@@ -34,6 +43,9 @@ mergeable objects:
 	if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increased tier) on the middle tile of the 3
 	i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
 	merging happens during scatter, and other objects can occupy the 2 tiles that become free through the merging
+
+tutorial:
+	add a tutorial (1 month) explaining game play loop
 
 [maybe] resource progression:
 	not all resources are active from the start
@@ -58,13 +70,6 @@ tooltip improvement:
 		"market resource" for resources
 		"terrain" for terrian
 
-affection arrows in production overlays:
-	when a production overlay is active, also show moving animated arrows where one object affects the production of another
-	the more the affection, the fast/bigger the arrow
-	arrow like this: > > > > >
-	maybe for ProductionModifiersource, aditionally the coordinate is needed from where the effect originates from
-	use ^ ^ ^ on tile if source is from same tile
-
 [maybe] obstacles:
 	some tiles may have obstacles on them
 	to start, just take a rock
@@ -84,6 +89,7 @@ conceptDefs:
 
 modifier apply feedback:
 	sound or animation when a modifier is applied
+	also when a modifier is lost, like a fizzle away
 
 new content:
 	add several customers for variety
@@ -97,10 +103,6 @@ game over:
 	these do not lose the game if not completed
 	but they give an extra reward if completed (draft of rare or epic object, research points, free expansion)
 
-game over logic:
-	if an order can't be completed, the customer will expect NOT the resources of that missed order on top of the expected resources of the next week, but you will not get payment for that order
-		add this as a note somehwere
-
 ui improvements:
 	use more bullet points like in object tooltip
 		centralize color and ascii thing for easy use
@@ -113,6 +115,8 @@ ui improvements:
 	in object draft, make more space for effects
 	in shop, objects should be bigger
 	in shop, discount indicator should be clearer
+	in shop, make object price red if not affordable
+	in detailed resource propduction tooltip of object, make resource type a tooltip target, but as text (like >FERTILITY< production that shows fertility desc)
 
 sectors (maybe 'plots'):
 	instead of having one centralized inventory, where the objects get scattered randomly across the whole garden, the garden can be split in sectors

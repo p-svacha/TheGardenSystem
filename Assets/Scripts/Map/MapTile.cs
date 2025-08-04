@@ -60,7 +60,10 @@ public class MapTile : ITooltipTarget
         AcquireCost = GetOriginalAcquireCost();
     }
     public void PlaceObject(Object obj) => Object = obj;
-    public void ClearObject() => Object = null;
+    public void ClearNonPermanentObject()
+    {
+        if (Object != null && !Object.HasTag(ObjectTagDefOf.Permanent)) Object = null;
+    }
     public void SetTerrain(TerrainDef def)
     {
         Terrain = new Terrain(this, def);
@@ -152,10 +155,12 @@ public class MapTile : ITooltipTarget
     public ResourceCollection GetOriginalAcquireCost()
     {
         int ringIndex = Mathf.Max(Mathf.Abs(Coordinates.x), Mathf.Abs(Coordinates.y)) - 1;
-        int goldCost = Game.COST_PER_TILE_RING * ringIndex;
+        float goldCost = Game.FIRST_TILE_RING_COST;
+        for (int i = 1; i < ringIndex; i++) goldCost *= Game.COST_INCREASE_PER_TILE_RING;
+        int finalGoldCost = (int)goldCost;
         return new ResourceCollection(new Dictionary<ResourceDef, int>()
         {
-            { ResourceDefOf.Gold, goldCost },
+            { ResourceDefOf.Gold, finalGoldCost },
         });
     }
 

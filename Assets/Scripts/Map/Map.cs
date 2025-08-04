@@ -11,9 +11,9 @@ public class Map
         Tiles = tiles;
     }
 
-    public void ClearAllObjects()
+    public void ClearAllNonPermanentObjects()
     {
-        foreach (MapTile tile in AllTiles) tile.ClearObject();
+        foreach (MapTile tile in AllTiles) tile.ClearNonPermanentObject();
     }
 
     public MapTile GetTile(int x, int y) => GetTile(new Vector2Int(x, y));

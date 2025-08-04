@@ -4,5 +4,5 @@ using UnityEngine;
 public static class ObjectDefOf
 {
     public static ObjectDef Carrot;
-    public static ObjectDef CompostHeap;
+    public static ObjectDef Shed;
 }

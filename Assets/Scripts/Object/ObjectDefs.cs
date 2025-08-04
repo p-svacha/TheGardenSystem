@@ -7,6 +7,18 @@ public static class ObjectDefs
     {
         new ObjectDef()
         {
+            DefName = "Shed",
+            Label = "shed",
+            Description = "An old wooden shed that marks a garden sector and holds its inventory. Click to view or manage items stored in this sector. Has no effects or resource production.",
+            Tier = ObjectTierDefOf.Special,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Permanent,
+            },
+        },
+
+        new ObjectDef()
+        {
             DefName = "Carrot",
             Label = "carrot",
             Description = "Reliable and crisp. Grows underground, but always finds the light.",
@@ -251,7 +263,6 @@ public static class ObjectDefs
             Tags = new List<ObjectTagDef>()
             {
                 ObjectTagDefOf.Structure,
-                ObjectTagDefOf.Plant,
                 ObjectTagDefOf.Fertilizer,
                 ObjectTagDefOf.Idol,
             },
