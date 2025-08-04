@@ -37,5 +37,6 @@ public class Map
     public int Height => MaxY - MinY + 1;
     public List<MapTile> AllTiles => Tiles.Values.ToList();
     public List<MapTile> OwnedTiles => AllTiles.Where(t => t.IsOwned).ToList();
+    public List<MapTile> OwnedEmptyTiles => AllTiles.Where(t => t.IsOwned && !t.HasObject).ToList();
     public List<MapTile> UnownedTiles => AllTiles.Where(t => !t.IsOwned).ToList();
 }

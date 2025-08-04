@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 374a877aa2caa2d44abcee312d2b52bd
+guid: fecbc37274e3e3647a596207b0c2d4f4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4214720395768067892
-    second: FertileSoil_0
+      213: 7857083976601736971
+    second: Shen_Open_Transparent_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FertileSoil_0
+      name: Shen_Open_Transparent_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 41
+        y: 46
+        width: 105
+        height: 110
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43779519ed1bd7a30800000000000000
-      internalID: 4214720395768067892
+      spriteID: b0792c38f38f90d60800000000000000
+      internalID: 7857083976601736971
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      FertileSoil_0: 4214720395768067892
+      Shen_Open_Transparent_0: 7857083976601736971
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -104,7 +104,7 @@ public class Game
     public void Initialize()
     {
         // Render
-        IsShowingGridOverlay = true;
+        IsShowingGridOverlay = false;
         DrawFullMap();
         CameraHandler.Instance.SetBounds(Map.MinX, Map.MinY, Map.MaxX, Map.MaxY);
         CameraHandler.Instance.FocusPosition(new Vector2(0f, 0f));
@@ -196,7 +196,7 @@ public class Game
         GameUI.Instance.DatePanel.Refresh();
 
         List<Object> remainingObjects = new List<Object>(Objects);
-        List<MapTile> shuffledGardenTiles = Map.OwnedTiles.GetShuffledList();
+        List<MapTile> shuffledGardenTiles = Map.OwnedEmptyTiles.GetShuffledList();
 
         foreach (MapTile tile in shuffledGardenTiles)
         {

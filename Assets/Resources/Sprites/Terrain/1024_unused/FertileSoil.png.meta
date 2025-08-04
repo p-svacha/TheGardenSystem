@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 374a877aa2caa2d44abcee312d2b52bd
+guid: 365880923afe84c44be5abc74cec4da2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4214720395768067892
-    second: FertileSoil_0
+      213: -6601552345572199026
+    second: RichSoil_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 1024
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FertileSoil_0
+      name: RichSoil_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43779519ed1bd7a30800000000000000
-      internalID: 4214720395768067892
+      spriteID: e85b5044e139264a0800000000000000
+      internalID: -6601552345572199026
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      FertileSoil_0: 4214720395768067892
+      RichSoil_0: -6601552345572199026
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

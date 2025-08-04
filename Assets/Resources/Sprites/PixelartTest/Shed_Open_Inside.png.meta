@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 920c5dfd47b404c4f96b9c77875720bd
+guid: 90b6c890ba5276049bb3445e0fdcaa7e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3160146286229454071
-    second: Soil_64_0
+      213: 2791804938688059336
+    second: Shed_Open_Inside_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Soil_64_0
+      name: Shed_Open_Inside_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 66
+        y: 49
+        width: 31
+        height: 65
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7fcf9fcdd481bdb20800000000000000
-      internalID: 3160146286229454071
+      spriteID: 8c7dea4dccb7eb620800000000000000
+      internalID: 2791804938688059336
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Soil_64_0: 3160146286229454071
+      Shed_Open_Inside_0: 2791804938688059336
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

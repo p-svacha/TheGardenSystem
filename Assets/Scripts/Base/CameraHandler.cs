@@ -13,7 +13,7 @@ public class CameraHandler : MonoBehaviour
     public static CameraHandler Instance;
     private Camera Camera;
 
-    protected static float ZOOM_SPEED = 0.6f; // Mouse Wheel Speed
+    protected static float ZOOM_SPEED = 0.8f; // Mouse Wheel Speed
     protected static float DRAG_SPEED = 0.025f; // Middle Mouse Drag Speed
     protected static float PAN_SPEED = 10f; // WASD Speed
     protected static float MIN_CAMERA_SIZE = 1f;
@@ -42,12 +42,17 @@ public class CameraHandler : MonoBehaviour
     {
         Camera = GetComponent<Camera>();
         _Singleton = Camera.main.GetComponent<CameraHandler>();
+
+        // Initial zoom
+        int pixelsPerUnit = 128;
+        Camera.orthographicSize = Screen.height / (pixelsPerUnit * 2f);
     }
 
 
     public virtual void Update()
     {
         // Scroll
+        /*
         if (Input.mouseScrollDelta.y != 0)
         {
             Camera.orthographicSize += -Input.mouseScrollDelta.y * ZOOM_SPEED;
@@ -57,6 +62,21 @@ public class CameraHandler : MonoBehaviour
             if (Camera.orthographicSize > MAX_CAMERA_SIZE) Camera.orthographicSize = MAX_CAMERA_SIZE;
 
             OnCameraChanged?.Invoke();
+        }
+        */
+        if (Input.mouseScrollDelta.y < 0)
+        {
+            if (Camera.orthographicSize < 6)
+            {
+                Camera.orthographicSize *= 2;
+            }
+        }
+        if (Input.mouseScrollDelta.y > 0)
+        {
+            if (Camera.orthographicSize > 2)
+            {
+                Camera.orthographicSize /= 2;
+            }
         }
 
         // Dragging with right/middle mouse button
