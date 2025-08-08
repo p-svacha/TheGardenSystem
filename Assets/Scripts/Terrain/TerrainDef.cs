@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TerrainDef : Def, ITooltipTarget
 {
-    new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Terrain/" + DefName);
+    public override Sprite Sprite => ResourceManager.LoadSprite("Sprites/Terrain/" + DefName);
 
     /// <summary>
     /// The DefName of the terrain that this terrain transforms to when reaching a fertility of 10.

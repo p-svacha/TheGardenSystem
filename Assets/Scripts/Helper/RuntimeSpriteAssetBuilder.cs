@@ -5,31 +5,44 @@ using TMPro;
 using UnityEngine.TextCore;
 using UnityEngine.TextCore.LowLevel;
 
+/// <summary>
+/// IMPORTANT:
+/// - Source sprites need to be the same size as cell Size
+/// - Sprite Mode of source sprites need to be set to Single - Cell Size - FULL RECT 
+/// </summary>
 public static class RuntimeSpriteAssetBuilder
 {
     /// <summary>
-    /// Builds and returns a TMP_SpriteAsset at runtime containing
-    /// one sprite per ResourceDef, laid out in a single atlas.
+    /// Builds and returns a TMP_SpriteAsset at runtime containing the sprites of the provided defs, and referenced by name by their DefName.
     /// </summary>
-    public static TMP_SpriteAsset BuildResourceSpriteAsset(int atlasSize = 1024, int cellSize = 128, int padding = 0)
+    public static TMP_SpriteAsset BuildResourceSpriteAsset(Def[] defs, int cellSize, FilterMode filterMode)
     {
-        // 1) Collect all sprites in DefDatabase order
-        var defs = DefDatabase<ResourceDef>.AllDefs;
-        var sprites = defs.Select(d => d.Sprite).ToArray();
-        var smallTexes = ResizeSpritesIntoTextures(sprites, cellSize);
+        // Global sprite sheet attributes that can be set in inspector
+        float OX = 0f; // offset x
+        float OY = 16f; // offset y
+        float ADV = cellSize; // x advance
 
-        // 2) Pack into a new atlas
-        var atlasTex = new Texture2D(atlasSize, atlasSize, TextureFormat.RGBA32, false);
-        var rects = atlasTex.PackTextures(smallTexes, padding);
-        atlasTex.Apply();
+        // Validate that all defs have a sprite
+        foreach (Def def in defs)
+        {
+            if (def.Sprite == null) throw new System.Exception($"Cannot create sprite sheet. Def {def.DefName} has no sprite.");
+        }
 
-        // 3) Create the TMP_SpriteAsset
+        // Collect all sprites that will go into sprite sheet
+        Sprite[] sprites = defs.Select(d => d.Sprite).ToArray();
+        Texture2D[] cellTextures = ExtractSpritesToCells(sprites, cellSize);
+
+        // Build atlas
+        RectInt[] rectsPx;
+        Texture2D atlasTex = BuildAtlas(cellTextures, cellSize, filterMode, out rectsPx);
+
+        // Create the TMP_SpriteAsset
         TMP_SpriteAsset spriteAsset = ScriptableObject.CreateInstance<TMP_SpriteAsset>();
         spriteAsset.name = "ResourceSpriteAsset";
         spriteAsset.spriteSheet = atlasTex;
 
-        // 2) Assign material
-        var spriteMat = new Material(Shader.Find("TextMeshPro/Sprite"));
+        // Assign material
+        Material spriteMat = new Material(Shader.Find("TextMeshPro/Sprite"));
         spriteMat.mainTexture = atlasTex;
         spriteMat.name = "ResourceSpriteAsset Material";
         spriteAsset.material = spriteMat;
@@ -42,57 +55,30 @@ public static class RuntimeSpriteAssetBuilder
         for (int i = 0; i < sprites.Length; i++)
         {
             var def = defs[i];
-            var sprite = sprites[i];
-            var r = rects[i];
+            var pr = rectsPx[i];
 
-            // TMP_Sprite metadata
-            TMP_Sprite info = new TMP_Sprite
+            var info = new TMP_Sprite
             {
                 name = def.DefName,
                 hashCode = def.DefName.GetHashCode(),
-
-                // position + size in pixels
-                x = (short)(r.x * atlasTex.width),
-                y = (short)(r.y * atlasTex.height),
-                width = (short)(r.width * atlasTex.width),
-                height = (short)(r.height * atlasTex.height),
-
+                x = (short)pr.x,
+                y = (short)pr.y,
+                width = (short)pr.width,
+                height = (short)pr.height,
                 pivot = new Vector2(0.5f, 0.5f),
-                xOffset = 0,
-                yOffset = 90,
+                xOffset = OX,
+                yOffset = OY,
                 xAdvance = cellSize,
             };
             spriteAsset.spriteInfoList.Add(info);
 
-            // Build the GlyphRect from that info
-            var glyphRect = new GlyphRect((int)info.x, (int)info.y, (int)info.width, (int)info.height);
+            var glyphRect = new GlyphRect(pr.x, pr.y, pr.width, pr.height);
+            var metrics = new GlyphMetrics(info.width, info.height, info.xOffset, info.yOffset, info.xAdvance);
 
-            // Metrics just as before
-            var metrics = new GlyphMetrics(
-                info.width,
-                info.height,
-                info.xOffset,
-                info.yOffset,
-                info.xAdvance
-            );
-
-            // 6‑parameter ctor: (uint index, GlyphMetrics metrics, GlyphRect rect, float scale, int atlasIndex, Sprite sprite)
-            var glyph = new TMP_SpriteGlyph(
-                (uint)info.hashCode,
-                metrics,
-                glyphRect,
-                1.5f,      // scale
-                0,         // atlas index
-                sprite     // reference back to the Sprite if you need it
-            );
+            var glyph = new TMP_SpriteGlyph((uint)info.hashCode, metrics, glyphRect, 1f, 0, sprites[i]);
             spriteAsset.spriteGlyphTable.Add(glyph);
 
-            // And the character entry
-            var character = new TMP_SpriteCharacter(
-                (uint)info.hashCode,
-                glyph
-            )
-            { name = def.DefName };
+            var character = new TMP_SpriteCharacter((uint)info.hashCode, glyph) { name = def.DefName };
             spriteAsset.spriteCharacterTable.Add(character);
         }
 
@@ -102,26 +88,86 @@ public static class RuntimeSpriteAssetBuilder
         return spriteAsset;
     }
 
-    private static Texture2D[] ResizeSpritesIntoTextures(Sprite[] sprites, int cellSize = 128)
+    private static Texture2D[] ExtractSpritesToCells(Sprite[] sprites, int cellSize)
     {
-        var smalls = new List<Texture2D>(sprites.Length);
-        foreach (var spr in sprites)
+        var cells = new Texture2D[sprites.Length];
+
+        for (int i = 0; i < sprites.Length; i++)
         {
-            // render the source texture into a 128×128 RT
-            var rt = RenderTexture.GetTemporary(cellSize, cellSize, 0, RenderTextureFormat.ARGB32);
-            Graphics.Blit(spr.texture, rt);
+            var s = sprites[i];
+            var srcTex = s.texture;
 
-            // read it back into a Texture2D
-            var tex = new Texture2D(cellSize, cellSize, TextureFormat.RGBA32, false);
-            var prev = RenderTexture.active;
-            RenderTexture.active = rt;
-            tex.ReadPixels(new Rect(0, 0, cellSize, cellSize), 0, 0);
-            tex.Apply();
-            RenderTexture.active = prev;
-            RenderTexture.ReleaseTemporary(rt);
+            // Full size of the sprite (should include original transparent padding if Mesh Type = Full Rect)
+            int fullW = Mathf.RoundToInt(s.rect.width);
+            int fullH = Mathf.RoundToInt(s.rect.height);
+            if (fullW != cellSize || fullH != cellSize)
+                throw new System.Exception($"{s.name}: sprite rect {fullW}x{fullH} != cellSize {cellSize}");
 
-            smalls.Add(tex);
+            // The (possibly trimmed) region that actually contains pixels on the texture
+            Rect tr = s.textureRect;
+            int srcX = Mathf.RoundToInt(tr.x);
+            int srcY = Mathf.RoundToInt(tr.y);
+            int srcW = Mathf.RoundToInt(tr.width);
+            int srcH = Mathf.RoundToInt(tr.height);
+
+            // Where that trimmed region belongs inside the full (padded) 22×22 rect
+            Vector2 off = s.textureRectOffset; // offset created by trimming
+            int dstX = Mathf.RoundToInt(off.x);
+            int dstY = Mathf.RoundToInt(off.y);
+
+            var dst = new Texture2D(cellSize, cellSize, TextureFormat.RGBA32, false);
+            dst.filterMode = FilterMode.Point;
+            dst.wrapMode = TextureWrapMode.Clamp;
+
+            // Clear (fully transparent)
+            var clear = new Color32[cellSize * cellSize];
+            dst.SetPixels32(clear);
+
+            // GPU copy: exact pixels, no resampling, keeps padding
+            Graphics.CopyTexture(srcTex, 0, 0, srcX, srcY, srcW, srcH, dst, 0, 0, dstX, dstY);
+            dst.Apply(false, false);
+
+            cells[i] = dst;
         }
-        return smalls.ToArray();
+
+        return cells;
+    }
+
+    /// <summary>
+    /// Creates the atlas texture packing all given textures into a single texture.
+    /// </summary>
+    private static Texture2D BuildAtlas(Texture2D[] cells, int cellSize, FilterMode filterMode,
+                                         out RectInt[] pixelRects)
+    {
+        int count = cells.Length;
+        int cols = Mathf.CeilToInt(Mathf.Sqrt(count));
+        int rows = Mathf.CeilToInt((float)count / cols);
+
+        int atlasW = cols * cellSize;
+        int atlasH = rows * cellSize;
+
+        var atlas = new Texture2D(atlasW, atlasH, TextureFormat.RGBA32, false);
+        atlas.filterMode = filterMode;
+        atlas.wrapMode = TextureWrapMode.Clamp;
+
+        pixelRects = new RectInt[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            int col = i % cols;
+            int row = i / cols;
+
+            // If you want row 0 at the top, flip Y like this; otherwise use row * cellSize.
+            int x = col * cellSize;
+            int y = atlasH - (row + 1) * cellSize;
+
+            // Exact GPU copy, no resample:
+            Graphics.CopyTexture(cells[i], 0, 0, 0, 0, cellSize, cellSize, atlas, 0, 0, x, y);
+
+            pixelRects[i] = new RectInt(x, y, cellSize, cellSize);
+        }
+
+        atlas.Apply(false, false);
+        return atlas;
     }
 }

@@ -23,9 +23,16 @@ Terrain:
 
 ----------------------------------------------------
 
+UI
+
+Font has a bitmap size of 11, so all UI Text elements need have a point size that is a multiplier of that (11, 22, 44, ...)
+Use ari-w9500 for normal text and ari-w9500-title for titles.
+
+----------------------------------------------------
+
 RESOURCE ICONS
 
-- 16x16 pixels
+- 22x22 pixels (so the text sprites go well with the font bitmap size)
 - no outline
 
 ----------------------------------------------------

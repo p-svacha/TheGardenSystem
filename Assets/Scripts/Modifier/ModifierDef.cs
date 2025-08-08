@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ModifierDef : Def, ITooltipTarget
 {
-    new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/ObjectModifiers/" + DefName);
+    public override Sprite Sprite => ResourceManager.LoadSprite("Sprites/ObjectModifiers/" + DefName);
 
     /// <summary>
     /// The effect that may get applied to the object holding the modifier.

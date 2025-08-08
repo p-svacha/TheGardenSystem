@@ -9,7 +9,7 @@ public class ObjectDef : Def, IDraftable, ITooltipTarget
     public List<ObjectEffect> Effects { get; init; } = new();
 
     private Sprite _Sprite;
-    new public Sprite Sprite => _Sprite;
+    public override Sprite Sprite => _Sprite;
 
     private ResourceCollection _NativeProduction;
     public ResourceCollection GetNativeProduction() => _NativeProduction;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ResourceDef : Def, ITooltipTarget
 {
-    new public Sprite Sprite => ResourceManager.LoadSprite("Sprites/Resources/" + DefName);
+    public override Sprite Sprite => ResourceManager.LoadSprite("Sprites/Resources/" + DefName);
     public ResourceType Type { get; init; }
 
     #region ITooltipTarget
