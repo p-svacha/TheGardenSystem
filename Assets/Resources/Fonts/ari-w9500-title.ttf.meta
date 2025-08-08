@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2d46c6e7a334b144a8b6a552453fa518
+guid: c64196c6c96ab144693a92b77cd72712
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Ari-W9500 Display
+  - Ari-W9500 Condensed Display
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 2

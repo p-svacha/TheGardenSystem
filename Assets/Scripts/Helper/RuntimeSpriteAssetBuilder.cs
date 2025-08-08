@@ -19,8 +19,9 @@ public static class RuntimeSpriteAssetBuilder
     {
         // Global sprite sheet attributes that can be set in inspector
         float OX = 0f; // offset x
-        float OY = 16f; // offset y
-        float ADV = cellSize; // x advance
+        float OY = 20f; // offset y
+        float ADV = 16f; // x advance
+        float SF = 1f; // scale factor
 
         // Validate that all defs have a sprite
         foreach (Def def in defs)
@@ -68,14 +69,14 @@ public static class RuntimeSpriteAssetBuilder
                 pivot = new Vector2(0.5f, 0.5f),
                 xOffset = OX,
                 yOffset = OY,
-                xAdvance = cellSize,
+                xAdvance = ADV,
             };
             spriteAsset.spriteInfoList.Add(info);
 
             var glyphRect = new GlyphRect(pr.x, pr.y, pr.width, pr.height);
             var metrics = new GlyphMetrics(info.width, info.height, info.xOffset, info.yOffset, info.xAdvance);
 
-            var glyph = new TMP_SpriteGlyph((uint)info.hashCode, metrics, glyphRect, 1f, 0, sprites[i]);
+            var glyph = new TMP_SpriteGlyph((uint)info.hashCode, metrics, glyphRect, SF, 0, sprites[i]);
             spriteAsset.spriteGlyphTable.Add(glyph);
 
             var character = new TMP_SpriteCharacter((uint)info.hashCode, glyph) { name = def.DefName };

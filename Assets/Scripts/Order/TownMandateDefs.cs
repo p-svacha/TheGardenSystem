@@ -15,6 +15,9 @@ public static class TownMandateDefs
             {
                 { ResourceDefOf.Food, 15 },
                 { ResourceDefOf.Kindle, 5 },
+                { ResourceDefOf.Ornaments, 5 },
+                { ResourceDefOf.Fiber, 5 },
+                { ResourceDefOf.Herbs, 5 },
             }),
         },
 

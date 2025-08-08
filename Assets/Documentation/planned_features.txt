@@ -112,6 +112,7 @@ game over:
 	but they give an extra reward if completed (draft of rare or epic object, research points, free expansion)
 
 ui improvements:
+	add sprite to tooltip (for example for resources to easily see what the tooltip is for)
 	use more bullet points like in object tooltip
 		centralize color and ascii thing for easy use
 		use in terrain for "turns into x at y fertility"
