@@ -50,6 +50,9 @@ public class Game
     // Inputs
     private MapTile HoveredTile;
 
+    // UI
+    private UI_HUD HUD;
+
 
     #region Initialization
 
@@ -60,6 +63,10 @@ public class Game
         Map = MapGenerator.GenerateMap(23);
         CurrentFinalResourceProduction = new Dictionary<ResourceDef, ResourceProduction>();
         CurrentPerTileResourceProduction = new Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>>();
+
+        // References
+        HUD = GameObject.Find("HUD").GetComponent<UI_HUD>();
+        if (HUD == null) throw new System.Exception("Couldn't find HUD");
 
         // Initialize resources
         Resources = new ResourceCollection();
@@ -110,7 +117,7 @@ public class Game
         CameraHandler.Instance.FocusPosition(new Vector2(0f, 0f));
 
         // UI
-        GameUI.Instance.AcquireTilesToggle.OnToggle += SetAcquireTilesMode;
+        HUD.AcquireTilesControl.OnToggle += SetAcquireTilesMode;
         UI_TileOverlayContainer.Instance.InitOverlays();
 
         StartNewDay();
@@ -193,7 +200,7 @@ public class Game
     {
         GameState = GameState.Noon;
 
-        GameUI.Instance.DatePanel.Refresh();
+        HUD.DatePanel.Refresh();
 
         List<Object> remainingObjects = new List<Object>(Objects);
         List<MapTile> shuffledGardenTiles = Map.OwnedEmptyTiles.GetShuffledList();
@@ -214,11 +221,11 @@ public class Game
         GameState = GameState.Afternoon;
 
         // UI
-        GameUI.Instance.DatePanel.Refresh();
-        GameUI.Instance.ResourcePanel.Refresh();
+        HUD.DatePanel.Refresh();
+        HUD.ResourcePanel.Refresh();
         TooltipManager.Instance.ResetTooltips();
-        GameUI.Instance.AcquireTilesToggle.Hide();
-        GameUI.Instance.ShopButton.transform.parent.gameObject.SetActive(false);
+        HUD.AcquireTilesControl.Hide();
+        HUD.ShopControl.transform.parent.gameObject.SetActive(false);
     }
 
     private void ConfirmScatter()
@@ -236,8 +243,8 @@ public class Game
 
         // UI
         DrawFullMap();
-        GameUI.Instance.DatePanel.Refresh();
-        GameUI.Instance.ResourcePanel.Refresh();
+        HUD.DatePanel.Refresh();
+        HUD.ResourcePanel.Refresh();
         TooltipManager.Instance.ResetTooltips();
     }
 
@@ -317,9 +324,9 @@ public class Game
                 Resources.RemoveResources(NextTownMandate.OrderedResources);
 
                 // UI
-                GameUI.Instance.DatePanel.Refresh();
-                GameUI.Instance.ResourcePanel.Refresh();
-                GameUI.Instance.OrderPanel.Refresh();
+                HUD.DatePanel.Refresh();
+                HUD.ResourcePanel.Refresh();
+                HUD.OrderPanel.Refresh();
 
                 if (IsLastDayOfYear)
                 {
@@ -482,12 +489,12 @@ public class Game
         GameState = GameState.Morning;
 
         // UI
-        GameUI.Instance.DatePanel.Refresh();
-        GameUI.Instance.ResourcePanel.Refresh();
-        GameUI.Instance.OrderPanel.Refresh();
+        HUD.DatePanel.Refresh();
+        HUD.ResourcePanel.Refresh();
+        HUD.OrderPanel.Refresh();
         TooltipManager.Instance.ResetTooltips();
-        GameUI.Instance.AcquireTilesToggle.Show();
-        GameUI.Instance.ShopButton.transform.parent.gameObject.SetActive(true);
+        HUD.AcquireTilesControl.Show();
+        HUD.ShopControl.transform.parent.gameObject.SetActive(true);
     }
 
     private void StartNewMonth()
@@ -538,7 +545,7 @@ public class Game
         AddTileToGarden(tile);
 
         // UI
-        GameUI.Instance.ResourcePanel.Refresh();
+        HUD.ResourcePanel.Refresh();
         RefreshAcquiringTilesOverlays();
     }
 
@@ -560,7 +567,7 @@ public class Game
         UI_ObjectDraftWindow.Instance.ShowObjectDraft(draftWindowTitle, draftWindowSubtitle, draftOptions, OnObjectDrafted);
 
         // UI
-        GameUI.Instance.DatePanel.Refresh();
+        HUD.DatePanel.Refresh();
     }
 
     private void OnObjectDrafted(List<IDraftable> selectedOptions)
@@ -609,7 +616,7 @@ public class Game
 
 
         // UI
-        GameUI.Instance.DatePanel.Refresh();
+        HUD.DatePanel.Refresh();
     }
 
     private void OnOrdersSelected(List<IDraftable> selectedOptions)
@@ -622,8 +629,8 @@ public class Game
         CreateNextWeeksOrders(isFirstWeekOrder: false);
 
         // UI
-        GameUI.Instance.ResourcePanel.Refresh();
-        GameUI.Instance.OrderPanel.Refresh();
+        HUD.ResourcePanel.Refresh();
+        HUD.OrderPanel.Refresh();
 
         // Next step
         if (IsLastDayOfMonth)
@@ -664,7 +671,7 @@ public class Game
         Resources.AddResources(res);
 
         // UI
-        GameUI.Instance.ResourcePanel.Refresh();
+        HUD.ResourcePanel.Refresh();
         if (IsAcquiringTiles) RefreshAcquiringTilesOverlays();
     }
 
@@ -713,7 +720,7 @@ public class Game
         else Resources.AddResource(ResourceDefOf.Gold, UI_ShopWindow.Instance.CurrentFinalBalance);
 
         // UI
-        GameUI.Instance.ResourcePanel.Refresh();
+        HUD.ResourcePanel.Refresh();
     }
 
     #endregion
