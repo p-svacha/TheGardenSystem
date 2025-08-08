@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 5d4ecd0a04b83c448a1002dd044855fd
+guid: 453bafb63c2da934d8d2c9dcb4b61952
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8315369072282018545
-    second: Claim_2_0
-  - first:
-      213: 5159452958527027033
-    second: Claim_2_1
+      213: -516091054131125173
+    second: Tooltip_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -49,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 1024
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -78,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -103,45 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Claim_2_0
+      name: Tooltip_0
       rect:
         serializedVersion: 2
-        x: 690
-        y: 601
-        width: 178
-        height: 283
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 8, y: 8, z: 8, w: 8}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1f2a3a15d10266370800000000000000
-      internalID: 8315369072282018545
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Claim_2_1
-      rect:
-        serializedVersion: 2
-        x: 263
-        y: 213
-        width: 178
-        height: 283
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 957775c312f0a9740800000000000000
-      internalID: 5159452958527027033
+      spriteID: b44e1ceabe976d8f0800000000000000
+      internalID: -516091054131125173
       vertices: []
       indices: 
       edges: []
@@ -150,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: dcbd8879a7f317a4b843fc041437e17c
     internalID: 0
     vertices: []
     indices: 
@@ -160,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Claim_2_0: 8315369072282018545
-      Claim_2_1: 5159452958527027033
+      Tooltip_0: -516091054131125173
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -7,8 +7,7 @@ public class UI_TileOverlay : MonoBehaviour
     private MapTile Tile;
 
     [Header("Elements")]
-    public Image OuterFrame;
-    public Image InnerFrame;
+    public Image Background;
     public TextMeshProUGUI Text;
 
     public void Init(MapTile tile)
@@ -22,13 +21,11 @@ public class UI_TileOverlay : MonoBehaviour
         Text.text = text;
         if (!showBackground)
         {
-            if (OuterFrame.enabled) OuterFrame.enabled = false;
-            if (InnerFrame.enabled) InnerFrame.enabled = false;
+            if (Background.enabled) Background.enabled = false;
         }
         else
         {
-            if (!OuterFrame.enabled) OuterFrame.enabled = true;
-            if (!InnerFrame.enabled) InnerFrame.enabled = true;
+            if (!Background.enabled) Background.enabled = true;
         }
 
         gameObject.SetActive(true);

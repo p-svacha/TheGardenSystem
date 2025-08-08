@@ -19,7 +19,7 @@ public static class RuntimeSpriteAssetBuilder
     {
         // Global sprite sheet attributes that can be set in inspector
         float OX = 0f; // offset x
-        float OY = 20f; // offset y
+        float OY = 19f; // offset y
         float ADV = 16f; // x advance
         float SF = 1f; // scale factor
 

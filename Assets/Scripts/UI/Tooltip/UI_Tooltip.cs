@@ -32,13 +32,19 @@ public class UI_Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         // Record creation time and mouse position
         MousePosition = Input.mousePosition;
+        if (TooltipManager.SNAP_TO_PIXELS) MousePosition = new Vector3(Mathf.Round(MousePosition.x), Mathf.Round(MousePosition.y), MousePosition.z);
         CreatedAt = Time.time;
 
         // Set inactive. One frame later the NestedTooltipManager will correctly position and reenable this tooltip.
         IsPositioned = false;
 
         // Seems weird, but is necessary so width and height of the window get set properly
-        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
+        if (TooltipManager.SNAP_TO_PIXELS)
+        {
+            GetComponent<ContentSizeFitter>().enabled = false;
+            SnapSizeToWholePixels();
+        }
         gameObject.SetActive(false);
     }
 
@@ -50,5 +56,30 @@ public class UI_Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerExit(PointerEventData e)
     {
         IsHovered = false;
+    }
+
+
+    private void SnapSizeToWholePixels()
+    {
+        var canvas = GetComponentInParent<Canvas>();
+        if (!canvas) return;
+
+        var rt = (RectTransform)transform;
+        float sf = canvas.scaleFactor;
+
+        // Snap size to whole screen pixels
+        float w = Mathf.Round(rt.rect.width * sf) / sf;
+        float h = Mathf.Round(rt.rect.height * sf) / sf;
+        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
+        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+
+        // (Optional) if your frame Image uses 9-slice and isn't stretched via anchors,
+        // also snap its rect:
+        if (OuterFrame)
+        {
+            var frt = OuterFrame.rectTransform;
+            frt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
+            frt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+        }
     }
 }

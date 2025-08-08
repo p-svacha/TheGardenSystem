@@ -177,9 +177,8 @@ public class MapTile : ITooltipTarget
         bodyText += $"{Terrain.Def.GetTooltipLink()} {Coordinates}";
 
         // Ownage info
-        int ownedInfoSize = 14;
         string ownedText = IsOwned ? "Owned" : $"Unowned ({AcquireCost.GetAsSingleLinkedString()})";
-        bodyText += $"\n<size={ownedInfoSize}>{ownedText}</size>";
+        bodyText += $"\n{ownedText}";
 
         // Terrain
         bodyText += $"\n\n{Terrain.GetDescriptionForTileTooltip()}";

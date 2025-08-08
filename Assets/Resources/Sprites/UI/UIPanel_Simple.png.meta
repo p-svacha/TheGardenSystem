@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2de76afa7bab14c4e81cac7ef120c2af
+guid: 14ff8ab8c1cf3fc45a73d34392601835
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2555698833323565014
-    second: Claim_1_0
+      213: -1114546635928031805
+    second: UIPanel_Simple_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 1024
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Claim_1_0
+      name: UIPanel_Simple_0
       rect:
         serializedVersion: 2
-        x: 451
-        y: 369
-        width: 178
-        height: 283
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 4, z: 4, w: 4}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6df91295c8aa77320800000000000000
-      internalID: 2555698833323565014
+      spriteID: 3cd27ef5db55880f0800000000000000
+      internalID: -1114546635928031805
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 399fdd662f84d854d993eba378454e92
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Claim_1_0: 2555698833323565014
+      UIPanel_Simple_0: -1114546635928031805
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

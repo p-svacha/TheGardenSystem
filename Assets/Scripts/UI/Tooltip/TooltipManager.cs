@@ -18,6 +18,11 @@ public class TooltipManager : MonoBehaviour
     private const int MOUSE_OFFSET = 2; // px
     private const int SCREEN_EDGE_OFFSET = 5; // px
 
+    /// <summary>
+    /// If set to true, all tooltip windows will have position and size snapped to a full integer.
+    /// </summary>
+    public const bool SNAP_TO_PIXELS = true;
+
     [Header("Prefabs")]
     public UI_Tooltip TooltipPrefab;
 
@@ -123,7 +128,7 @@ public class TooltipManager : MonoBehaviour
 
     private void PositionTooltip(UI_Tooltip tooltip)
     {
-        RectTransform rect = tooltip.GetComponent<RectTransform>();
+        RectTransform rect = (RectTransform)tooltip.transform;
         Vector3 originalPosition = tooltip.MousePosition + new Vector3(MOUSE_OFFSET, MOUSE_OFFSET, 0);
         Vector2 adjustedPosition = new Vector2(originalPosition.x, originalPosition.y);
 
