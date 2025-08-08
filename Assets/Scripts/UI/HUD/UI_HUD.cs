@@ -15,7 +15,7 @@ public class UI_HUD : MonoBehaviour
 
     private void OnEnable()
     {
-        ShopControl.Button.onClick.AddListener(ShopButton_OnClick);
+        ShopControl.SetOnClick(ShopButton_OnClick);
     }
 
     private void ShopButton_OnClick()

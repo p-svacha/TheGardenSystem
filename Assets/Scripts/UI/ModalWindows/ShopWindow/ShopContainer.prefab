@@ -118,10 +118,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 4
+    m_Right: 4
+    m_Top: 4
+    m_Bottom: 4
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
@@ -152,15 +152,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.16470589, g: 0.16862746, b: 0.1764706, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: -1114546635928031805, guid: 14ff8ab8c1cf3fc45a73d34392601835, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -596,6 +596,22 @@ PrefabInstance:
     - target: {fileID: 2936265355799832287, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
       propertyPath: m_text
       value: Your Goods
+      objectReference: {fileID: 0}
+    - target: {fileID: 2936265355799832287, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ff22a65cc7664842b6ad9971f57082a, type: 2}
+    - target: {fileID: 2936265355799832287, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2366928172204897562, guid: 1ff22a65cc7664842b6ad9971f57082a, type: 2}
+    - target: {fileID: 2936265355799832287, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2936265355799832287, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -18,7 +18,7 @@ public class UI_MandateWindow : UI_WindowBase
     {
         base.Awake();
         Instance = this;
-        ConfirmButton.onClick.AddListener(Close);
+        ConfirmButton.SetOnClick(Close);
     }
 
     public void Show()

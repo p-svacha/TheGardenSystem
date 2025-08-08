@@ -5,7 +5,7 @@ using TMPro;
 public class UI_ObjectDraftOption : UI_DraftOption
 {
     [Header("Elements")]
-    public Image InnerFrame;
+    public Image Background;
     public TextMeshProUGUI TitleText;
     public Image Image;
     public TextMeshProUGUI ResourcesText;
@@ -25,6 +25,6 @@ public class UI_ObjectDraftOption : UI_DraftOption
 
     public override void SetSelected(bool value)
     {
-        InnerFrame.color = value ? ResourceManager.UiBackgroundLighter2 : ResourceManager.UiBackgroundLighter1;
+        Background.sprite = value ? ResourceManager.LoadSprite("Sprites/UI/UIPanel_Simple_Lighter") : ResourceManager.LoadSprite("Sprites/UI/UIPanel_Simple");
     }
 }

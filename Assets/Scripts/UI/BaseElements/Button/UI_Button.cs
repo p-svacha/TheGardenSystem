@@ -11,16 +11,18 @@ public class UI_Button : MonoBehaviour,
     IPointerDownHandler, IPointerUpHandler
 {
     [Header("Sprites")]
-    [SerializeField] private Sprite defaultSprite;
-    [SerializeField] private Sprite hoverSprite;
-    [SerializeField] private Sprite pressedSprite;
+    private Sprite DefaultSprite;
+    private Sprite HoverSprite;
+    private Sprite PressedSprite;
+    private Sprite DisabledSprite;
 
-    [Header("References (auto-filled if left null)")]
+    [Header("Elements")]
     [SerializeField] private Image targetImage;
-    public Button Button;
+    [SerializeField] private Button Button;
     [SerializeField] private RectTransform textRect;
     [SerializeField] private RectTransform iconRect;
-    [SerializeField] private CanvasGroup canvasGroup;
+    private CanvasGroup canvasGroup;
+    public Image DisabledOverlay;
 
     [Header("Pressed Offset")]
     [Tooltip("How far to push content while pressed (pixels). Use negative Y to move down.")]
@@ -40,6 +42,7 @@ public class UI_Button : MonoBehaviour,
     private bool isPointerOver;
     private bool isPointerDown;
     private bool pressedOffsetApplied;
+    private bool IsInteractable;
 
     private Vector2 originalTextPos;
     private Vector2 originalIconPos;
@@ -52,15 +55,16 @@ public class UI_Button : MonoBehaviour,
         TryAutoWireIcon();
         if (!canvasGroup) canvasGroup = GetComponent<CanvasGroup>();
         if (!canvasGroup) canvasGroup = gameObject.AddComponent<CanvasGroup>();
-        if (targetImage != null && defaultSprite == null) defaultSprite = targetImage.sprite;
+        if (targetImage != null && DefaultSprite == null) DefaultSprite = targetImage.sprite;
     }
 
     private void Awake()
     {
-        // Your sprite loading — keep as-is if you use a custom loader.
-        defaultSprite = ResourceManager.LoadSprite("Sprites/UI/Button_Default");
-        hoverSprite = ResourceManager.LoadSprite("Sprites/UI/Button_Hovered");
-        pressedSprite = ResourceManager.LoadSprite("Sprites/UI/Button_Pressed");
+        // Load sprites
+        DefaultSprite = ResourceManager.LoadSprite("Sprites/UI/Button_Default");
+        HoverSprite = ResourceManager.LoadSprite("Sprites/UI/Button_Hovered");
+        PressedSprite = ResourceManager.LoadSprite("Sprites/UI/Button_Pressed");
+        DisabledSprite = ResourceManager.LoadSprite("Sprites/UI/Button_Disabled");
 
         targetImage = GetComponent<Image>();
         Button = GetComponent<Button>();
@@ -70,7 +74,7 @@ public class UI_Button : MonoBehaviour,
         if (!textRect) TryAutoWireTMP();
         if (!iconRect) TryAutoWireIcon();
 
-        if (!defaultSprite && targetImage) defaultSprite = targetImage.sprite;
+        if (!DefaultSprite && targetImage) DefaultSprite = targetImage.sprite;
 
         // Avoid fighting with Button transitions.
         if (Button && Button.transition != Selectable.Transition.None)
@@ -82,6 +86,7 @@ public class UI_Button : MonoBehaviour,
         CacheOriginalPositions();
         isPointerOver = isPointerDown = false;
         pressedOffsetApplied = false;
+        IsInteractable = true;
         RefreshVisual(); // will apply pressed offset if toggled-on
     }
 
@@ -89,44 +94,19 @@ public class UI_Button : MonoBehaviour,
     {
         isPointerOver = isPointerDown = false;
         ResetPositions();
-        SetSprite(defaultSprite);
+        SetSprite(DefaultSprite);
     }
 
-    // ---------- Pointer Events ----------
-    public void OnPointerDown(PointerEventData eventData)
+
+
+    #region Public API
+
+    public void SetOnClick(UnityEngine.Events.UnityAction action)
     {
-        if (eventData.button != PointerEventData.InputButton.Left) return;
-        if (Button && !Button.interactable) return;
-
-        isPointerDown = true;
-        RefreshVisual(forcePressed: true); // no direct OffsetPositions() here
+        Button.onClick.RemoveAllListeners();
+        Button.onClick.AddListener(action);
     }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        if (eventData.button != PointerEventData.InputButton.Left) return;
-
-        isPointerDown = false;
-
-        if (isPointerOver && (!Button || Button.interactable) && actsAsToggle)
-            SetToggled(!isToggled, invokeEvent: true);
-
-        RefreshVisual(); // no direct ResetPositions() here
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        isPointerOver = true;
-        if (!isPointerDown) RefreshVisual();
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        isPointerOver = false;
-        if (!isPointerDown) RefreshVisual();
-    }
-
-    // ---------- Public API ----------
     public void Show()
     {
         if (!canvasGroup) return;
@@ -168,20 +148,42 @@ public class UI_Button : MonoBehaviour,
 
     public bool GetToggled() => isToggled;
 
-    // ---------- Internals ----------
+    public void SetInteractable(bool value)
+    {
+        IsInteractable = value;
+        Button.interactable = value;
+        RefreshVisual();
+    }
+
+    public void Enable() => SetInteractable(true);
+    public void Disable() => SetInteractable(false);
+
+    #endregion
+
+    #region Internal Logic
+
     private void RefreshVisual(bool forcePressed = false)
     {
+        if(!IsInteractable)
+        {
+            SetSprite(DisabledSprite);
+            DisabledOverlay.gameObject.SetActive(true);
+            return;
+        }
+
+        DisabledOverlay.gameObject.SetActive(false);
+
         bool showPressed =
             forcePressed ||
             isPointerDown ||
             (actsAsToggle && isToggled && toggleUsesPressedLook);
 
         if (showPressed)
-            SetSprite(pressedSprite ? pressedSprite : defaultSprite);
+            SetSprite(PressedSprite ? PressedSprite : DefaultSprite);
         else if (isPointerOver)
-            SetSprite(hoverSprite ? hoverSprite : defaultSprite);
+            SetSprite(HoverSprite ? HoverSprite : DefaultSprite);
         else
-            SetSprite(defaultSprite);
+            SetSprite(DefaultSprite);
 
         ApplyPressedOffset(showPressed);
     }
@@ -189,7 +191,7 @@ public class UI_Button : MonoBehaviour,
     private void SetSprite(Sprite s)
     {
         if (!targetImage) return;
-        targetImage.sprite = s ? s : defaultSprite;
+        targetImage.sprite = s ? s : DefaultSprite;
         // Intentionally do not call SetNativeSize() to preserve slicing/layout.
     }
 
@@ -248,4 +250,43 @@ public class UI_Button : MonoBehaviour,
         if (apply) OffsetPositions(); else ResetPositions();
         pressedOffsetApplied = apply;
     }
+
+    #endregion
+
+    #region Pointer Events
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        if (Button && !Button.interactable) return;
+
+        isPointerDown = true;
+        RefreshVisual(forcePressed: true); // no direct OffsetPositions() here
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+
+        isPointerDown = false;
+
+        if (isPointerOver && (!Button || Button.interactable) && actsAsToggle)
+            SetToggled(!isToggled, invokeEvent: true);
+
+        RefreshVisual(); // no direct ResetPositions() here
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        isPointerOver = true;
+        if (!isPointerDown) RefreshVisual();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isPointerOver = false;
+        if (!isPointerDown) RefreshVisual();
+    }
+
+    #endregion
 }

@@ -171,6 +171,8 @@ public class TooltipManager : MonoBehaviour
     /// </summary>
     private void ShowTooltip(ITooltipTarget target)
     {
+        if (DEBUG_ENABLED) Debug.Log($"Spawning tooltip for {target.NestedTooltipLinkId}");
+
         // Create new tooltip
         UI_Tooltip tooltip = Instantiate(TooltipPrefab, transform);
         string titleText = target.GetTooltipTitle();
@@ -196,7 +198,6 @@ public class TooltipManager : MonoBehaviour
 
     public void DestroyAllWindows()
     {
-        if (DEBUG_ENABLED) Debug.Log("DestroyAllWindows");
         foreach (var w in Windows) Destroy(w.gameObject);
         Windows.Clear();
         DynamicLinkTargets.Clear();
@@ -234,8 +235,9 @@ public class TooltipManager : MonoBehaviour
             if (DEBUG_ENABLED) Debug.LogWarning("This function may only be called if no object is currently hovered. Make sure to call NotifyObjectUnhovered() on the previous target first.");
             CurrentHoveredTarget = null;
         }
-        if (DEBUG_ENABLED) Debug.Log("NotifyObjectHovered " + target.NestedTooltipLinkText);
+        if (DEBUG_ENABLED) Debug.Log("NotifyObjectHovered " + target.NestedTooltipLinkId);
 
+        HoverTimer = 0f;
         CurrentHoveredTarget = target;
         IsCurrentHoveredTargetRoot = isRoot;
         if (spawnsInstantTooltip) HoverTimer = TOOLTIP_DELAY;
@@ -246,6 +248,9 @@ public class TooltipManager : MonoBehaviour
     /// </summary>
     public void NotifyObjectUnhovered(ITooltipTarget target)
     {
+        if (target != CurrentHoveredTarget) return;
+
+        if (DEBUG_ENABLED) Debug.Log("NotifyObjectUnhovered " + target.NestedTooltipLinkId);
         CurrentHoveredTarget = null;
         HoverTimer = 0f;
     }

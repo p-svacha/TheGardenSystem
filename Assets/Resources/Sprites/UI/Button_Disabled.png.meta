@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 89e557b76d717cb48afdda6b498421b5
+guid: 2bc13c2e45f1ecd4cb1e0ba319d46b2a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2780540300400067551
-    second: Checkmark_0
+      213: -144398873211278316
+    second: Button_Disabled_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 22
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Checkmark_0
+      name: Button_Disabled_0
       rect:
         serializedVersion: 2
-        x: 132
-        y: 88
-        width: 781
-        height: 809
+        x: 0
+        y: 0
+        width: 64
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 6, y: 6, z: 6, w: 6}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fd30109dba6769620800000000000000
-      internalID: 2780540300400067551
+      spriteID: 41c66486dfdfefdf0800000000000000
+      internalID: -144398873211278316
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: aea9c357400083445ac811a6c41717d7
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Checkmark_0: 2780540300400067551
+      Button_Disabled_0: -144398873211278316
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

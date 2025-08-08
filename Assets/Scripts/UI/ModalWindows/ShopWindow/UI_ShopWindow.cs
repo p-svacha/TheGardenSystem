@@ -30,7 +30,7 @@ public class UI_ShopWindow : UI_WindowBase
         base.Awake();
         Instance = this;
         CloseButton.onClick.AddListener(Close);
-        ConfirmButton.onClick.AddListener(Confirm);
+        ConfirmButton.SetOnClick(Confirm);
         InitHelpButton();
     }
 
@@ -38,11 +38,11 @@ public class UI_ShopWindow : UI_WindowBase
     {
         HelpButton.GetComponent<UI_TooltipTarget_Simple>().SpawnsInstantTooltip = true;
         HelpButton.GetComponent<UI_TooltipTarget_Simple>().Text = "Welcome to the shop." +
-            "\nHere you can sell and buy resources, as well as buy a selection of objects." +
-            "\nThe shops stock will refill and change at the start of each month. Each month one object will be on sale." +
-            "\nClick on any resource or object to add or remove it from the current trade. Hold shift to move 10 resources at a time." +
-            "\nSold resources will stay in the shops inventory until the end of the month and can be bought back at a loss." +
-            "\nComplete the trade by clicking 'Confirm'. You see the amount of gold will pay or receive next to the button.";
+            "\n\nHere you can sell and buy resources, as well as buy a selection of objects." +
+            "\n\nThe shops stock will refill and change at the start of each month. Each month one object will be on sale." +
+            "\n\nClick on any resource or object to add or remove it from the current trade. Hold shift to move 10 resources at a time." +
+            "\n\nSold resources will stay in the shops inventory until the end of the month and can be bought back at a loss." +
+            "\n\nComplete the trade by clicking 'Confirm'. You see the amount of gold will pay or receive next to the button.";
     }
 
     public void Show()
@@ -102,7 +102,7 @@ public class UI_ShopWindow : UI_WindowBase
         SummaryText.color = CanCompleteTrade() ? ResourceManager.UiTextDefault : ResourceManager.UiTextRed;
 
         // Enable / Disable confirm
-        ConfirmButton.interactable = CanCompleteTrade();
+        ConfirmButton.SetInteractable(CanCompleteTrade());
     }
 
     public bool CanCompleteTrade()

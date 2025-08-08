@@ -33,11 +33,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2416673179100169723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 0, y: -20}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -2}
+  m_SizeDelta: {x: 44, y: 44}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &139174046403751191
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -129,7 +129,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 70}
+  m_SizeDelta: {x: 60, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3594501112910158148
 MonoBehaviour:
@@ -146,8 +146,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 50
-  m_PreferredHeight: 70
+  m_PreferredWidth: 60
+  m_PreferredHeight: 75
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2509804, g: 0.25490198, b: 0.2627451, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.011764706}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -288,7 +288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1857967237766921991, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1857967237766921991, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -324,7 +324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1857967237766921991, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1857967237766921991, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -347,12 +347,12 @@ PrefabInstance:
       value: x42
       objectReference: {fileID: 0}
     - target: {fileID: 2936265355799832287, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
-      propertyPath: m_fontSize
+      propertyPath: m_fontSizeBase
       value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2936265355799832287, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 14
+      propertyPath: m_VerticalAlignment
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 2936265355799832287, guid: f7b20810605e6d94d9fc5866c12fbca4, type: 3}
       propertyPath: m_HorizontalAlignment

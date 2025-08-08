@@ -69,6 +69,7 @@ public class CameraHandler : MonoBehaviour
             if (Camera.orthographicSize < 6)
             {
                 Camera.orthographicSize *= 2;
+                OnCameraChanged?.Invoke();
             }
         }
         if (Input.mouseScrollDelta.y > 0)
@@ -76,6 +77,7 @@ public class CameraHandler : MonoBehaviour
             if (Camera.orthographicSize > 2)
             {
                 Camera.orthographicSize /= 2;
+                OnCameraChanged?.Invoke();
             }
         }
 

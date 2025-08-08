@@ -35,6 +35,7 @@ public class UI_OrderSelectionWindow : UI_WindowBase
         Callback = callback;
         Draft.Init(subtitle, draftOptions, OrderDraftOptionPrefab, minSelectableOptions: 0, maxSelectableOptions: -1, maxOptionsDisplayedPerRow: 1, initiallyAllSelected: true, OnOrderSelectionChanged);
         gameObject.SetActive(true);
+        RecalculateAndDisplayRemainingResources();
     }
 
     private void OnOrderSelectionChanged()
@@ -59,8 +60,8 @@ public class UI_OrderSelectionWindow : UI_WindowBase
         RemainingResourcesText.text = RemainingResources.GetAsSingleLinkedString();
 
         // Enable / Disable confirm
-        if (RemainingResources.HasNegativeValues()) ConfirmButton.interactable = false;
-        else ConfirmButton.interactable = true;
+        if (RemainingResources.HasNegativeValues()) ConfirmButton.SetInteractable(false);
+        else ConfirmButton.SetInteractable(true);
     }
 
     private void Confirm()

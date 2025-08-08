@@ -23,6 +23,12 @@ affection arrows in production overlays:
 	maybe for ProductionModifiersource, aditionally the coordinate is needed from where the effect originates from
 	use ^ ^ ^ on tile if source is from same tile
 
+tooltip improvements:
+	add max width attribute
+	show type on top right (i.e. "rare object" / "market resource" / "resource production")
+	flip when not enough space on right, so it goes left from cursor and shows the background sprite flipped so the little arrow is correct
+	make all textx with resource icons in them size 22
+
 ordered scatter:
 	instead of full scatter all at once, objects get scattered one by one with slight delay in between
 	this will also make merging nicer (see next chapter)

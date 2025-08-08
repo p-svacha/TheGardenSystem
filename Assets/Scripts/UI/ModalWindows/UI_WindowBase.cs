@@ -6,7 +6,7 @@ public class UI_WindowBase : MonoBehaviour
 {
     [Header("Window Base")]
     public TextMeshProUGUI WindowTitle;
-    public Button ConfirmButton;
+    public UI_Button ConfirmButton;
 
     protected virtual void Awake()
     {
@@ -17,7 +17,6 @@ public class UI_WindowBase : MonoBehaviour
     protected void Init(string title, System.Action confirmCallback)
     {
         WindowTitle.text = title;
-        ConfirmButton.onClick.RemoveAllListeners();
-        ConfirmButton.onClick.AddListener(confirmCallback.Invoke);
+        ConfirmButton.SetOnClick(confirmCallback.Invoke);
     }
 }

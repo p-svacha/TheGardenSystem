@@ -25,7 +25,7 @@ public class UI_TooltipTarget_Simple : MonoBehaviour, IPointerEnterHandler, IPoi
     public string GetTooltipTitle() => "";
     public string GetTooltipBodyText(List<ITooltipTarget> dynamicReferences) => Text;
 
-    public string NestedTooltipLinkId => "";
+    public string NestedTooltipLinkId => "SimpleTooltip";
     public string NestedTooltipLinkText => "";
     public Color NestedTooltipLinkColor => TooltipManager.DEFAULT_NESTED_LINK_COLOR;
 
