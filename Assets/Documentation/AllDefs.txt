@@ -171,9 +171,9 @@
 
         new ObjectDef()
         {
-            DefName = "CornStalk",
-            Label = "corn stalk",
-            Description = "Tall and golden, swaying in the breeze. A sign of steady growth.",
+            DefName = "Corn",
+            Label = "corn",
+            Description = "A single golden knob of corn.",
             Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {

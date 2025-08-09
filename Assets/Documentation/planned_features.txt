@@ -10,6 +10,9 @@ shed:
 	show number on shed with how many objects are in it
 	add an indicator of how many tiles are in the garden
 
+tile rendering:
+	render lower rows (lower y coordinate) in front of higher rows
+
 mergeable objects:
 some tiles have the tag "mergeable".
 if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increased tier) on the middle tile of the 3

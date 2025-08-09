@@ -230,6 +230,7 @@ public class TooltipManager : MonoBehaviour
     /// </summary>
     public void NotifyObjectHovered(ITooltipTarget target, bool isRoot = true, bool spawnsInstantTooltip = false)
     {
+        if (target.GetTooltipTitle() == "" && target.GetTooltipBodyText(new()) == "") return;
         if (CurrentHoveredTarget != null)
         {
             if (DEBUG_ENABLED) Debug.LogWarning("This function may only be called if no object is currently hovered. Make sure to call NotifyObjectUnhovered() on the previous target first.");
