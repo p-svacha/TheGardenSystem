@@ -95,42 +95,10 @@ public class MapRenderer : MonoBehaviour
     {
         FenceTileCache = new Dictionary<Direction, Tile>();
 
-        // Load the base vertical fence sprite once
-        Sprite baseFence = ResourceManager.LoadSprite("Sprites/Overlays/Fence");
-
-        foreach (Direction dir in Enum.GetValues(typeof(Direction)))
-        {
-            Tile tile = CreateTileFromSprite(baseFence);
-
-            // Compute a transform that both rotates and offsets the tile inside its cell
-            Vector3 offset = Vector3.zero;
-            Quaternion rot = Quaternion.identity;
-            float centerOffset = 0.45f;
-
-            switch (dir)
-            {
-                case Direction.N:
-                    offset = new Vector3(0f, centerOffset, 0f);
-                    rot = Quaternion.Euler(0, 0, 90);
-                    break;
-                case Direction.E:
-                    offset = new Vector3(centerOffset, 0f, 0f);
-                    rot = Quaternion.Euler(0, 0, 0);
-                    break;
-                case Direction.S:
-                    offset = new Vector3(0f, -centerOffset, 0f);
-                    rot = Quaternion.Euler(0, 0, 90);
-                    break;
-                case Direction.W:
-                    offset = new Vector3(-centerOffset, 0f, 0f);
-                    rot = Quaternion.Euler(0, 0, 0);
-                    break;
-            }
-
-            // Bake into the Tile’s transform
-            tile.transform = Matrix4x4.TRS(offset, rot, Vector3.one);
-            FenceTileCache[dir] = tile;
-        }
+        FenceTileCache.Add(Direction.N, CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_N"))));
+        FenceTileCache.Add(Direction.E, CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_E"))));
+        FenceTileCache.Add(Direction.S, CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_S"))));
+        FenceTileCache.Add(Direction.W, CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_W"))));
     }
 
     private void InitializeObjectTiles()

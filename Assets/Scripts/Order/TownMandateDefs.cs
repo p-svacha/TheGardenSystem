@@ -15,7 +15,7 @@ public static class TownMandateDefs
             {
                 { ResourceDefOf.Food, 15 },
                 { ResourceDefOf.Kindle, 5 },
-                { ResourceDefOf.Ornaments, 5 },
+                { ResourceDefOf.Decorations, 5 },
                 { ResourceDefOf.Fiber, 5 },
                 { ResourceDefOf.Herbs, 5 },
             }),
@@ -44,7 +44,7 @@ public static class TownMandateDefs
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Herbs, 40 },
-                { ResourceDefOf.Ornaments, 20 },
+                { ResourceDefOf.Decorations, 20 },
             }),
         },
 
@@ -56,7 +56,7 @@ public static class TownMandateDefs
             Description = "Volunteers are decorating public spaces and planters across town.",
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 80 },
+                { ResourceDefOf.Decorations, 80 },
             }),
         },
 
@@ -69,7 +69,7 @@ public static class TownMandateDefs
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Kindle, 65 },
-                { ResourceDefOf.Ornaments, 35 },
+                { ResourceDefOf.Decorations, 35 },
             }),
         },
 
@@ -83,7 +83,7 @@ public static class TownMandateDefs
             {
                 { ResourceDefOf.Food, 25 },
                 { ResourceDefOf.Herbs, 25 },
-                { ResourceDefOf.Ornaments, 25 },
+                { ResourceDefOf.Decorations, 25 },
                 { ResourceDefOf.Kindle, 25 },
                 { ResourceDefOf.Fiber, 25 },
             }),
@@ -99,7 +99,7 @@ public static class TownMandateDefs
             {
                 { ResourceDefOf.Fiber, 80 },
                 { ResourceDefOf.Herbs, 40 },
-                { ResourceDefOf.Ornaments, 20 },
+                { ResourceDefOf.Decorations, 20 },
             }),
         },
 
@@ -113,7 +113,7 @@ public static class TownMandateDefs
             {
                 { ResourceDefOf.Food, 100 },
                 { ResourceDefOf.Herbs, 30 },
-                { ResourceDefOf.Ornaments, 30 },
+                { ResourceDefOf.Decorations, 30 },
             }),
         },
 
@@ -139,7 +139,7 @@ public static class TownMandateDefs
             Description = "A town-wide parade of petals, perfumes, and herbal arrangements.",
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 100 },
+                { ResourceDefOf.Decorations, 100 },
                 { ResourceDefOf.Herbs, 60 },
                 { ResourceDefOf.Food, 40 },
             }),
@@ -156,7 +156,7 @@ public static class TownMandateDefs
                 { ResourceDefOf.Food, 70 },
                 { ResourceDefOf.Fiber, 60 },
                 { ResourceDefOf.Kindle, 60 },
-                { ResourceDefOf.Ornaments, 30 },
+                { ResourceDefOf.Decorations, 30 },
             }),
         },
 
@@ -169,7 +169,7 @@ public static class TownMandateDefs
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 85 },
-                { ResourceDefOf.Ornaments, 65 },
+                { ResourceDefOf.Decorations, 65 },
                 { ResourceDefOf.Herbs, 55 },
                 { ResourceDefOf.Kindle, 35 },
             }),

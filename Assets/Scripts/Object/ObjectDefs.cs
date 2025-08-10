@@ -107,9 +107,9 @@ public static class ObjectDefs
 
         new ObjectDef()
         {
-            DefName = "Wildflower",
-            Label = "wildflower",
-            Description = "A wild flower with beautiful and colorful petals.",
+            DefName = "Daisy",
+            Label = "daisy",
+            Description = "A wild flower that can be used for decoration.",
             Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
@@ -119,7 +119,7 @@ public static class ObjectDefs
             },
             NativeProduction = new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 1 },
+                { ResourceDefOf.Decorations, 1 },
             },
         },
 
@@ -155,7 +155,7 @@ public static class ObjectDefs
             NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 1 },
-                { ResourceDefOf.Ornaments, 1 },
+                { ResourceDefOf.Decorations, 1 },
             },
             Effects = new List<ObjectEffect>()
             {
@@ -190,7 +190,7 @@ public static class ObjectDefs
             },
             NativeProduction = new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 1 },
+                { ResourceDefOf.Decorations, 1 },
             },
             Effects = new List<ObjectEffect>()
             {
@@ -207,7 +207,7 @@ public static class ObjectDefs
                     {
                         ResourceProductionModifier = new Dictionary<ResourceDef, int>()
                         {
-                            { ResourceDefOf.Ornaments, 1 },
+                            { ResourceDefOf.Decorations, 1 },
                         },
                     },
                 },
@@ -305,7 +305,7 @@ public static class ObjectDefs
                         ResourceProductionModifier = new Dictionary<ResourceDef, int>()
                         {
                             { ResourceDefOf.Food, 1 },
-                            { ResourceDefOf.Ornaments, 1 },
+                            { ResourceDefOf.Decorations, 1 },
                         }
                     },
                 }
@@ -375,7 +375,7 @@ public static class ObjectDefs
             },
             NativeProduction = new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 2 },
+                { ResourceDefOf.Decorations, 2 },
                 { ResourceDefOf.Herbs, 1 },
             },
             Effects = new List<ObjectEffect>()
@@ -394,7 +394,7 @@ public static class ObjectDefs
                     {
                         ResourceProductionModifier = new Dictionary<ResourceDef, int>()
                         {
-                            { ResourceDefOf.Ornaments, 1 },
+                            { ResourceDefOf.Decorations, 1 },
                         }
                     },
                 },
@@ -410,7 +410,7 @@ public static class ObjectDefs
                     {
                         ResourceProductionModifier = new Dictionary<ResourceDef, int>()
                         {
-                            { ResourceDefOf.Ornaments, 3 },
+                            { ResourceDefOf.Decorations, 3 },
                         }
                     },
                 },

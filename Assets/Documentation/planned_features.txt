@@ -64,10 +64,14 @@ art:
 tutorial:
 	add a tutorial (1 month) explaining game play loop
 
-[maybe] resource progression:
+resource progression:
 	not all resources are active from the start
 	only get added once first time produced or ordered
 	only active get shown in resource panel and remaining res
+	some resources are clearly for later stages in the game
+	maybe add new category of "complex market resources" for that
+		complex resources must either be crafted with objects from basic market resources
+		or they are just very hard to acquire (like an object that produces it but ONLY if on water)
 
 order level increases:
 	at the end of week, x customers increase their order level, where x equals current month

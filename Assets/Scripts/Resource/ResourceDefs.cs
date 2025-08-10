@@ -33,8 +33,8 @@ public static class ResourceDefs
 
         new ResourceDef()
         {
-            DefName = "Ornaments",
-            Label = "ornaments",
+            DefName = "Decorations",
+            Label = "decorations",
             Description = "Visually pleasing or fragrant goods used to beautify spaces. Includes flowers, decorative plants, and handmade items with aesthetic value.",
             Type = ResourceType.MarketResource,
         },

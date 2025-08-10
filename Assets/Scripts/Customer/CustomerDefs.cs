@@ -56,10 +56,10 @@ public static class CustomerDefs
             GoldRewardPerLevel = 5,
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
-                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 10 } }) },
-                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 10 }, { ResourceDefOf.Herbs, 10 } }) },
-                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 15 }, { ResourceDefOf.Herbs, 15 } }) },
-                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 20 }, { ResourceDefOf.Herbs, 20 } }) },
+                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Decorations, 10 } }) },
+                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Decorations, 10 }, { ResourceDefOf.Herbs, 10 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Decorations, 15 }, { ResourceDefOf.Herbs, 15 } }) },
+                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Decorations, 20 }, { ResourceDefOf.Herbs, 20 } }) },
             },
         },
 

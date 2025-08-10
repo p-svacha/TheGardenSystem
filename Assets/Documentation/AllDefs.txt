@@ -54,10 +54,10 @@
             GoldRewardPerLevel = 5,
             OrderIncreases = new Dictionary<int, ResourceCollection>()
             {
-                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 10 } }) },
-                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 10 }, { ResourceDefOf.Herbs, 10 } }) },
-                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 15 }, { ResourceDefOf.Herbs, 15 } }) },
-                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Ornaments, 20 }, { ResourceDefOf.Herbs, 20 } }) },
+                { 1, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Decorations, 10 } }) },
+                { 6, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Decorations, 10 }, { ResourceDefOf.Herbs, 10 } }) },
+                { 11, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Decorations, 15 }, { ResourceDefOf.Herbs, 15 } }) },
+                { 16, new(new Dictionary<ResourceDef, int>() { { ResourceDefOf.Decorations, 20 }, { ResourceDefOf.Herbs, 20 } }) },
             },
         },
 
@@ -223,9 +223,9 @@
 
         new ObjectDef()
         {
-            DefName = "Wildflower",
-            Label = "wildflower",
-            Description = "A wild flower with beautiful and colorful petals.",
+            DefName = "Daisy",
+            Label = "daisy",
+            Description = "A wild flower that can be used for decoration.",
             Tier = ObjectTierDefOf.Common,
             Tags = new List<ObjectTagDef>()
             {
@@ -235,7 +235,7 @@
             },
             NativeProduction = new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 1 },
+                { ResourceDefOf.Decorations, 1 },
             },
         },
 
@@ -271,7 +271,7 @@
             NativeProduction = new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 1 },
-                { ResourceDefOf.Ornaments, 1 },
+                { ResourceDefOf.Decorations, 1 },
             },
             Effects = new List<ObjectEffect>()
             {
@@ -306,7 +306,7 @@
             },
             NativeProduction = new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 1 },
+                { ResourceDefOf.Decorations, 1 },
             },
             Effects = new List<ObjectEffect>()
             {
@@ -323,7 +323,7 @@
                     {
                         ResourceProductionModifier = new Dictionary<ResourceDef, int>()
                         {
-                            { ResourceDefOf.Ornaments, 1 },
+                            { ResourceDefOf.Decorations, 1 },
                         },
                     },
                 },
@@ -421,7 +421,7 @@
                         ResourceProductionModifier = new Dictionary<ResourceDef, int>()
                         {
                             { ResourceDefOf.Food, 1 },
-                            { ResourceDefOf.Ornaments, 1 },
+                            { ResourceDefOf.Decorations, 1 },
                         }
                     },
                 }
@@ -491,7 +491,7 @@
             },
             NativeProduction = new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 2 },
+                { ResourceDefOf.Decorations, 2 },
                 { ResourceDefOf.Herbs, 1 },
             },
             Effects = new List<ObjectEffect>()
@@ -510,7 +510,7 @@
                     {
                         ResourceProductionModifier = new Dictionary<ResourceDef, int>()
                         {
-                            { ResourceDefOf.Ornaments, 1 },
+                            { ResourceDefOf.Decorations, 1 },
                         }
                     },
                 },
@@ -526,7 +526,7 @@
                     {
                         ResourceProductionModifier = new Dictionary<ResourceDef, int>()
                         {
-                            { ResourceDefOf.Ornaments, 3 },
+                            { ResourceDefOf.Decorations, 3 },
                         }
                     },
                 },
@@ -828,7 +828,7 @@
             {
                 { ResourceDefOf.Food, 15 },
                 { ResourceDefOf.Kindle, 5 },
-                { ResourceDefOf.Ornaments, 5 },
+                { ResourceDefOf.Decorations, 5 },
                 { ResourceDefOf.Fiber, 5 },
                 { ResourceDefOf.Herbs, 5 },
             }),
@@ -857,7 +857,7 @@
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Herbs, 40 },
-                { ResourceDefOf.Ornaments, 20 },
+                { ResourceDefOf.Decorations, 20 },
             }),
         },
 
@@ -869,7 +869,7 @@
             Description = "Volunteers are decorating public spaces and planters across town.",
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 80 },
+                { ResourceDefOf.Decorations, 80 },
             }),
         },
 
@@ -882,7 +882,7 @@
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Kindle, 65 },
-                { ResourceDefOf.Ornaments, 35 },
+                { ResourceDefOf.Decorations, 35 },
             }),
         },
 
@@ -896,7 +896,7 @@
             {
                 { ResourceDefOf.Food, 25 },
                 { ResourceDefOf.Herbs, 25 },
-                { ResourceDefOf.Ornaments, 25 },
+                { ResourceDefOf.Decorations, 25 },
                 { ResourceDefOf.Kindle, 25 },
                 { ResourceDefOf.Fiber, 25 },
             }),
@@ -912,7 +912,7 @@
             {
                 { ResourceDefOf.Fiber, 80 },
                 { ResourceDefOf.Herbs, 40 },
-                { ResourceDefOf.Ornaments, 20 },
+                { ResourceDefOf.Decorations, 20 },
             }),
         },
 
@@ -926,7 +926,7 @@
             {
                 { ResourceDefOf.Food, 100 },
                 { ResourceDefOf.Herbs, 30 },
-                { ResourceDefOf.Ornaments, 30 },
+                { ResourceDefOf.Decorations, 30 },
             }),
         },
 
@@ -952,7 +952,7 @@
             Description = "A town-wide parade of petals, perfumes, and herbal arrangements.",
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Ornaments, 100 },
+                { ResourceDefOf.Decorations, 100 },
                 { ResourceDefOf.Herbs, 60 },
                 { ResourceDefOf.Food, 40 },
             }),
@@ -969,7 +969,7 @@
                 { ResourceDefOf.Food, 70 },
                 { ResourceDefOf.Fiber, 60 },
                 { ResourceDefOf.Kindle, 60 },
-                { ResourceDefOf.Ornaments, 30 },
+                { ResourceDefOf.Decorations, 30 },
             }),
         },
 
@@ -982,7 +982,7 @@
             OrderedResources = new(new Dictionary<ResourceDef, int>()
             {
                 { ResourceDefOf.Food, 85 },
-                { ResourceDefOf.Ornaments, 65 },
+                { ResourceDefOf.Decorations, 65 },
                 { ResourceDefOf.Herbs, 55 },
                 { ResourceDefOf.Kindle, 35 },
             }),
@@ -1020,8 +1020,8 @@
 
         new ResourceDef()
         {
-            DefName = "Ornaments",
-            Label = "ornaments",
+            DefName = "Decorations",
+            Label = "decorations",
             Description = "Visually pleasing or fragrant goods used to beautify spaces. Includes flowers, decorative plants, and handmade items with aesthetic value.",
             Type = ResourceType.MarketResource,
         },

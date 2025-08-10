@@ -7,11 +7,11 @@ public static class ResourceDefOf
     public static ResourceDef Gold;
 
     // Market resources
+    public static ResourceDef Decorations;
     public static ResourceDef Fiber;
     public static ResourceDef Food;
     public static ResourceDef Herbs;
     public static ResourceDef Kindle;
-    public static ResourceDef Ornaments;
 
     // Abstract resources
     public static ResourceDef Fertility;
