@@ -12,6 +12,8 @@ public class MapRenderer : MonoBehaviour
     public Grid TilemapGrid;
     private Tilemap TerrainTilemap;
     private Tilemap TerrainOverlayTilemap;
+    private Dictionary<Direction, Tilemap> TerrainBlendTilemaps;
+
     private Tilemap[] TileModifierTilemaps;
     private Tilemap GridOverlayTilemap;
     private Dictionary<Direction, Tilemap> FenceTilemaps;
@@ -37,6 +39,13 @@ public class MapRenderer : MonoBehaviour
         TilemapGrid = GetComponent<Grid>();
         TerrainTilemap = GameObject.Find("TerrainTilemap").GetComponent<Tilemap>();
         TerrainOverlayTilemap = GameObject.Find("TerrainOverlayTilemap").GetComponent<Tilemap>();
+
+        TerrainBlendTilemaps = new Dictionary<Direction, Tilemap>();
+        TerrainBlendTilemaps.Add(Direction.N, GameObject.Find("TerrainBlend_N").GetComponent<Tilemap>());
+        TerrainBlendTilemaps.Add(Direction.E, GameObject.Find("TerrainBlend_E").GetComponent<Tilemap>());
+        TerrainBlendTilemaps.Add(Direction.S, GameObject.Find("TerrainBlend_S").GetComponent<Tilemap>());
+        TerrainBlendTilemaps.Add(Direction.W, GameObject.Find("TerrainBlend_W").GetComponent<Tilemap>());
+
         TileModifierTilemaps = new Tilemap[9];
         for (int i = 1; i <= 9; i++) TileModifierTilemaps[i - 1] = GameObject.Find("TileModifierTilemap" + i).GetComponent<Tilemap>();
 
@@ -140,6 +149,7 @@ public class MapRenderer : MonoBehaviour
         TerrainTilemap.ClearAllTiles();
         TerrainOverlayTilemap.ClearAllTiles();
         GridOverlayTilemap.ClearAllTiles();
+        foreach (Tilemap tilemap in TerrainBlendTilemaps.Values) tilemap.ClearAllTiles();
         foreach (Tilemap tilemap in FenceTilemaps.Values) tilemap.ClearAllTiles();
         foreach (Tilemap tilemap in ObjectOverlayTilemaps) tilemap.ClearAllTiles();
         foreach (Tilemap tilemap in TileModifierTilemaps) tilemap.ClearAllTiles();
@@ -151,6 +161,12 @@ public class MapRenderer : MonoBehaviour
             // Terrain
             if (!TerrainTileCache.TryGetValue(mapTile.Terrain.Def, out var tile)) continue;
             TerrainTilemap.SetTile(cell, tile);
+
+            // Terrain Blending
+            if (mapTile.TileNorth != null && mapTile.TileNorth.Terrain.Def != mapTile.Terrain.Def) TerrainBlendTilemaps[Direction.N].SetTile(cell, TerrainTileCache[mapTile.TileNorth.Terrain.Def]);
+            if (mapTile.TileEast != null && mapTile.TileEast.Terrain.Def != mapTile.Terrain.Def) TerrainBlendTilemaps[Direction.E].SetTile(cell, TerrainTileCache[mapTile.TileEast.Terrain.Def]);
+            if (mapTile.TileSouth != null && mapTile.TileSouth.Terrain.Def != mapTile.Terrain.Def) TerrainBlendTilemaps[Direction.S].SetTile(cell, TerrainTileCache[mapTile.TileSouth.Terrain.Def]);
+            if (mapTile.TileWest != null && mapTile.TileWest.Terrain.Def != mapTile.Terrain.Def) TerrainBlendTilemaps[Direction.W].SetTile(cell, TerrainTileCache[mapTile.TileWest.Terrain.Def]);
 
             // Terrain Overlay
             if (mapTile.Terrain.IsAffectedByFertility)
