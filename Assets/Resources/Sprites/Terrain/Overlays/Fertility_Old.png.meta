@@ -1,0 +1,1001 @@
+fileFormatVersion: 2
+guid: 51c7746f20cfc2046bf8bfe2dacb2a65
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1179884761097149983
+    second: Fertility_0
+  - first:
+      213: 4838967043555010838
+    second: Fertility_1
+  - first:
+      213: -3295326975265126704
+    second: Fertility_2
+  - first:
+      213: -3372549306541758657
+    second: Fertility_3
+  - first:
+      213: -4458213609966552230
+    second: Fertility_4
+  - first:
+      213: 4792909131165074277
+    second: Fertility_5
+  - first:
+      213: -2994330957770484739
+    second: Fertility_6
+  - first:
+      213: -6341243629674781630
+    second: Fertility_7
+  - first:
+      213: 468745408746048644
+    second: Fertility_8
+  - first:
+      213: -111154770801551860
+    second: Fertility_9
+  - first:
+      213: -3546526957499764111
+    second: Fertility_10
+  - first:
+      213: 3084400210654421212
+    second: Fertility_11
+  - first:
+      213: 5878646398071545617
+    second: Fertility_12
+  - first:
+      213: -5410409921997545069
+    second: Fertility_13
+  - first:
+      213: -4109678627965038129
+    second: Fertility_14
+  - first:
+      213: 4188285703914896719
+    second: Fertility_15
+  - first:
+      213: 9041427485768317403
+    second: Fertility_16
+  - first:
+      213: -7306885313884750690
+    second: Fertility_17
+  - first:
+      213: 3746496233394379214
+    second: Fertility_18
+  - first:
+      213: -4628577301266327976
+    second: Fertility_19
+  - first:
+      213: -813017294067261827
+    second: Fertility_20
+  - first:
+      213: -835787670751528958
+    second: Fertility_21
+  - first:
+      213: 9192465813865524537
+    second: Fertility_22
+  - first:
+      213: -2626015350802444278
+    second: Fertility_23
+  - first:
+      213: -3882583000194611126
+    second: Fertility_24
+  - first:
+      213: -7546685031349847563
+    second: Fertility_25
+  - first:
+      213: 3125756114425818381
+    second: Fertility_26
+  - first:
+      213: -5094135276969217203
+    second: Fertility_27
+  - first:
+      213: 6359687113074790547
+    second: Fertility_28
+  - first:
+      213: -4945857428074511689
+    second: Fertility_29
+  - first:
+      213: -4409504329473724339
+    second: Fertility_30
+  - first:
+      213: 5783602088560050032
+    second: Fertility_31
+  - first:
+      213: 4746322144808001945
+    second: Fertility_32
+  - first:
+      213: -6554868545882625812
+    second: Fertility_33
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 1024
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Fertility_0
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 927
+        width: 43
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e168e2af0530afe0800000000000000
+      internalID: -1179884761097149983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_1
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 813
+        width: 192
+        height: 189
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6192bee53e6772340800000000000000
+      internalID: 4838967043555010838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_2
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 807
+        width: 139
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d64f8c4395a442d0800000000000000
+      internalID: -3295326975265126704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_3
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 911
+        width: 96
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f37a614364c4231d0800000000000000
+      internalID: -3372549306541758657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_4
+      rect:
+        serializedVersion: 2
+        x: 471
+        y: 772
+        width: 204
+        height: 197
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5bb125a75e3122c0800000000000000
+      internalID: -4458213609966552230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_5
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 823
+        width: 156
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56302dbf575d38240800000000000000
+      internalID: 4792909131165074277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_6
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 887
+        width: 66
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df3922acbdff176d0800000000000000
+      internalID: -2994330957770484739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_7
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 702
+        width: 97
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 244a60324806ff7a0800000000000000
+      internalID: -6341243629674781630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_8
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 581
+        width: 191
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48c476a3771518600800000000000000
+      internalID: 468745408746048644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_9
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 639
+        width: 178
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c06984b2359157ef0800000000000000
+      internalID: -111154770801551860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_10
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 783
+        width: 106
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17231efb58438cec0800000000000000
+      internalID: -3546526957499764111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_11
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 663
+        width: 147
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd0623556adfdca20800000000000000
+      internalID: 3084400210654421212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_12
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 536
+        width: 127
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11f1f2da0c5259150800000000000000
+      internalID: 5878646398071545617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_13
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 398
+        width: 238
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 391661e67dc5ae4b0800000000000000
+      internalID: -5410409921997545069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_14
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 577
+        width: 80
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc11127df0d77f6c0800000000000000
+      internalID: -4109678627965038129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_15
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 580
+        width: 220
+        height: 197
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4db1bf38a7cf1a30800000000000000
+      internalID: 4188285703914896719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_16
+      rect:
+        serializedVersion: 2
+        x: 848
+        y: 495
+        width: 137
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd97caf056a997d70800000000000000
+      internalID: 9041427485768317403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_17
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 445
+        width: 69
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9c7163458ab89a90800000000000000
+      internalID: -7306885313884750690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_18
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 359
+        width: 220
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec99fc7797a3ef330800000000000000
+      internalID: 3746496233394379214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_19
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 396
+        width: 142
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 856959eb77df3cfb0800000000000000
+      internalID: -4628577301266327976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_20
+      rect:
+        serializedVersion: 2
+        x: 727
+        y: 354
+        width: 203
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7e1fde141597b4f0800000000000000
+      internalID: -813017294067261827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_21
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 263
+        width: 133
+        height: 177
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2083439aa8fa664f0800000000000000
+      internalID: -835787670751528958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_22
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 204
+        width: 246
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93d606534f2329f70800000000000000
+      internalID: 9192465813865524537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_23
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 394
+        width: 33
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0092b0a3f48e8bd0800000000000000
+      internalID: -2626015350802444278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_24
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 367
+        width: 58
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a480e66055b4e1ac0800000000000000
+      internalID: -3882583000194611126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_25
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 47
+        width: 242
+        height: 282
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f972a2b2f9c44790800000000000000
+      internalID: -7546685031349847563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_26
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 209
+        width: 167
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0d2bd600aae06b20800000000000000
+      internalID: 3125756114425818381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_27
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 247
+        width: 100
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d43b67a94fefd49b0800000000000000
+      internalID: -5094135276969217203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_28
+      rect:
+        serializedVersion: 2
+        x: 867
+        y: 213
+        width: 117
+        height: 140
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 390d379fbb5224850800000000000000
+      internalID: 6359687113074790547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_29
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 163
+        width: 80
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b244e99fd8cc5bb0800000000000000
+      internalID: -4945857428074511689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_30
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 39
+        width: 190
+        height: 189
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d40fb26cc2b4ec2c0800000000000000
+      internalID: -4409504329473724339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_31
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 39
+        width: 188
+        height: 181
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07f34dae47b734050800000000000000
+      internalID: 5783602088560050032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_32
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 39
+        width: 236
+        height: 205
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 991e9d6f7d25ed140800000000000000
+      internalID: 4746322144808001945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fertility_33
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 146
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce8e84569cd6805a0800000000000000
+      internalID: -6554868545882625812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Fertility_0: -1179884761097149983
+      Fertility_1: 4838967043555010838
+      Fertility_10: -3546526957499764111
+      Fertility_11: 3084400210654421212
+      Fertility_12: 5878646398071545617
+      Fertility_13: -5410409921997545069
+      Fertility_14: -4109678627965038129
+      Fertility_15: 4188285703914896719
+      Fertility_16: 9041427485768317403
+      Fertility_17: -7306885313884750690
+      Fertility_18: 3746496233394379214
+      Fertility_19: -4628577301266327976
+      Fertility_2: -3295326975265126704
+      Fertility_20: -813017294067261827
+      Fertility_21: -835787670751528958
+      Fertility_22: 9192465813865524537
+      Fertility_23: -2626015350802444278
+      Fertility_24: -3882583000194611126
+      Fertility_25: -7546685031349847563
+      Fertility_26: 3125756114425818381
+      Fertility_27: -5094135276969217203
+      Fertility_28: 6359687113074790547
+      Fertility_29: -4945857428074511689
+      Fertility_3: -3372549306541758657
+      Fertility_30: -4409504329473724339
+      Fertility_31: 5783602088560050032
+      Fertility_32: 4746322144808001945
+      Fertility_33: -6554868545882625812
+      Fertility_4: -4458213609966552230
+      Fertility_5: 4792909131165074277
+      Fertility_6: -2994330957770484739
+      Fertility_7: -6341243629674781630
+      Fertility_8: 468745408746048644
+      Fertility_9: -111154770801551860
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

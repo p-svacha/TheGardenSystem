@@ -11,7 +11,7 @@ public class MapRenderer : MonoBehaviour
     // Tilemaps
     public Grid TilemapGrid;
     private Tilemap TerrainTilemap;
-    private Tilemap TerrainOverlayTilemap;
+    private List<Tilemap> BlendOverlayTilemaps;
     private Dictionary<Direction, Tilemap> TerrainBlendTilemaps;
 
     private Tilemap[] TileModifierTilemaps;
@@ -38,7 +38,8 @@ public class MapRenderer : MonoBehaviour
 
         TilemapGrid = GetComponent<Grid>();
         TerrainTilemap = GameObject.Find("TerrainTilemap").GetComponent<Tilemap>();
-        TerrainOverlayTilemap = GameObject.Find("TerrainOverlayTilemap").GetComponent<Tilemap>();
+        BlendOverlayTilemaps = new List<Tilemap>();
+        for (int i = 1; i <= 9; i++) BlendOverlayTilemaps.Add(GameObject.Find("TerrainOverlayTilemap_Density" + i).GetComponent<Tilemap>());
 
         TerrainBlendTilemaps = new Dictionary<Direction, Tilemap>();
         TerrainBlendTilemaps.Add(Direction.N, GameObject.Find("TerrainBlend_N").GetComponent<Tilemap>());
@@ -147,7 +148,7 @@ public class MapRenderer : MonoBehaviour
     public void DrawFullMap(Map map)
     {
         TerrainTilemap.ClearAllTiles();
-        TerrainOverlayTilemap.ClearAllTiles();
+        foreach(Tilemap tilemap in BlendOverlayTilemaps) tilemap.ClearAllTiles();
         GridOverlayTilemap.ClearAllTiles();
         foreach (Tilemap tilemap in TerrainBlendTilemaps.Values) tilemap.ClearAllTiles();
         foreach (Tilemap tilemap in FenceTilemaps.Values) tilemap.ClearAllTiles();
@@ -173,19 +174,12 @@ public class MapRenderer : MonoBehaviour
             {
                 if (mapTile.Terrain.Fertility > 0 && mapTile.Terrain.HasNextFertilityLevel)
                 {
-                    float transparency = mapTile.Terrain.Fertility / 10f;
-                    transparency *= 0.5f;
-                    TerrainOverlayTilemap.SetTile(cell, FertilityOverlayTile);
-                    TerrainOverlayTilemap.SetTileFlags(cell, TileFlags.None);
-                    TerrainOverlayTilemap.SetColor(cell, new Color(1f, 1f, 1f, transparency));
+                    if (BlendOverlayTilemaps.Count <= mapTile.Terrain.Fertility - 1) throw new System.Exception($"No density tilemap found for density {mapTile.Terrain.Fertility}");
+                    BlendOverlayTilemaps[mapTile.Terrain.Fertility - 1].SetTile(cell, FertilityOverlayTile);
                 }
                 if (mapTile.Terrain.Fertility < 0 && mapTile.Terrain.HasPrevFertilityLevel)
                 {
-                    float transparency = -mapTile.Terrain.Fertility / 10f;
-                    transparency *= 0.5f;
-                    TerrainOverlayTilemap.SetTile(cell, NegativeFertilityOverlayTile);
-                    TerrainOverlayTilemap.SetTileFlags(cell, TileFlags.None);
-                    TerrainOverlayTilemap.SetColor(cell, new Color(1f, 1f, 1f, transparency));
+                    BlendOverlayTilemaps[Math.Abs(mapTile.Terrain.Fertility) - 1].SetTile(cell, NegativeFertilityOverlayTile);
                 }
             }
 
