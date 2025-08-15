@@ -1,7 +1,5 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
-(T) "total resource still to deliver" in town mandate overview should already be refreshed at night of last day of month
-
 shed:
 	each garden sector has a shed, a permanent object with special tier
 	shed can be clicked on to open, showing the sectors inventory
@@ -10,21 +8,22 @@ shed:
 	show number on shed with how many objects are in it
 	add an indicator of how many tiles are in the garden
 
-tile rendering:
-	render lower rows (lower y coordinate) in front of higher rows
-
 mergeable objects:
-some tiles have the tag "mergeable".
-if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increased tier) on the middle tile of the 3
-i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
-merging happens during scatter, and other objects can occupy the 2 tiles that become free through the merging
+	some tiles have the tag "mergeable".
+	if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increased tier) on the middle tile of the 3
+	i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
+	merging happens during scatter, and other objects can occupy the 2 tiles that become free through the merging
 
-affection arrows in production overlays:
-	when a production overlay is active, also show moving animated arrows where one object affects the production of another
-	the more the affection, the fast/bigger the arrow
-	arrow like this: > > > > >
-	maybe for ProductionModifiersource, aditionally the coordinate is needed from where the effect originates from
-	use ^ ^ ^ on tile if source is from same tile
+root synergy object:
+	object with effect synregyzing with root
+
+	affection arrows in production overlays:
+		when a production overlay is active, also show moving animated arrows where one object affects the production of another
+		the more the affection, the fast/bigger the arrow
+		arrow like this: > > > > >
+		maybe for ProductionModifiersource, aditionally the coordinate is needed from where the effect originates from
+		use ^ ^ ^ on tile if source is from same tile
+		a circle at one end of the arrow indicates the source of the effect (can either be the object receiving the effect, or the one it originates from)
 
 tooltip improvements:
 	add max width attribute
@@ -53,13 +52,12 @@ rework town mandates to be more dynamic:
 		in march 36 kindle, 24 food, = 60 total etc
 		total is always month * 20
 
+items:
+	item that can be used after scatter and before harvest to change the scatter
+
 art:
-	move all objects to new art style
-	move resource icons to new art style
-	move fences to new art style
 	move terrain overlays to new art style
 	move modifier art to new art style
-	make a shader for pixelated terrain transitions
 
 tutorial:
 	add a tutorial (1 month) explaining game play loop

@@ -15235,11 +15235,11 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 200
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 1, y: 1, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 0
-  m_Mode: 0
+  m_SortOrder: 2
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &1527142984
@@ -15250,17 +15250,79 @@ Tilemap:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1527142981}
   m_Enabled: 1
-  m_Tiles: {}
+  m_Tiles:
+  - first: {x: -26, y: -12, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 2
+      m_TileSpriteIndex: 2
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: -26, y: -11, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: -26, y: -10, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
-  m_TileAssetArray: []
-  m_TileSpriteArray: []
-  m_TileMatrixArray: []
-  m_TileColorArray: []
+  m_TileAssetArray:
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 759b915df55ca024b899740842cd0d45, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 88355e9df23b59e44982c66dbb9575bd, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: baf63c1258dc80e4ebb2197e5a0a1c28, type: 2}
+  m_TileSpriteArray:
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 212136817893ae74f9aff596d7c42b23, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: b25105c7c51283d429a9fc56fa56fcdd, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 5abd0aa03c7a74a449f79bf9bc256cc8, type: 3}
+  m_TileMatrixArray:
+  - m_RefCount: 3
+    m_Data:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+  m_TileColorArray:
+  - m_RefCount: 3
+    m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: 0, y: 0, z: 0}
-  m_Size: {x: 0, y: 0, z: 1}
+  m_Origin: {x: -26, y: -12, z: 0}
+  m_Size: {x: 26, y: 12, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -21934,6 +21996,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 873025479}
     m_Modifications:
+    - target: {fileID: 4899598656441313721, guid: 244d15675ad9d964e86561f8f194fffc, type: 3}
+      propertyPath: m_fontSize
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4899598656441313721, guid: 244d15675ad9d964e86561f8f194fffc, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ff22a65cc7664842b6ad9971f57082a, type: 2}
+    - target: {fileID: 4899598656441313721, guid: 244d15675ad9d964e86561f8f194fffc, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4899598656441313721, guid: 244d15675ad9d964e86561f8f194fffc, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2366928172204897562, guid: 1ff22a65cc7664842b6ad9971f57082a, type: 2}
+    - target: {fileID: 4899598656441313721, guid: 244d15675ad9d964e86561f8f194fffc, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6553594511988572560, guid: 244d15675ad9d964e86561f8f194fffc, type: 3}
       propertyPath: m_Name
       value: HelpButton
@@ -21964,11 +22046,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8092613817944431728, guid: 244d15675ad9d964e86561f8f194fffc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8092613817944431728, guid: 244d15675ad9d964e86561f8f194fffc, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8092613817944431728, guid: 244d15675ad9d964e86561f8f194fffc, type: 3}
       propertyPath: m_LocalPosition.x
