@@ -1,19 +1,12 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
 shed:
-	shed can be clicked on to open, showing the sectors inventory
-		shown as a cabinet
-		each object gets calculated how much transparent pixels are at bottom
-		y offset of shelfobject ui element gets set accordingly
-		add some wood detail to cabinet
-		add close button to shed window
-		implement shed window display logic
-		add mouseover to objects in shed window
-		shed door is open when shed window is open
-		clicking on open shed closes the window too again
+	add some wood detail to cabinet
+	shed door is open when shed window is open
 	during scatter only shows remaining objects
-	show number on shed with how many objects are in it
+	above shelf, show two signs with how many tiles are in that sector and how many objects are in the shed
 	add an indicator of how many tiles are in a garden sector
+	reverse alignment on cabinet vertical layout so upper shelves are rendered in front of lower shelves
 
 mergeable objects:
 	some tiles have the tag "mergeable".
@@ -103,6 +96,9 @@ new customer draft:
 
 fiber:
 	make a customer buying fiber
+
+wiki / codex:
+	add ingame way to view def info in a neat UI
 
 tooltip improvement:
 	add a new "info text" element to tooltip in top right corner

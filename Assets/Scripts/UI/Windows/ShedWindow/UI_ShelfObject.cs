@@ -15,5 +15,10 @@ public class UI_ShelfObject : MonoBehaviour
     {
         ObjectImage.sprite = obj.Sprite;
         TooltipTarget.Init(obj);
+
+        RectTransform rt = InnerContainer.GetComponent<RectTransform>();
+        int yOffset = -(2 * obj.Def.SpriteBottomY) + 13;
+        if (yOffset > 0) yOffset = 0;
+        rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, yOffset);
     }
 }

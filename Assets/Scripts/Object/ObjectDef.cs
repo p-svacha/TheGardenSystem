@@ -7,12 +7,17 @@ public class ObjectDef : Def, IDraftable, ITooltipTarget
     public List<ObjectTagDef> Tags { get; init; } = new();
     public Dictionary<ResourceDef, int> NativeProduction { private get; init; } = new();
     public List<ObjectEffect> Effects { get; init; } = new();
+    private ResourceCollection _NativeProduction;
+    public ResourceCollection GetNativeProduction() => _NativeProduction;
 
     private Sprite _Sprite;
     public override Sprite Sprite => _Sprite;
 
-    private ResourceCollection _NativeProduction;
-    public ResourceCollection GetNativeProduction() => _NativeProduction;
+    /// <summary>
+    /// The y coordinate of the first pixel from the bottom that is not transparent.
+    /// </summary>
+    public int SpriteBottomY { get; private set; }
+    
 
     public override bool Validate()
     {
@@ -29,6 +34,8 @@ public class ObjectDef : Def, IDraftable, ITooltipTarget
     {
         _Sprite = ResourceManager.LoadSprite("Sprites/Objects/" + DefName);
         _NativeProduction = new ResourceCollection(NativeProduction);
+        SpriteBottomY = HelperFunctions.CountBottomTransparentRows(_Sprite);
+        Debug.Log($"{DefName} has a SpriteBottomY of {SpriteBottomY}.");
     }
 
     #region Getters

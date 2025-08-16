@@ -863,6 +863,59 @@ public static class HelperFunctions
         return false;
     }
 
+    /// <summary>
+    /// Returns how many consecutive bottom rows (from the sprite's rect) are fully transparent.
+    /// Notes:
+    /// - The texture must be Read/Write enabled in import settings.
+    /// - If the sprite was tightly packed/trimmed, the cropped pixels are gone; this will
+    ///   only analyze the remaining rect in the atlas.
+    /// </summary>
+    public static int CountBottomTransparentRows(Sprite sprite)
+    {
+        if (sprite == null) throw new System.ArgumentNullException(nameof(sprite));
+        Texture2D tex = sprite.texture;
+        if (tex == null) throw new System.ArgumentException("Sprite has no texture.", nameof(sprite));
+
+        // Use the sprite's rect (pixel coords inside the texture)
+        Rect r = sprite.rect;
+        int w = Mathf.RoundToInt(r.width);
+        int h = Mathf.RoundToInt(r.height);
+        int x0 = Mathf.RoundToInt(r.x);
+        int y0 = Mathf.RoundToInt(r.y);
+
+        // Read only the sub-rect to avoid copying the whole texture.
+        // Requires TextureImporter.isReadable = true.
+        Color[] sub = tex.GetPixels(x0, y0, w, h);
+
+        int transparentRowCount = 0;
+
+        // Colors from GetPixels are laid out row-major from bottom to top.
+        // Row y starts at index y * w, for y in [0, h-1].
+        for (int y = 0; y < h; y++)
+        {
+            bool rowIsFullyTransparent = true;
+            int rowStart = y * w;
+
+            for (int x = 0; x < w; x++)
+            {
+                // "Fully transparent" means alpha == 0.0f exactly.
+                // If you want to tolerate tiny non-zero values, use <= someEpsilon instead.
+                if (sub[rowStart + x].a > 0f)
+                {
+                    rowIsFullyTransparent = false;
+                    break;
+                }
+            }
+
+            if (rowIsFullyTransparent)
+                transparentRowCount++;
+            else
+                break; // first non-transparent row encountered; we’re done
+        }
+
+        return transparentRowCount;
+    }
+
     #endregion
 
     #region Color
