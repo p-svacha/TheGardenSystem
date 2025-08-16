@@ -36,8 +36,8 @@ public class UI_ShopWindow : UI_WindowBase
 
     private void InitHelpButton()
     {
-        HelpButton.GetComponent<UI_TooltipTarget_Simple>().SpawnsInstantTooltip = true;
-        HelpButton.GetComponent<UI_TooltipTarget_Simple>().Text = "Welcome to the shop." +
+        HelpButton.GetComponent<TooltipTarget_Simple>().SpawnsInstantTooltip = true;
+        HelpButton.GetComponent<TooltipTarget_Simple>().Text = "Welcome to the shop." +
             "\n\nHere you can sell and buy resources, as well as buy a selection of objects." +
             "\n\nThe shops stock will refill and change at the start of each month. Each month one object will be on sale." +
             "\n\nClick on any resource or object to add or remove it from the current trade. Hold shift to move 10 resources at a time." +

@@ -11,12 +11,12 @@ public class UI_AddObjectWindowElement : MonoBehaviour
     {
         Sprite.sprite = def.Sprite;
         Button.onClick.AddListener(() => AddObject(def));
-        GetComponent<UI_TooltipTarget_Reference>().Init(def);
+        GetComponent<TooltipTarget_Reference>().Init(def);
     }
 
     private void AddObject(ObjectDef def)
     {
         Debug.Log($"{def.DefName} was added to inventory through dev mode.");
-        Game.Instance.AddObjectToInventory(def);
+        Game.Instance.AddNewObjectToInventory(Game.Instance.Sectors[0], def);
     }
 }

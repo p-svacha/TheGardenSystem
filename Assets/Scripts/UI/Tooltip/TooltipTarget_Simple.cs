@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// Attach this to a UI element to make it show a simple tooltip target with a fixed text.
 /// </summary>
-public class UI_TooltipTarget_Simple : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ITooltipTarget
+public class TooltipTarget_Simple : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ITooltipTarget
 {
     public string Text;
     public bool SpawnsInstantTooltip;

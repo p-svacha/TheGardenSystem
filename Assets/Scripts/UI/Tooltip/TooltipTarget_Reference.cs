@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// Attach this to a UI element that should show a tooltip of a specific referenced ITooltipTarget when hovered.
 /// </summary>
-public class UI_TooltipTarget_Reference : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class TooltipTarget_Reference : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     /// <summary>
     /// The object the tooltip is shown for.

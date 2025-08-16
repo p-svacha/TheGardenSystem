@@ -9,7 +9,7 @@ public class UI_ShopElement : MonoBehaviour
     public Image Background;
     public Image Icon;
     public TextMeshProUGUI Text;
-    public UI_TooltipTarget_Reference TooltipTarget;
+    public TooltipTarget_Reference TooltipTarget;
 
     public void Init(ResourceDef resource, int amount, System.Action onClick)
     {

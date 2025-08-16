@@ -5,6 +5,8 @@ using System.Linq;
 public class Game
 {
     public static Game Instance;
+
+    // Rules
     public const int STARTING_AREA_SIZE = 3;
     public const int DAYS_PER_WEEK = 5;
     public const int WEEKS_PER_MONTH = 4;
@@ -20,15 +22,23 @@ public class Game
     public const float RESOURCE_BUY_PRICE = 2f;
     public const float SHOP_DISCOUNT = 0.50f; // in % of original price
 
+    private const int INITIAL_SHED_CABINETS = 1;
+    private const int INITIAL_SHED_CABINET_SHELVES = 3;
+    private const int INITIAL_SHED_CABINET_SHELF_OBJECTS = 3;
+
+
     // State
     public GameState GameState { get; private set; }
     public int Day { get; private set; }
     public Map Map { get; private set; }
     public bool IsAcquiringTiles { get; private set; }
 
+    // Sectors
+    public List<GardenSector> Sectors;
+
     // Production
     public ResourceCollection Resources { get; private set; }
-    public List<Object> Objects { get; private set; }
+    public List<Object> AllObjects { get; private set; }
     public Dictionary<ResourceDef, ResourceProduction> CurrentFinalResourceProduction { get; private set; }
     public Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> CurrentPerTileResourceProduction { get; private set; }
 
@@ -60,9 +70,12 @@ public class Game
     {
         Instance = this;
         Day = 0;
-        Map = MapGenerator.GenerateMap(23);
         CurrentFinalResourceProduction = new Dictionary<ResourceDef, ResourceProduction>();
         CurrentPerTileResourceProduction = new Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>>();
+
+        // Generate map
+        Map = MapGenerator.GenerateMap(23);
+        Map.GetTile(0, 0).Acquire();
 
         // References
         HUD = GameObject.Find("HUD").GetComponent<UI_HUD>();
@@ -72,24 +85,23 @@ public class Game
         Resources = new ResourceCollection();
         foreach (ResourceDef def in DefDatabase<ResourceDef>.AllDefs.Where(r => r.Type == ResourceType.Currency || r.Type == ResourceType.MarketResource)) Resources.Resources.Add(def, 0);
 
-        // Starting garden area
+        // Starting sector
+        Sectors = new List<GardenSector>();
+        AddSector(new Vector2Int(0, 0));
+
         int gardenStartAreaSize = 3;
         int half = gardenStartAreaSize / 2;
         for (int x = -half; x <= half; x++)
         {
             for (int y = -half; y <= half; y++)
             {
-                AddTileToGarden(Map.GetTile(x, y), redraw: false);
+                AddTileToGarden(Sectors[0], Map.GetTile(x, y), redraw: false);
             }
         }
 
         // Starting objects
-        Objects = new List<Object>();
-        AddObjectToInventory(ObjectDefOf.Carrot);
-
-        // Shed
-        Object shed = new Object(ObjectDefOf.Shed);
-        Map.GetTile(0, 0).PlaceObject(shed);
+        AllObjects = new List<Object>();
+        AddNewObjectToInventory(Sectors[0], ObjectDefOf.Carrot);
 
         // Weekly orders
         WeeklyCustomers = new List<Customer>();
@@ -141,7 +153,19 @@ public class Game
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    TryToBuyTile(HoveredTile);
+                    TryToBuyTile(Sectors[0], HoveredTile);
+                }
+            }
+        }
+
+        // Shed window
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!HelperFunctions.IsMouseOverUi())
+            {
+                if (HoveredTile != null && HoveredTile.HasObject && HoveredTile.Object.Def == ObjectDefOf.Shed)
+                {
+                    GameUI.Instance.ToggleShedWindow();
                 }
             }
         }
@@ -187,7 +211,7 @@ public class Game
         {
             if (HoveredTile != null && !HelperFunctions.IsMouseOverUi())
             {
-                if (Input.GetMouseButtonDown(0)) AddTileToGarden(HoveredTile);
+                if (Input.GetMouseButtonDown(0)) AddTileToGarden(Sectors[0], HoveredTile);
                 if (Input.GetMouseButtonDown(1)) RemoveTileFromGarden(HoveredTile);
             }
         }
@@ -202,17 +226,7 @@ public class Game
 
         HUD.DatePanel.Refresh();
 
-        List<Object> remainingObjects = new List<Object>(Objects);
-        List<MapTile> shuffledGardenTiles = Map.OwnedEmptyTiles.GetShuffledList();
-
-        foreach (MapTile tile in shuffledGardenTiles)
-        {
-            if (remainingObjects.Count == 0) break;
-
-            Object pickedObject = remainingObjects.RandomElement();
-            tile.PlaceObject(pickedObject);
-            remainingObjects.Remove(pickedObject);
-        }
+        foreach (GardenSector sector in Sectors) sector.Scatter();
 
         CurrentFinalResourceProduction = GetCurrentScatterProduction();
 
@@ -537,12 +551,12 @@ public class Game
         else UI_TileOverlayContainer.Instance.HideAllOverlays();
     }
 
-    private void TryToBuyTile(MapTile tile)
+    private void TryToBuyTile(GardenSector sector, MapTile tile)
     {
         if (!Resources.HasResources(tile.AcquireCost)) return; // not enough money
 
         Resources.RemoveResources(tile.AcquireCost);
-        AddTileToGarden(tile);
+        AddTileToGarden(sector, tile);
 
         // UI
         HUD.ResourcePanel.Refresh();
@@ -576,7 +590,7 @@ public class Game
         foreach (IDraftable draftedObject in selectedOptions)
         {
             ObjectDef def = (ObjectDef)draftedObject;
-            AddObjectToInventory(def);
+            AddNewObjectToInventory(Sectors[0], def);
         }
 
         // End day
@@ -649,15 +663,30 @@ public class Game
 
     #region Actions
 
-    public void AddObjectToInventory(ObjectDef def)
+    public void AddSector(Vector2Int shedPosition)
     {
-        Object newObj = new Object(def);
-        Objects.Add(newObj);
+        MapTile initialTile = Map.GetTile(shedPosition);
+        if (!initialTile.IsOwned) throw new System.Exception("Can't create a sector on an unowned tile.");
+
+        GardenSector newSector = new GardenSector(initialTile);
+        Object shed = new Object(ObjectDefOf.Shed);
+        initialTile.PlaceObject(shed);
+        newSector.AddTile(initialTile);
+
+        Sectors.Add(newSector);
     }
 
-    public void AddTileToGarden(MapTile tile, bool redraw = true)
+    public void AddNewObjectToInventory(GardenSector sector, ObjectDef def)
+    {
+        Object newObj = new Object(def);
+        AllObjects.Add(newObj);
+        sector.AddObject(newObj);
+    }
+
+    public void AddTileToGarden(GardenSector sector, MapTile tile, bool redraw = true)
     {
         tile.Acquire();
+        sector.AddTile(tile);
         if (redraw) DrawFullMap();
     }
     public void RemoveTileFromGarden(MapTile tile, bool redraw = true)
@@ -711,7 +740,7 @@ public class Game
         // Objects
         foreach (ObjectDef obj in UI_ShopWindow.Instance.Buying.Objects.Keys)
         {
-            AddObjectToInventory(obj);
+            AddNewObjectToInventory(Sectors[0], obj);
             ShopObjects.Remove(obj);
         }
 
@@ -785,6 +814,19 @@ public class Game
     }
 
     public List<Order> DueOrders => ActiveOrders.Where(o => o.DueDay == Day).ToList();
+
+    public int GetShedCabinetAmount()
+    {
+        return INITIAL_SHED_CABINETS;
+    }
+    public int GetShedCabinetShelfAmount()
+    {
+        return INITIAL_SHED_CABINET_SHELVES;
+    }
+    public int GetShedCabinetShelfObjectAmount()
+    {
+        return INITIAL_SHED_CABINET_SHELF_OBJECTS;
+    }
 
     #endregion
 }

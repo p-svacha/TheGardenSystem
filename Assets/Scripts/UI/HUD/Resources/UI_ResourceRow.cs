@@ -19,17 +19,17 @@ public class UI_ResourceRow : MonoBehaviour
         {
             ResourceProduction production = Game.Instance.CurrentFinalResourceProduction[res];
             PlusValueText.text = $"(+{production.GetValue()})";
-            PlusValueText.GetComponent<UI_TooltipTarget_Reference>().Init(production);
+            PlusValueText.GetComponent<TooltipTarget_Reference>().Init(production);
         }
         else
         {
             PlusValueText.text = "";
-            PlusValueText.GetComponent<UI_TooltipTarget_Reference>().Disabled = true;
+            PlusValueText.GetComponent<TooltipTarget_Reference>().Disabled = true;
         }
 
         ProductionLensActivator.Init(res);
 
         // Tooltips
-        Icon.GetComponent<UI_TooltipTarget_Reference>().Init(res);
+        Icon.GetComponent<TooltipTarget_Reference>().Init(res);
     }
 }

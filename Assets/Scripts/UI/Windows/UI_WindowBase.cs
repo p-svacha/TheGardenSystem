@@ -19,4 +19,9 @@ public class UI_WindowBase : MonoBehaviour
         WindowTitle.text = title;
         ConfirmButton.SetOnClick(confirmCallback.Invoke);
     }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 }

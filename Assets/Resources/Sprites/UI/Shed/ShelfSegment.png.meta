@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ec89fc6c412614e4c9db3208d65cccd8
+guid: 3b0cdc23fdad9c148a8147face8b3f57
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7944502702452990849
-    second: Corn_0
+      213: -3549511679565768765
+    second: ShelfSegment_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -50,8 +50,8 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
-  spritePivot: {x: 0.5, y: 0.26}
-  spritePixelsToUnits: 64
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Corn_0
+      name: ShelfSegment_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 16
-        width: 26
-        height: 34
+        x: 0
+        y: 0
+        width: 109
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f7c982742e47fb190800000000000000
-      internalID: -7944502702452990849
+      spriteID: 3c7d16dfee99dbec0800000000000000
+      internalID: -3549511679565768765
       vertices: []
       indices: 
       edges: []
@@ -126,7 +126,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Corn_0: -7944502702452990849
+      ShelfSegment_0: -3549511679565768765
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

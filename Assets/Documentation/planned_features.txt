@@ -1,18 +1,27 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
 shed:
-	each garden sector has a shed, a permanent object with special tier
 	shed can be clicked on to open, showing the sectors inventory
-	in inventory winow lists all objects
+		shown as a cabinet
+		each object gets calculated how much transparent pixels are at bottom
+		y offset of shelfobject ui element gets set accordingly
+		add some wood detail to cabinet
+		add close button to shed window
+		implement shed window display logic
+		add mouseover to objects in shed window
+		shed door is open when shed window is open
+		clicking on open shed closes the window too again
 	during scatter only shows remaining objects
 	show number on shed with how many objects are in it
-	add an indicator of how many tiles are in the garden
+	add an indicator of how many tiles are in a garden sector
 
 mergeable objects:
 	some tiles have the tag "mergeable".
 	if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increased tier) on the middle tile of the 3
 	i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
 	merging happens during scatter, and other objects can occupy the 2 tiles that become free through the merging
+	add isDraftable to ObjectDef
+		merged objects are not draftable
 
 root synergy object:
 	object with effect synregyzing with root
@@ -24,6 +33,7 @@ root synergy object:
 		maybe for ProductionModifiersource, aditionally the coordinate is needed from where the effect originates from
 		use ^ ^ ^ on tile if source is from same tile
 		a circle at one end of the arrow indicates the source of the effect (can either be the object receiving the effect, or the one it originates from)
+		also show indicators of what will merge
 
 tooltip improvements:
 	add max width attribute
@@ -35,6 +45,14 @@ ordered scatter:
 	instead of full scatter all at once, objects get scattered one by one with slight delay in between
 	this will also make merging nicer (see next chapter)
 	add a little jingle, particles, shake or effect when an effect triggers
+
+design:
+	which sector do objects go that are bought in shop?
+	which sector do drafted objects go?
+	is it free to move objects?
+		yes, add a drop down to those two, or another ui control element
+	which sector does a bought tile go to?
+		always adjacent, add user selection if multiple options
 
 resource giving animations:
 	confirming scatter shows tiles giving resources one-by-one with little animation of resources moving the their ui element
@@ -51,6 +69,10 @@ rework town mandates to be more dynamic:
 		in january that would be 12 kindle, 8 food = 20 total
 		in march 36 kindle, 24 food, = 60 total etc
 		total is always month * 20
+
+acquire tiles change:
+	make it to be only possible to buy tiles 8-adjacent to existing tiles
+	hide gold overlay for not buyable ones
 
 items:
 	item that can be used after scatter and before harvest to change the scatter
@@ -123,6 +145,7 @@ game over:
 	but they give an extra reward if completed (draft of rare or epic object, research points, free expansion)
 
 ui improvements:
+	make resource collection toSingleString always have same order of resources (like in defdatabase)
 	add sprite to tooltip (for example for resources to easily see what the tooltip is for)
 	use more bullet points like in object tooltip
 		centralize color and ascii thing for easy use
@@ -150,8 +173,14 @@ sectors (maybe 'plots'):
 	this means that sectors will always be rectangular, making it visually clear
 	after that, moving objects between sectors isn't free (still need to decide how to do it, maybe with a new general or specialized currency)
 	when drafting objects, you draft for a specific sector (sectors get iterated through each day)
-	[maybe] each sector has a 'shed', a permanent object with no effects, but that is used to check that sectors inventory.
+	each sector has a 'shed', a permanent object with no effects, but that is used to check that sectors inventory.
 		Starting sector would have one shed in the middle. Would be elegant way to display inventory without it being just a ui menu you open.
+		sectors have a name, represented by a sign on the sector shed
+	borders between sectors are visualized with some kind fences
+	make it possible to name and paint sheds
+		shed window background should adapt
+	make it possible to open 2 shed windows at once, left and right
+		then add drag and drop of objects between sheds
 
 [maybe] research:
 	a research tree is added, with modular dependencies between the research projects (like rimworld for example)
@@ -167,6 +196,10 @@ sectors (maybe 'plots'):
 	important design considerations:
 		techs should mostly not give "general" or plain stat bonuses, but rather amplify specific strategies or help in specific situations
 	ideas for specific researches
+		- additional cabinet in each shed ("bigger shed") (1 -> 2 -> 3)
+	    - additional shelf in each shed cabinet ("taller shed cabinets") (3 -> 4 -> 5 -> 6)
+		- additional object per shelf in each shelf in each cabinet in each shed ("wider shed cabinets") (3 -> 4 -> 5)
+		- storage objects (for more objects in a sector)
 		- unlock shop (buying res only)
 		- unlock selling resources in shop
 		- unlock buy objects in shop
