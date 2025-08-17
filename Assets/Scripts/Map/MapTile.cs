@@ -60,10 +60,10 @@ public class MapTile : ITooltipTarget
         IsOwned = false;
         AcquireCost = GetOriginalAcquireCost();
     }
-    public void PlaceObject(Object obj) => Object = obj;
+    public void SetObject(Object obj) => Object = obj;
     public void ClearNonPermanentObject()
     {
-        if (Object != null && !Object.HasTag(ObjectTagDefOf.Permanent)) Object = null;
+        if (Object != null && !Object.HasTag(ObjectTagDefOf.Permanent)) Game.Instance.ClearTile(this);
     }
     public void SetTerrain(TerrainDef def)
     {

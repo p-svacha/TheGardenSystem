@@ -1,10 +1,10 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
 shed:
-	during scatter only shows remaining objects
-	above shelf, show 3 signs with how many tiles are in that sector and how many objects are in the shed
-	change title to display sector name and also make it a sign
-	reverse alignment on cabinet vertical layout so upper shelves are rendered in front of lower shelves
+	(/) during scatter only shows remaining objects
+	(/) above shelf, show 3 signs with how many tiles are in that sector and how many objects are in the shed
+	(/) change title to display sector name and also make it a sign
+	(/) reverse alignment on cabinet vertical layout so upper shelves are rendered in front of lower shelves
 
 mergeable objects:
 	some tiles have the tag "mergeable".
@@ -197,6 +197,9 @@ sectors (maybe 'plots'):
 		shed window background should adapt
 	make it possible to open 2 shed windows at once, left and right
 		then add drag and drop of objects between sheds
+	add option to rename sectors
+		small edit buttn in shed window next to title sign
+		clicking it opens a dialogue with text input field and confirm/cancel
 
 [maybe] research:
 	a research tree is added, with modular dependencies between the research projects (like rimworld for example)

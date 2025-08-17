@@ -11,10 +11,20 @@ public class Object : ITooltipTarget
     /// </summary>
     public List<Modifier> Modifiers { get; private set; }
 
+    /// <summary>
+    /// The tile this object is currently on. Can be null.
+    /// </summary>
+    public MapTile Tile { get; private set; }
+
     public Object(ObjectDef def)
     {
         Def = def;
         Modifiers = new List<Modifier>();
+    }
+
+    public void SetTile(MapTile tile)
+    {
+        Tile = tile;
     }
 
     #region Modifiers

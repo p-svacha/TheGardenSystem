@@ -10,10 +10,11 @@ public class UI_ShedCabinet : MonoBehaviour
 
     [Header("Prefabs")]
     public UI_CabinetShelf ShelfPrefab;
+    public GameObject ShelfTopPrefab;
 
     public void Init(List<Object> objects)
     {
-        HelperFunctions.DestroyAllChildredImmediately(Container, skipElements: 1);
+        HelperFunctions.DestroyAllChildredImmediately(Container);
 
         int numObjects = objects.Count;
         int objPerShelf = Game.Instance.GetShedCabinetShelfObjectAmount();
@@ -23,7 +24,7 @@ public class UI_ShedCabinet : MonoBehaviour
         for (int i = 0; i < numShelves; i++)
         {
             UI_CabinetShelf shelf = GameObject.Instantiate(ShelfPrefab, Container.transform);
-            Sprite shelfSprite = i == numShelves - 1 ? ResourceManager.LoadSprite("Sprites/UI/Shed/ShelfSegmentBottom") : ResourceManager.LoadSprite("Sprites/UI/Shed/ShelfSegment");
+            Sprite shelfSprite = i == 0 ? ResourceManager.LoadSprite("Sprites/UI/Shed/ShelfSegmentBottom") : ResourceManager.LoadSprite("Sprites/UI/Shed/ShelfSegment");
             shelf.Init(background: shelfSprite);
 
             for (int j = 0; j < objPerShelf; j++)
@@ -33,5 +34,6 @@ public class UI_ShedCabinet : MonoBehaviour
                 objIndex++;
             }
         }
+        GameObject.Instantiate(ShelfTopPrefab, Container.transform);
     }
 }

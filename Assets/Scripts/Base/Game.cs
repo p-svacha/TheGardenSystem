@@ -336,6 +336,10 @@ public class Game
 
     private void StartPostScatter()
     {
+        // Remove all objects from day
+        Map.ClearAllNonPermanentObjects();
+        DrawFullMap();
+
         if (IsLastDayOfMonth)
         {
             // Pay town mandate
@@ -489,8 +493,6 @@ public class Game
 
     public void EndDay()
     {
-        Map.ClearAllNonPermanentObjects();
-        DrawFullMap();
         CurrentFinalResourceProduction.Clear();
 
         StartNewDay();
@@ -669,14 +671,29 @@ public class Game
 
     #region Actions
 
+    public void PlaceObject(Object obj, MapTile tile)
+    {
+        tile.SetObject(obj);
+        obj.SetTile(tile);
+    }
+
+    /// <summary>
+    /// Removes an object from a tile.
+    /// </summary>
+    public void ClearTile(MapTile tile)
+    {
+        if (tile.HasObject) tile.Object.SetTile(null);
+        tile.SetObject(null);
+    }
+
     public void AddSector(Vector2Int shedPosition)
     {
         MapTile initialTile = Map.GetTile(shedPosition);
         if (!initialTile.IsOwned) throw new System.Exception("Can't create a sector on an unowned tile.");
 
-        GardenSector newSector = new GardenSector(initialTile);
+        GardenSector newSector = new GardenSector("Starting Sector", initialTile);
         Object shed = new Object(ObjectDefOf.Shed);
-        initialTile.PlaceObject(shed);
+        PlaceObject(shed, initialTile);
         initialTile.SetSector(newSector);
         newSector.AddTile(initialTile);
 

@@ -7,12 +7,14 @@ using UnityEngine;
 /// </summary>
 public class GardenSector
 {
+    public string Name { get; private set; }
     public MapTile ShedTile;
     public List<MapTile> Tiles;
     public List<Object> Objects;
 
-    public GardenSector(MapTile shedTile)
+    public GardenSector(string name, MapTile shedTile)
     {
+        Name = name;
         ShedTile = shedTile;
         Tiles = new List<MapTile>();
         Objects = new List<Object>();
@@ -30,7 +32,7 @@ public class GardenSector
             if (remainingObjects.Count == 0) break;
 
             Object pickedObject = remainingObjects.RandomElement();
-            tile.PlaceObject(pickedObject);
+            Game.Instance.PlaceObject(pickedObject, tile);
             remainingObjects.Remove(pickedObject);
         }
     }
@@ -47,6 +49,7 @@ public class GardenSector
 
     public void AddTile(MapTile tile)
     {
+        if (Tiles.Contains(tile)) return;
         Tiles.Add(tile);
     }
 
@@ -59,6 +62,8 @@ public class GardenSector
 
     #region Getters
 
+    public int NumTiles => Tiles.Count;
+    public int NumObjects => Objects.Count;
     public List<MapTile> EmptyTiles => Tiles.Where(t => !t.HasObject).ToList();
 
     #endregion
