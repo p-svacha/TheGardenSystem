@@ -1,7 +1,7 @@
 Each day works the same:
 
-morning: empty garden, new tiles can be bought. useful to inspect terrain and garden
-noon: the scatter happens, with one-by-one animation out of the shed, no player input. The noon ends automatically after the end of the animation.
-afternoon: scatter can be inspected and maybe manipulated
-evening: the harvest happens, each tile gives the resources it produces with little animation one-by-one, no player input. The player ends the evening manually after the animation
-night: end-of-day windows appear, like order delivery selection, object draft, research draft, etc.
+morning:	empty garden, new tiles can be bought, shop can be used. useful to inspect terrain and garden
+noon:		the scatter happens, with one-by-one animation out of the shed, no player input. The noon ends automatically after the end of the animation.
+afternoon:	scatter can be inspected and maybe manipulated
+evening:	the harvest happens, each tile gives the resources it produces with little animation one-by-one, no player input. The player ends the evening manually after the animation
+night:		end-of-day windows appear, like order delivery selection, object draft, research draft, etc.

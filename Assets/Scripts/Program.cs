@@ -21,6 +21,6 @@ public class Program : MonoBehaviour
     void Update()
     {
         if (Game.GameState == GameState.Uninitialized) Game.Initialize();
-        else Game.HandleInputs();
+        else Game.Update();
     }
 }

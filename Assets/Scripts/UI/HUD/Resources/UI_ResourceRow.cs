@@ -15,7 +15,7 @@ public class UI_ResourceRow : MonoBehaviour
         Icon.sprite = res.Sprite;
         ValueText.text = Game.Instance.Resources.Resources[res].ToString();
 
-        if (Game.Instance.GameState == GameState.Afternoon)
+        if (Game.Instance.GameState == GameState.Noon || Game.Instance.GameState == GameState.Afternoon)
         {
             ResourceProduction production = Game.Instance.CurrentFinalResourceProduction[res];
             PlusValueText.text = $"(+{production.GetValue()})";

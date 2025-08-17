@@ -212,9 +212,13 @@ public class MapRenderer : MonoBehaviour
                 // Special cases
 
                 // Open shed
-                if(UI_ShedWindow.Instance.gameObject.activeSelf && mapTile.Object.Def == ObjectDefOf.Shed && UI_ShedWindow.Instance.DisplayedSector == mapTile.Sector)
+                bool isShed = mapTile.Object.Def == ObjectDefOf.Shed;
+                if (isShed)
                 {
-                    ObjectTilemap.SetTile(cell, ShedOpenTile);
+                    bool isDoorOpen = false;
+                    if (UI_ShedWindow.Instance.gameObject.activeSelf && UI_ShedWindow.Instance.DisplayedSector == mapTile.Sector) isDoorOpen = true;
+                    if (Game.Instance.GameState == GameState.Noon) isDoorOpen = true;
+                    if (isDoorOpen) ObjectTilemap.SetTile(cell, ShedOpenTile);
                 }
 
                 // Object modifiers

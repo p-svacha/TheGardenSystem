@@ -147,7 +147,7 @@ public class Game
         else if (GameState == GameState.Evening) StartPostScatter();
     }
 
-    public void HandleInputs()
+    public void Update()
     {
         // Update Hover
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -182,6 +182,13 @@ public class Game
         if (Input.GetKeyDown(KeyCode.Space))
         {
             AdvanceGameLoop();
+        }
+
+        switch( GameState)
+        {
+            case GameState.Noon:
+                ScatterAnimationManager.Update();
+                break;
         }
 
         UpdateDevModeInputs();
@@ -232,13 +239,27 @@ public class Game
 
         HUD.DatePanel.Refresh();
 
-        foreach (GardenSector sector in Sectors) sector.Scatter();
+        foreach (GardenSector sector in Sectors)
+        {
+            sector.InitScatter();
+        }
+        ScatterAnimationManager.StartAnimation(callback: OnScatterAnimationDone);
+    }
+
+    public void OnObjectArrivedDuringScatter(Object obj, MapTile tile)
+    {
+        Game.Instance.PlaceObject(obj, tile);
+        
+        Game.Instance.DrawFullMap();
 
         CurrentFinalResourceProduction = GetCurrentScatterProduction();
+        HUD.ResourcePanel.Refresh();
+    }
 
-        DrawFullMap();
-
+    private void OnScatterAnimationDone()
+    {
         GameState = GameState.Afternoon;
+        DrawFullMap(); // To close doors
 
         // UI
         HUD.DatePanel.Refresh();

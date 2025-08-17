@@ -12,6 +12,11 @@ public class GardenSector
     public List<MapTile> Tiles;
     public List<Object> Objects;
 
+    /// <summary>
+    /// The random order of which objects will land on what tile and in what order during the current scatter.
+    /// </summary>
+    public Dictionary<Object, MapTile> CurrentScatter;
+
     public GardenSector(string name, MapTile shedTile)
     {
         Name = name;
@@ -22,8 +27,10 @@ public class GardenSector
 
     #region Actions
 
-    public void Scatter()
+    public void InitScatter()
     {
+        CurrentScatter = new Dictionary<Object, MapTile>();
+
         List<Object> remainingObjects = new List<Object>(Objects);
         List<MapTile> shuffledGardenTiles = EmptyTiles.GetShuffledList();
 
@@ -32,8 +39,8 @@ public class GardenSector
             if (remainingObjects.Count == 0) break;
 
             Object pickedObject = remainingObjects.RandomElement();
-            Game.Instance.PlaceObject(pickedObject, tile);
             remainingObjects.Remove(pickedObject);
+            CurrentScatter.Add(pickedObject, tile);
         }
     }
 

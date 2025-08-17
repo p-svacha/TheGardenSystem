@@ -1,23 +1,25 @@
-FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
+FEATURE ROADMAP (in about the order they should be implemented)
 
-shed:
-	(/) during scatter only shows remaining objects
-	(/) above shelf, show 3 signs with how many tiles are in that sector and how many objects are in the shed
-	(/) change title to display sector name and also make it a sign
-	(/) reverse alignment on cabinet vertical layout so upper shelves are rendered in front of lower shelves
+ordered scatter:
+	if shed window is open during scatter, make objects disappear there as soon as they leave shed
+		allow starting scatter with shed window open
+	this will also make merging nicer (see next chapter)
+	add a little jingle, particles, shake or effect when an effect triggers
+
+rename kindle to fuel
 
 mergeable objects:
 	some tiles have the tag "mergeable".
 	if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increased tier) on the middle tile of the 3
 	i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
 	merging happens during scatter, and other objects can occupy the 2 tiles that become free through the merging
-	add isDraftable to ObjectDef
+	add undraftable behavioural tag
 		merged objects are not draftable
 
 root synergy object:
 	object with effect synregyzing with root
 
-	affection arrows in production overlays:
+affection arrows in production overlays:
 		when a production overlay is active, also show moving animated arrows where one object affects the production of another
 		the more the affection, the fast/bigger the arrow
 		arrow like this: > > > > >
@@ -31,19 +33,6 @@ tooltip improvements:
 	show type on top right (i.e. "rare object" / "market resource" / "resource production", "synergy tag")
 	flip when not enough space on right, so it goes left from cursor and shows the background sprite flipped so the little arrow is correct
 	make all textx with resource icons in them size 22
-
-ordered scatter:
-	instead of full scatter all at once, objects get scattered one by one with slight delay in between
-	this will also make merging nicer (see next chapter)
-	add a little jingle, particles, shake or effect when an effect triggers
-
-design:
-	which sector do objects go that are bought in shop?
-	which sector do drafted objects go?
-	is it free to move objects?
-		yes, add a drop down to those two, or another ui control element
-	which sector does a bought tile go to?
-		always adjacent, add user selection if multiple options
 
 resource giving animations:
 	confirming scatter shows tiles giving resources one-by-one with little animation of resources moving the their ui element
@@ -73,6 +62,14 @@ sector acquiring:
 	each sector except starting one has a preplaced abandonded/ruined shed
 	ruined sheds can be purchased with increasingly more gold
 
+sector selection:
+	which sector do objects go that are bought in shop?
+	which sector do drafted objects go?
+	is it free to move objects?
+		yes, add a drop down to those two, or another ui control element
+	which sector does a bought tile go to?
+		always adjacent, add user selection if multiple options
+
 terraforming:
 	more focus on terraforming
 	more transitions between terrain types
@@ -95,7 +92,17 @@ art:
 	move modifier art to new art style
 
 tutorial:
+	add a tooltip to each element in date panel
+		month
+		week
+		day
+		time of day
 	add a tutorial (1 month) explaining game play loop
+
+QOL:
+	show hovered tile object + modifiers in front
+	for example relevant for object behind shed roof
+	add a "center camera" button to shed window, panning camera to the shed
 
 resource progression:
 	not all resources are active from the start
