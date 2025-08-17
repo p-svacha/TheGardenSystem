@@ -8,6 +8,7 @@ public class MapTile : ITooltipTarget
     public Vector2Int Coordinates { get; private set; }
     public Terrain Terrain { get; private set; }
     public Object Object { get; private set; }
+    public GardenSector Sector { get; private set; }
 
     // Ownage properties
     public bool IsOwned { get; private set; }
@@ -67,6 +68,11 @@ public class MapTile : ITooltipTarget
     public void SetTerrain(TerrainDef def)
     {
         Terrain = new Terrain(this, def);
+    }
+
+    public void SetSector(GardenSector sector)
+    {
+        Sector = sector;
     }
 
     #region Modifiers

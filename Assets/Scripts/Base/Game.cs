@@ -139,6 +139,14 @@ public class Game
 
     #region Game Loop
 
+    public void AdvanceGameLoop()
+    {
+        if (UI_ShedWindow.Instance.gameObject.activeSelf) return; // Can't advance game loop when shed window is open
+        if (GameState == GameState.Morning) StartScatter();
+        else if (GameState == GameState.Afternoon) ConfirmScatter();
+        else if (GameState == GameState.Evening) StartPostScatter();
+    }
+
     public void HandleInputs()
     {
         // Update Hover
@@ -165,7 +173,7 @@ public class Game
             {
                 if (HoveredTile != null && HoveredTile.HasObject && HoveredTile.Object.Def == ObjectDefOf.Shed)
                 {
-                    GameUI.Instance.ToggleShedWindow();
+                    Shed_OnClick(HoveredTile);
                 }
             }
         }
@@ -173,9 +181,7 @@ public class Game
         // Game Loop
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (GameState == GameState.Morning) StartScatter();
-            else if (GameState == GameState.Afternoon) ConfirmScatter();
-            else if (GameState == GameState.Evening) StartPostScatter();
+            AdvanceGameLoop();
         }
 
         UpdateDevModeInputs();
@@ -671,6 +677,7 @@ public class Game
         GardenSector newSector = new GardenSector(initialTile);
         Object shed = new Object(ObjectDefOf.Shed);
         initialTile.PlaceObject(shed);
+        initialTile.SetSector(newSector);
         newSector.AddTile(initialTile);
 
         Sectors.Add(newSector);
@@ -686,6 +693,7 @@ public class Game
     public void AddTileToGarden(GardenSector sector, MapTile tile, bool redraw = true)
     {
         tile.Acquire();
+        tile.SetSector(sector);
         sector.AddTile(tile);
         if (redraw) DrawFullMap();
     }
@@ -750,6 +758,35 @@ public class Game
 
         // UI
         HUD.ResourcePanel.Refresh();
+    }
+
+    #endregion
+
+    #region Shed Window
+
+    public void Shed_OnClick(MapTile tile)
+    {
+        if (UI_ShedWindow.Instance.gameObject.activeSelf)
+        {
+            if (UI_ShedWindow.Instance.DisplayedSector == tile.Sector) CloseShed(tile.Sector);
+            else OpenShed(tile.Sector);
+        }
+        else
+        {
+            OpenShed(tile.Sector);
+        }
+    }
+
+    public void CloseShed(GardenSector sector)
+    {
+        UI_ShedWindow.Instance.Hide();
+        DrawFullMap();
+    }
+
+    private void OpenShed(GardenSector sector)
+    {
+        UI_ShedWindow.Instance.Show(sector);
+        DrawFullMap();
     }
 
     #endregion

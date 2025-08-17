@@ -14,16 +14,6 @@ public class GameUI : MonoBehaviour
         _TMPResourceSpriteAsset = null;
     }
 
-    #region Shed Window
-
-    public void ToggleShedWindow()
-    {
-        if (UI_ShedWindow.Instance.gameObject.activeSelf) UI_ShedWindow.Instance.Hide();
-        else UI_ShedWindow.Instance.Show(Game.Instance.Sectors[0]);
-    }
-
-    #endregion
-
     #region TMP Sprite Asset
 
     private static TMP_SpriteAsset _TMPResourceSpriteAsset;

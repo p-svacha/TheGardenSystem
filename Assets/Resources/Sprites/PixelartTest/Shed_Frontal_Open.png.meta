@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 98cbc8cac79e93a4c940530067f9d81e
+guid: bd356bc96be309e4cb05d4b5ea3a89e7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5796099624330969072
-    second: Shed_Frontal4_0
+      213: 7592670838751541594
+    second: Shed_Frontal_Open_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Shed_Frontal4_0
+      name: Shed_Frontal_Open_0
       rect:
         serializedVersion: 2
-        x: 53
-        y: 54
-        width: 86
-        height: 111
+        x: 41
+        y: 42
+        width: 98
+        height: 123
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0104af8c91e109fa0800000000000000
-      internalID: -5796099624330969072
+      spriteID: a59b04076e59e5960800000000000000
+      internalID: 7592670838751541594
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Shed_Frontal4_0: -5796099624330969072
+      Shed_Frontal_Open_0: 7592670838751541594
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -30,6 +30,8 @@ public class MapRenderer : MonoBehaviour
     private Dictionary<ObjectDef, Tile> ObjectTileCache;
     private Dictionary<ModifierDef, Tile> ModifierTileCache;
 
+    public Tile ShedOpenTile;
+
     #region Initialize
 
     private void Awake()
@@ -120,6 +122,9 @@ public class MapRenderer : MonoBehaviour
             Tile tile = CreateTileFromSprite(def.Sprite);
             ObjectTileCache[def] = tile;
         }
+
+        // Special tiles
+        ShedOpenTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Objects/Shed_Open"));
     }
 
     private void InitializeModifierTiles()
@@ -203,6 +208,14 @@ public class MapRenderer : MonoBehaviour
             else
             {
                 ObjectTilemap.SetTile(cell, ObjectTileCache[mapTile.Object.Def]);
+
+                // Special cases
+
+                // Open shed
+                if(UI_ShedWindow.Instance.gameObject.activeSelf && mapTile.Object.Def == ObjectDefOf.Shed && UI_ShedWindow.Instance.DisplayedSector == mapTile.Sector)
+                {
+                    ObjectTilemap.SetTile(cell, ShedOpenTile);
+                }
 
                 // Object modifiers
                 index = 0;

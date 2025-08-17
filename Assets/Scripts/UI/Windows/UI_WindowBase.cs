@@ -20,7 +20,7 @@ public class UI_WindowBase : MonoBehaviour
         ConfirmButton.SetOnClick(confirmCallback.Invoke);
     }
 
-    public void Hide()
+    public virtual void Hide()
     {
         gameObject.SetActive(false);
     }

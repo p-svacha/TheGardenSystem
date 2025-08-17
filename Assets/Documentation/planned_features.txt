@@ -1,11 +1,9 @@
 FEATURE ROADMAP (not necessarily in that order, just things i plan to implement)
 
 shed:
-	add some wood detail to cabinet
-	shed door is open when shed window is open
 	during scatter only shows remaining objects
-	above shelf, show two signs with how many tiles are in that sector and how many objects are in the shed
-	add an indicator of how many tiles are in a garden sector
+	above shelf, show 3 signs with how many tiles are in that sector and how many objects are in the shed
+	change title to display sector name and also make it a sign
 	reverse alignment on cabinet vertical layout so upper shelves are rendered in front of lower shelves
 
 mergeable objects:
@@ -30,7 +28,7 @@ root synergy object:
 
 tooltip improvements:
 	add max width attribute
-	show type on top right (i.e. "rare object" / "market resource" / "resource production")
+	show type on top right (i.e. "rare object" / "market resource" / "resource production", "synergy tag")
 	flip when not enough space on right, so it goes left from cursor and shows the background sprite flipped so the little arrow is correct
 	make all textx with resource icons in them size 22
 
@@ -70,7 +68,29 @@ acquire tiles change:
 items:
 	item that can be used after scatter and before harvest to change the scatter
 
+sector acquiring:
+	sector are preplaced on the map
+	each sector except starting one has a preplaced abandonded/ruined shed
+	ruined sheds can be purchased with increasingly more gold
+
+terraforming:
+	more focus on terraforming
+	more transitions between terrain types
+	also multidimenstional transitions
+	port fertility to a new TerrainStatDef system
+	maybe change system so the stats don't reset on terrain changes
+		but make it the other way around: the stats make up the terrain
+		for example:
+			40 humidity, 20 fertility => shallow water
+			10 humidty, 30 fertility => fertile soil
+	make transitions more modular
+	add an auto-generated terraform graph chart where all terrain types and transformations can be seen
+	add stat humidity
+
+"end turn" button for game loop:
+
 art:
+	fix side fence perspective of querbalken
 	move terrain overlays to new art style
 	move modifier art to new art style
 
