@@ -276,23 +276,37 @@ public class Game
         // State
         GameState = GameState.Evening_HarvestAnimation;
 
+        // Calculate final production of the day
+        CurrentFinalResourceProduction = GetCurrentScatterProduction();
+
+        // Start animation
         HarvestAnimationManager.StartAnimation(callback: OnHarvestAnimationDone);
         HUD.RefreshGameLoopButton();
 
         // todo: migrate this to animation
-        CurrentFinalResourceProduction = GetCurrentScatterProduction();
-
-        ApplyMarketResourcesAndCurrency();
-        ApplyAbstractResources();
 
         DecrementModifierDurations();
         ApplyNewModifiers();
 
-        foreach (GardenSector sector in Sectors)
-        {
-            foreach (Object obj in sector.Objects) obj.IsInShed = true;
-        }
         // todo end
+    }
+
+    public void OnResourceIconArrivesDuringHarvest(MapTile sourceTile, ResourceDef res, bool isNegative)
+    {
+        if (res.Type == ResourceType.MarketResource || res.Type == ResourceType.Currency)
+        {
+            if (isNegative) HarvestAnimationManager.CurrentResourcePlusValues[res]++;
+            else HarvestAnimationManager.CurrentResourcePlusValues[res]--;
+            AddSingleAccumulativeResource(res);
+        }
+        else if (res.Type == ResourceType.TerrainModificationResource)
+        {
+            if (res == ResourceDefOf.Fertility)
+            {
+                sourceTile.Terrain.AdjustFertility(isNegative? -1 : 1);
+                DrawFullMap();
+            }
+        }
     }
 
     public void OnObjectAppliesModifierDuringHarvest()
@@ -319,42 +333,6 @@ public class Game
         HUD.RefreshGameLoopButton();
     }
 
-    /// <summary>
-    /// Adds all market resources produced today to the resource pool.
-    /// </summary>
-    private void ApplyMarketResourcesAndCurrency()
-    {
-        ResourceCollection marketResourcesToAdd = new ResourceCollection();
-        foreach (var kvp in CurrentFinalResourceProduction)
-        {
-            ResourceDef resource = kvp.Key;
-            ResourceProduction production = kvp.Value;
-
-            if (resource.Type == ResourceType.MarketResource || resource.Type == ResourceType.Currency)
-            {
-                marketResourcesToAdd.AddResource(resource, production.GetValue());
-            }
-        }
-        AddResources(marketResourcesToAdd);
-    }
-
-    /// <summary>
-    /// Applies the effect of all abstract resources that were produced today.
-    /// </summary>
-    private void ApplyAbstractResources()
-    {
-        foreach (var kvp in CurrentPerTileResourceProduction)
-        {
-            MapTile tile = kvp.Key;
-            Dictionary<ResourceDef, ResourceProduction> tileProduction = kvp.Value;
-
-            // Fertility
-            if (tileProduction.TryGetValue(ResourceDefOf.Fertility, out ResourceProduction fertilityProduction) && fertilityProduction.GetValue() != 0)
-            {
-                tile.Terrain.AdjustFertility(fertilityProduction.GetValue());
-            }
-        }
-    }
 
     /// <summary>
     /// Decrements the duration of all modifiers.
@@ -777,6 +755,14 @@ public class Game
         if (redraw) DrawFullMap();
     }
 
+    public void AddSingleAccumulativeResource(ResourceDef def)
+    {
+        Resources.AddResource(def, 1);
+
+        // UI
+        HUD.ResourcePanel.Refresh();
+        if (IsAcquiringTiles) RefreshAcquiringTilesOverlays();
+    }
     public void AddResources(ResourceCollection res)
     {
         Resources.AddResources(res);

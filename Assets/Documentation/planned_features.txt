@@ -3,18 +3,21 @@ FEATURE ROADMAP (in about the order they should be implemented)
 harvest animation:
 	confirming scatter shows tiles giving resources one-by-one with little animation of resources moving the their ui element
 	first phase:
+		terrain modification resources should jump up and down 
+	phase 2:
+		existing modifiers tick
+		skip if none
+		only animate if modifier fizzles out
+	thrid phase:
 		one by one scattered objects apply modifiers to tiles and objects
-	second phase:
+	four phase:
 		shed doors open
-		one by one scattered objects do:
-			spawn resource icons according to their production that fly to resource panel
-			move back to the shed
-			spawn resource icon for fertility, hopping up and landing again on tile
+		objects move back to shed one by one
 		shed doors close again when done
-	game loop button is disabled during animation
 
 ordered scatter:
 	add a little jingle, particles, shake or effect when an effect triggers
+		probably needs a new bool object.IsAffectedBy(otherObject)
 
 rename kindle to fuel
 

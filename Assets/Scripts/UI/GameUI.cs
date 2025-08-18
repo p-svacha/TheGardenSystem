@@ -8,6 +8,9 @@ public class GameUI : MonoBehaviour
 {
     public static GameUI Instance;
 
+    [Header("Elements")]
+    public GameObject FlyingResourceIconsContainer;
+
     private void Awake()
     {
         Instance = this;

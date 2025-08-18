@@ -17,7 +17,7 @@ public class Object : ITooltipTarget
     public MapTile Tile { get; private set; }
 
     /// <summary>
-    /// Flag if this object is currently visually in the shed. No gameplay implications.
+    /// Flag if this object is currently in the shed. Used for animations and shed display.
     /// </summary>
     public bool IsInShed;
 

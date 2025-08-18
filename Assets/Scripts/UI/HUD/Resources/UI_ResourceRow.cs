@@ -21,6 +21,11 @@ public class UI_ResourceRow : MonoBehaviour
             PlusValueText.text = $"(+{production.GetValue()})";
             PlusValueText.GetComponent<TooltipTarget_Reference>().Init(production);
         }
+        else if (Game.Instance.GameState == GameState.Evening_HarvestAnimation)
+        {
+            ValueText.text = Game.Instance.Resources.Resources[res].ToString();
+            PlusValueText.text = $"(+{HarvestAnimationManager.CurrentResourcePlusValues[res]})";
+        }
         else
         {
             PlusValueText.text = "";

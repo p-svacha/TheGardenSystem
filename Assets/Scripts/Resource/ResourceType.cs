@@ -15,5 +15,5 @@ public enum ResourceType
     /// <summary>
     /// Abstract resources are non-accumulative and non-material. They get applied directly towards something in the day they get produced.
     /// </summary>
-    AbstractResource,
+    TerrainModificationResource,
 }

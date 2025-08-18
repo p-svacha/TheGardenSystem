@@ -61,7 +61,7 @@ public static class ResourceDefs
             DefName = "Fertility",
             Label = "fertility",
             Description = "Enriches or depletes the soil fertility the object lands on. Terrain may change at certain fertility threshholds.",
-            Type = ResourceType.AbstractResource,
+            Type = ResourceType.TerrainModificationResource,
         },
     };
 }

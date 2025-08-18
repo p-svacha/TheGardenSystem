@@ -108,6 +108,7 @@ public static class ScatterAnimationManager
             ObjectIndex++;
         }
 
+        // Check if everything done
         if (ObjectIndex >= Sectors.Max(s => s.NumObjects) && ScatteringObjects.Count == 0)
         {
             SwitchStateTo(AnimationState.PostScatter);

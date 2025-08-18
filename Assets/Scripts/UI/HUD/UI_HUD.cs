@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UI_HUD : MonoBehaviour
 {
+    public static UI_HUD Instance;
+
     [Header("Elements")]
     public UI_DatePanel DatePanel;
     public UI_ResourcePanel ResourcePanel;
@@ -13,6 +15,11 @@ public class UI_HUD : MonoBehaviour
     public UI_Button AcquireTilesControl;
     public UI_Button ShopControl;
     [SerializeField] private UI_Button GameLoopButton;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void OnEnable()
     {
