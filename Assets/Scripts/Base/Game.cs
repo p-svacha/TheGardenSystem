@@ -47,7 +47,7 @@ public class Game
     public List<Order> ActiveOrders { get; private set; }
     public Customer TownCouncil { get; private set; }
     public List<TownMandate> TownMandates { get; private set; }
-    public TownMandate NextTownMandate => (IsLastDayOfMonth && Game.Instance.GameState > GameState.Evening) ? TownMandates[Month + 1] : TownMandates[Month];
+    public TownMandate NextTownMandate => (IsLastDayOfMonth && Game.Instance.GameState > GameState.Evening_HarvestAnimation) ? TownMandates[Month + 1] : TownMandates[Month];
 
     // Shop
     public ResourceCollection ShopResources { get; private set; }
@@ -141,10 +141,9 @@ public class Game
 
     public void AdvanceGameLoop()
     {
-        if (UI_ShedWindow.Instance.gameObject.activeSelf) return; // Can't advance game loop when shed window is open
         if (GameState == GameState.Morning) StartScatter();
-        else if (GameState == GameState.Afternoon) ConfirmScatter();
-        else if (GameState == GameState.Evening) StartPostScatter();
+        else if (GameState == GameState.Afternoon) StartHarvest();
+        else if (GameState == GameState.Evening_PostHarvest) StartPostScatter();
     }
 
     public void Update()
@@ -188,6 +187,10 @@ public class Game
         {
             case GameState.Noon:
                 ScatterAnimationManager.Update();
+                break;
+
+            case GameState.Evening_HarvestAnimation:
+                HarvestAnimationManager.Update();
                 break;
         }
 
@@ -237,13 +240,9 @@ public class Game
     {
         GameState = GameState.Noon;
 
-        HUD.DatePanel.Refresh();
-        HUD.GameLoopButton.Hide();
+        HUD.RefreshGameLoopButton();
 
-        foreach (GardenSector sector in Sectors)
-        {
-            sector.InitScatter();
-        }
+        foreach (GardenSector sector in Sectors) sector.InitScatter();
         ScatterAnimationManager.StartAnimation(callback: OnScatterAnimationDone);
     }
 
@@ -269,12 +268,18 @@ public class Game
         HUD.AcquireTilesControl.Hide();
         HUD.ShopControl.transform.parent.gameObject.SetActive(false);
 
-        HUD.GameLoopButton.Show();
-        HUD.GameLoopButton.SetText("Harvest");
+        HUD.RefreshGameLoopButton();
     }
 
-    private void ConfirmScatter()
+    private void StartHarvest()
     {
+        // State
+        GameState = GameState.Evening_HarvestAnimation;
+
+        HarvestAnimationManager.StartAnimation(callback: OnHarvestAnimationDone);
+        HUD.RefreshGameLoopButton();
+
+        // todo: migrate this to animation
         CurrentFinalResourceProduction = GetCurrentScatterProduction();
 
         ApplyMarketResourcesAndCurrency();
@@ -283,8 +288,27 @@ public class Game
         DecrementModifierDurations();
         ApplyNewModifiers();
 
+        foreach (GardenSector sector in Sectors)
+        {
+            foreach (Object obj in sector.Objects) obj.IsInShed = true;
+        }
+        // todo end
+    }
+
+    public void OnObjectAppliesModifierDuringHarvest()
+    {
+
+    }
+
+    public void OnObjectReturnedDuringHarvest()
+    {
+
+    }
+
+    private void OnHarvestAnimationDone()
+    {
         // State
-        GameState = GameState.Evening;
+        GameState = GameState.Evening_PostHarvest;
 
         // UI
         DrawFullMap();
@@ -292,10 +316,7 @@ public class Game
         HUD.ResourcePanel.Refresh();
         TooltipManager.Instance.ResetTooltips();
 
-        if (IsLastDayOfYear) HUD.GameLoopButton.SetText("End Year");
-        else if (IsLastDayOfMonth) HUD.GameLoopButton.SetText("End Month");
-        else if (IsLastDayOfWeek) HUD.GameLoopButton.SetText("End Week");
-        else HUD.GameLoopButton.SetText("End Day");
+        HUD.RefreshGameLoopButton();
     }
 
     /// <summary>
@@ -366,6 +387,8 @@ public class Game
 
     private void StartPostScatter()
     {
+        if (IsShedWindowOpen) return; // Can't go to night when shed window is open
+
         // Remove all objects from day
         Map.ClearAllNonPermanentObjects();
         DrawFullMap();
@@ -406,7 +429,7 @@ public class Game
         }
 
         // UI
-        HUD.GameLoopButton.Hide();
+        HUD.RefreshGameLoopButton();
     }
 
     /// <summary>
@@ -550,8 +573,7 @@ public class Game
         HUD.AcquireTilesControl.Show();
         HUD.ShopControl.transform.parent.gameObject.SetActive(true);
 
-        HUD.GameLoopButton.Show();
-        HUD.GameLoopButton.SetText("Start Day");
+        HUD.RefreshGameLoopButton();
     }
 
     private void StartNewMonth()
@@ -833,13 +855,25 @@ public class Game
     {
         UI_ShedWindow.Instance.Hide();
         DrawFullMap();
+        HUD.RefreshGameLoopButton();
     }
 
     private void OpenShed(GardenSector sector)
     {
+        if (!CanOpenShedWindow()) return;
+
         UI_ShedWindow.Instance.Show(sector);
         DrawFullMap();
+        HUD.RefreshGameLoopButton();
     }
+
+    public bool CanOpenShedWindow()
+    {
+        if (IsNight) return false;
+        return true;
+    }
+
+    public bool IsShedWindowOpen => UI_ShedWindow.Instance.gameObject.activeSelf;
 
     #endregion
 
@@ -875,7 +909,7 @@ public class Game
         if (GameState == GameState.Morning) return "Morning";
         if (GameState == GameState.Noon) return "Noon";
         if (GameState == GameState.Afternoon) return "Afternoon";
-        if (GameState == GameState.Evening) return "Evening";
+        if (GameState == GameState.Evening_HarvestAnimation) return "Evening";
         return "Night";
     }
 

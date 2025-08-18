@@ -39,12 +39,6 @@ public class UI_ShedWindow : UI_WindowBase
         // Objects
         List<Object> objectsToDisplay = new List<Object>(sector.Objects);
 
-        // Only show remaining objects during scatter
-        if(Game.Instance.GameState == GameState.Afternoon || Game.Instance.GameState == GameState.Evening)
-        {
-            objectsToDisplay = objectsToDisplay.Where(o => o.Tile == null).ToList();
-        }
-
         gameObject.SetActive(true);
         Cabinet.Init(objectsToDisplay);
         DisplayedSector = sector;

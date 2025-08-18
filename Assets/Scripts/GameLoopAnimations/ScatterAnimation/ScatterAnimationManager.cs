@@ -95,6 +95,13 @@ public static class ScatterAnimationManager
                 ScatteringObject scatteringObject = scatteringObjGo.AddComponent<ScatteringObject>();
                 scatteringObject.Init(objToScatter, sourceTile, targetTile);
                 ScatteringObjects.Add(scatteringObject);
+                objToScatter.IsInShed = false;
+
+                // Remove object from shed window if open
+                if (UI_ShedWindow.Instance.gameObject.activeSelf && UI_ShedWindow.Instance.DisplayedSector == sector)
+                {
+                    UI_ShedWindow.Instance.Show(sector);
+                }
             }
             
             LastObjectTime = Timer;

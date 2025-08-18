@@ -12,7 +12,7 @@ public class UI_HUD : MonoBehaviour
     public UI_OrderPanel OrderPanel;
     public UI_Button AcquireTilesControl;
     public UI_Button ShopControl;
-    public UI_Button GameLoopButton;
+    [SerializeField] private UI_Button GameLoopButton;
 
     private void OnEnable()
     {
@@ -29,5 +29,45 @@ public class UI_HUD : MonoBehaviour
     private void GameLoopButton_OnClick()
     {
         Game.Instance.AdvanceGameLoop();
+    }
+
+    public void RefreshGameLoopButton()
+    {
+        switch (Game.Instance.GameState)
+        {
+            case GameState.Morning:
+                GameLoopButton.Show();
+                GameLoopButton.SetText("Start Day");
+                break;
+
+            case GameState.Noon:
+                GameLoopButton.Hide();
+                break;
+
+            case GameState.Afternoon:
+                GameLoopButton.Show();
+                GameLoopButton.SetText("Harvest");
+                break;
+
+            case GameState.Evening_HarvestAnimation:
+                GameLoopButton.Hide();
+                break;
+
+            case GameState.Evening_PostHarvest:
+                GameLoopButton.Show();
+                if (Game.Instance.IsLastDayOfYear) GameLoopButton.SetText("End Year");
+                else if (Game.Instance.IsLastDayOfMonth) GameLoopButton.SetText("End Month");
+                else if (Game.Instance.IsLastDayOfWeek) GameLoopButton.SetText("End Week");
+                else GameLoopButton.SetText("End Day");
+
+                if (Game.Instance.IsShedWindowOpen) GameLoopButton.SetInteractable(false);
+                else GameLoopButton.SetInteractable(true);
+                break;
+
+            case GameState.Night_ObjectDraft:
+            case GameState.Night_OrderSelection:
+                GameLoopButton.Hide();
+                break;
+        }
     }
 }

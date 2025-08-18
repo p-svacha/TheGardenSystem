@@ -16,10 +16,16 @@ public class Object : ITooltipTarget
     /// </summary>
     public MapTile Tile { get; private set; }
 
+    /// <summary>
+    /// Flag if this object is currently visually in the shed. No gameplay implications.
+    /// </summary>
+    public bool IsInShed;
+
     public Object(ObjectDef def)
     {
         Def = def;
         Modifiers = new List<Modifier>();
+        IsInShed = true;
     }
 
     public void SetTile(MapTile tile)

@@ -30,7 +30,7 @@ public class UI_OrderPanel : MonoBehaviour
         if (Game.Instance.IsLastDayOfWeek)
         {
             nextDueDay = Game.Instance.Day;
-            if (Game.Instance.GameState > GameState.Evening) nextDueDay += Game.DAYS_PER_WEEK;
+            if (Game.Instance.GameState > GameState.Evening_HarvestAnimation) nextDueDay += Game.DAYS_PER_WEEK;
         }
 
 

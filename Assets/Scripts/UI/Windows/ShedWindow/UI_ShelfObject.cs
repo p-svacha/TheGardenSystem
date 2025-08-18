@@ -20,5 +20,7 @@ public class UI_ShelfObject : MonoBehaviour
         int yOffset = -(2 * obj.Def.SpriteBottomY) + 13;
         if (yOffset > 0) yOffset = 0;
         rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, yOffset);
+
+        ObjectImage.enabled = obj.IsInShed;
     }
 }

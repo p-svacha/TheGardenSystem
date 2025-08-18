@@ -1,13 +1,19 @@
 FEATURE ROADMAP (in about the order they should be implemented)
 
-(/) fix sprite sheet pixel issues
-(/) fix tile overlay font size
-(/) "end turn" button for game loop:
+harvest animation:
+	confirming scatter shows tiles giving resources one-by-one with little animation of resources moving the their ui element
+	first phase:
+		one by one scattered objects apply modifiers to tiles and objects
+	second phase:
+		shed doors open
+		one by one scattered objects do:
+			spawn resource icons according to their production that fly to resource panel
+			move back to the shed
+			spawn resource icon for fertility, hopping up and landing again on tile
+		shed doors close again when done
+	game loop button is disabled during animation
 
 ordered scatter:
-	if shed window is open during scatter, make objects disappear there as soon as they leave shed
-		allow starting scatter with shed window open
-	this will also make merging nicer (see next chapter)
 	add a little jingle, particles, shake or effect when an effect triggers
 
 rename kindle to fuel
@@ -20,17 +26,14 @@ mergeable objects:
 	add undraftable behavioural tag
 		merged objects are not draftable
 
-root synergy object:
-	object with effect synregyzing with root
-
 affection arrows in production overlays:
-		when a production overlay is active, also show moving animated arrows where one object affects the production of another
-		the more the affection, the fast/bigger the arrow
-		arrow like this: > > > > >
-		maybe for ProductionModifiersource, aditionally the coordinate is needed from where the effect originates from
-		use ^ ^ ^ on tile if source is from same tile
-		a circle at one end of the arrow indicates the source of the effect (can either be the object receiving the effect, or the one it originates from)
-		also show indicators of what will merge
+	when a production overlay is active, also show moving animated arrows where one object affects the production of another
+	the more the affection, the fast/bigger the arrow
+	arrow like this: > > > > >
+	maybe for ProductionModifiersource, aditionally the coordinate is needed from where the effect originates from
+	use ^ ^ ^ on tile if source is from same tile
+	a circle at one end of the arrow indicates the source of the effect (can either be the object receiving the effect, or the one it originates from)
+	also show indicators of what will merge
 
 tooltip improvements:
 	add max width attribute
@@ -38,12 +41,11 @@ tooltip improvements:
 	flip when not enough space on right, so it goes left from cursor and shows the background sprite flipped so the little arrow is correct
 	make all textx with resource icons in them size 22
 
-resource giving animations:
-	confirming scatter shows tiles giving resources one-by-one with little animation of resources moving the their ui element
-
 allow going to shop during order selection:
 	allow player to go to shop during order selection
+	allow shop in evening after harvest animation
 	also make sure that player can buy resources for town mandate before the check, after the harvest
+		add a big warning to game loop button if mandate can't be payed
 	adjust game loop description.txt
 
 rework town mandates to be more dynamic:	
@@ -57,9 +59,6 @@ rework town mandates to be more dynamic:
 acquire tiles change:
 	make it to be only possible to buy tiles 8-adjacent to existing tiles
 	hide gold overlay for not buyable ones
-
-items:
-	item that can be used after scatter and before harvest to change the scatter
 
 sector acquiring:
 	sector are preplaced on the map
@@ -103,6 +102,12 @@ tutorial:
 	add a tutorial (1 month) explaining game play loop
 
 QOL:
+	allow looking at shed inventories during object draft
+		add a "hide window" button to object draft window
+		the button then hides and small symbols at the top show the current selection of objects
+		next to the symbols, a "show draft window" button appears
+			this button is disabled if any shed window is open
+		while hidden, sheds can be openened normally
 	show hovered tile object + modifiers in front
 	for example relevant for object behind shed roof
 	add a "center camera" button to shed window, panning camera to the shed
@@ -127,8 +132,12 @@ new customer draft:
 fiber:
 	make a customer buying fiber
 
+items:
+	item that can be used after scatter and before harvest to change the scatter
+
 wiki / codex:
 	add ingame way to view def info in a neat UI
+	right or middle clicking anything opens codex for that def
 
 tooltip improvement:
 	add a new "info text" element to tooltip in top right corner
@@ -137,7 +146,7 @@ tooltip improvement:
 		"market resource" for resources
 		"terrain" for terrian
 
-[maybe] obstacles:
+obstacles:
 	some tiles may have obstacles on them
 	to start, just take a rock
 	objects will not be scattered on tiles with obstacles on them, until they are removed

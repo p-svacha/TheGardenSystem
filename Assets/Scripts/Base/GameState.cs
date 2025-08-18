@@ -6,7 +6,8 @@ public enum GameState
     Morning,
     Noon,
     Afternoon,
-    Evening,
+    Evening_HarvestAnimation,
+    Evening_PostHarvest,
     Night_OrderSelection, // only at end of week
     Night_ObjectDraft,
     GameOver,
