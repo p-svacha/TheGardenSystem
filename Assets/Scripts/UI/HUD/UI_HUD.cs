@@ -12,15 +12,22 @@ public class UI_HUD : MonoBehaviour
     public UI_OrderPanel OrderPanel;
     public UI_Button AcquireTilesControl;
     public UI_Button ShopControl;
+    public UI_Button GameLoopButton;
 
     private void OnEnable()
     {
         ShopControl.SetOnClick(ShopButton_OnClick);
+        GameLoopButton.SetOnClick(GameLoopButton_OnClick);
     }
 
     private void ShopButton_OnClick()
     {
         if (UI_ShopWindow.Instance.gameObject.activeSelf) return;
         UI_ShopWindow.Instance.Show();
+    }
+
+    private void GameLoopButton_OnClick()
+    {
+        Game.Instance.AdvanceGameLoop();
     }
 }

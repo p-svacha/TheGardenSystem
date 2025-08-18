@@ -1,5 +1,9 @@
 FEATURE ROADMAP (in about the order they should be implemented)
 
+(/) fix sprite sheet pixel issues
+(/) fix tile overlay font size
+(/) "end turn" button for game loop:
+
 ordered scatter:
 	if shed window is open during scatter, make objects disappear there as soon as they leave shed
 		allow starting scatter with shed window open
@@ -84,9 +88,8 @@ terraforming:
 	add an auto-generated terraform graph chart where all terrain types and transformations can be seen
 	add stat humidity
 
-"end turn" button for game loop:
-
 art:
+	render open shed tile in front of all other objects, so all other objects appear behind doors
 	fix side fence perspective of querbalken
 	move terrain overlays to new art style
 	move modifier art to new art style

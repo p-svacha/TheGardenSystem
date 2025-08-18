@@ -238,6 +238,7 @@ public class Game
         GameState = GameState.Noon;
 
         HUD.DatePanel.Refresh();
+        HUD.GameLoopButton.Hide();
 
         foreach (GardenSector sector in Sectors)
         {
@@ -267,6 +268,9 @@ public class Game
         TooltipManager.Instance.ResetTooltips();
         HUD.AcquireTilesControl.Hide();
         HUD.ShopControl.transform.parent.gameObject.SetActive(false);
+
+        HUD.GameLoopButton.Show();
+        HUD.GameLoopButton.SetText("Harvest");
     }
 
     private void ConfirmScatter()
@@ -287,6 +291,11 @@ public class Game
         HUD.DatePanel.Refresh();
         HUD.ResourcePanel.Refresh();
         TooltipManager.Instance.ResetTooltips();
+
+        if (IsLastDayOfYear) HUD.GameLoopButton.SetText("End Year");
+        else if (IsLastDayOfMonth) HUD.GameLoopButton.SetText("End Month");
+        else if (IsLastDayOfWeek) HUD.GameLoopButton.SetText("End Week");
+        else HUD.GameLoopButton.SetText("End Day");
     }
 
     /// <summary>
@@ -395,7 +404,9 @@ public class Game
             string title = $"Day {Day} Complete";
             StartObjectDraft(title, ObjectTierDefOf.Common);
         }
-        
+
+        // UI
+        HUD.GameLoopButton.Hide();
     }
 
     /// <summary>
@@ -538,6 +549,9 @@ public class Game
         TooltipManager.Instance.ResetTooltips();
         HUD.AcquireTilesControl.Show();
         HUD.ShopControl.transform.parent.gameObject.SetActive(true);
+
+        HUD.GameLoopButton.Show();
+        HUD.GameLoopButton.SetText("Start Day");
     }
 
     private void StartNewMonth()

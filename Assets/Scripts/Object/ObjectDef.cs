@@ -35,7 +35,7 @@ public class ObjectDef : Def, IDraftable, ITooltipTarget
         _Sprite = ResourceManager.LoadSprite("Sprites/Objects/" + DefName);
         _NativeProduction = new ResourceCollection(NativeProduction);
         SpriteBottomY = HelperFunctions.CountBottomTransparentRows(_Sprite);
-        Debug.Log($"{DefName} has a SpriteBottomY of {SpriteBottomY}.");
+        // Debug.Log($"{DefName} has a SpriteBottomY of {SpriteBottomY}.");
     }
 
     #region Getters

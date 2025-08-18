@@ -423,10 +423,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7105d6b946b593c4ca771b624abb7786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LabelText: {fileID: 8174780858473279358}
+  Icon: {fileID: 7677170411426625488}
   targetImage: {fileID: 8885210782867890861}
   Button: {fileID: 7235510314243163482}
-  textRect: {fileID: 5066616390431111160}
-  iconRect: {fileID: 6123453369110922962}
   DisabledOverlay: {fileID: 2596615934580043718}
   pressedTextOffset: {x: 0, y: -4}
   snapToIntegerPositions: 1

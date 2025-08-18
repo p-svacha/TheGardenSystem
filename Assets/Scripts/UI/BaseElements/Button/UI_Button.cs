@@ -17,12 +17,16 @@ public class UI_Button : MonoBehaviour,
     private Sprite DisabledSprite;
 
     [Header("Elements")]
+    public TextMeshProUGUI LabelText;
+    public Image Icon;
     [SerializeField] private Image targetImage;
     [SerializeField] private Button Button;
-    [SerializeField] private RectTransform textRect;
-    [SerializeField] private RectTransform iconRect;
     private CanvasGroup canvasGroup;
     public Image DisabledOverlay;
+
+    // Cache
+    private RectTransform TextRect;
+    private RectTransform IconRect;
 
     [Header("Pressed Offset")]
     [Tooltip("How far to push content while pressed (pixels). Use negative Y to move down.")]
@@ -51,8 +55,6 @@ public class UI_Button : MonoBehaviour,
     {
         targetImage = GetComponent<Image>();
         Button = GetComponent<Button>();
-        TryAutoWireTMP();
-        TryAutoWireIcon();
         if (!canvasGroup) canvasGroup = GetComponent<CanvasGroup>();
         if (!canvasGroup) canvasGroup = gameObject.AddComponent<CanvasGroup>();
         if (targetImage != null && DefaultSprite == null) DefaultSprite = targetImage.sprite;
@@ -71,8 +73,8 @@ public class UI_Button : MonoBehaviour,
         if (!canvasGroup) canvasGroup = GetComponent<CanvasGroup>();
         if (!canvasGroup) canvasGroup = gameObject.AddComponent<CanvasGroup>();
 
-        if (!textRect) TryAutoWireTMP();
-        if (!iconRect) TryAutoWireIcon();
+        TextRect = LabelText.GetComponent<RectTransform>();
+        IconRect = Icon.GetComponent<RectTransform>();
 
         if (!DefaultSprite && targetImage) DefaultSprite = targetImage.sprite;
 
@@ -158,6 +160,11 @@ public class UI_Button : MonoBehaviour,
     public void Enable() => SetInteractable(true);
     public void Disable() => SetInteractable(false);
 
+    public void SetText(string text)
+    {
+        LabelText.text = text;
+    }
+
     #endregion
 
     #region Internal Logic
@@ -203,8 +210,8 @@ public class UI_Button : MonoBehaviour,
             return snapToIntegerPositions ? new Vector2(Mathf.Round(p.x), Mathf.Round(p.y)) : p;
         }
 
-        if (textRect) textRect.anchoredPosition = Offset(originalTextPos);
-        if (iconRect) iconRect.anchoredPosition = Offset(originalIconPos);
+        if (TextRect) TextRect.anchoredPosition = Offset(originalTextPos);
+        if (IconRect) IconRect.anchoredPosition = Offset(originalIconPos);
     }
 
     private void ResetPositions()
@@ -213,35 +220,14 @@ public class UI_Button : MonoBehaviour,
             ? new Vector2(Mathf.Round(p.x), Mathf.Round(p.y))
             : p;
 
-        if (textRect) textRect.anchoredPosition = Snap(originalTextPos);
-        if (iconRect) iconRect.anchoredPosition = Snap(originalIconPos);
+        if (TextRect) TextRect.anchoredPosition = Snap(originalTextPos);
+        if (IconRect) IconRect.anchoredPosition = Snap(originalIconPos);
     }
 
     private void CacheOriginalPositions()
     {
-        if (textRect) originalTextPos = textRect.anchoredPosition;
-        if (iconRect) originalIconPos = iconRect.anchoredPosition;
-    }
-
-    private void TryAutoWireTMP()
-    {
-        var tmp = GetComponentInChildren<TMP_Text>(true);
-        if (tmp) textRect = tmp.rectTransform;
-    }
-
-    private void TryAutoWireIcon()
-    {
-        // Find first Image in children that's NOT the root Image.
-        var allImages = GetComponentsInChildren<Image>(true);
-        foreach (var img in allImages)
-        {
-            if (img == null) continue;
-            if (targetImage == null || img != targetImage)
-            {
-                iconRect = img.rectTransform;
-                break;
-            }
-        }
+        if (TextRect) originalTextPos = TextRect.anchoredPosition;
+        if (IconRect) originalIconPos = IconRect.anchoredPosition;
     }
 
     private void ApplyPressedOffset(bool apply)

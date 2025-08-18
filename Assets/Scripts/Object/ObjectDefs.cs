@@ -37,6 +37,39 @@ public static class ObjectDefs
 
         new ObjectDef()
         {
+            DefName = "Worm",
+            Label = "worm",
+            Description = "A smal wriggly rain worm that is healthy for roots and the soil in general.",
+            Tier = ObjectTierDefOf.Common,
+            Tags = new List<ObjectTagDef>()
+            {
+                ObjectTagDefOf.Animal,
+            },
+            NativeProduction = new Dictionary<ResourceDef, int>()
+            {
+                { ResourceDefOf.Fertility, 1 },
+            },
+            Effects = new List<ObjectEffect>()
+            {
+                new AdjacencyEffect()
+                {
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TagsAll = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Root
+                        }
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        NativeProductionModifier = 1
+                    },
+                },
+            }
+        },
+
+        new ObjectDef()
+        {
             DefName = "CompostHeap",
             Label = "compost heap",
             Description = "Old scraps, new life. Everything returns to the soil in time.",
@@ -49,7 +82,7 @@ public static class ObjectDefs
             },
             NativeProduction = new Dictionary<ResourceDef, int>()
             {
-                { ResourceDefOf.Fertility, 1 },
+                { ResourceDefOf.Fertility, 2 },
             },
         },
 

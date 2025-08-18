@@ -53,6 +53,15 @@ public static class RuntimeSpriteAssetBuilder
         spriteAsset.spriteGlyphTable.Clear();
         spriteAsset.spriteCharacterTable.Clear();
 
+        spriteAsset.faceInfo = new FaceInfo()
+        {
+            pointSize = cellSize,
+            scale = 1,
+            ascentLine = cellSize,
+            baseline = 0,
+            descentLine = 0,
+        };
+
         for (int i = 0; i < sprites.Length; i++)
         {
             var def = defs[i];
