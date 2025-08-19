@@ -1,9 +1,9 @@
 FEATURE ROADMAP (in about the order they should be implemented)
 
 harvest animation:
-	confirming scatter shows tiles giving resources one-by-one with little animation of resources moving the their ui element
 	first phase:
-		terrain modification resources should jump up and down 
+		add logic for negative accumulative resources
+			they go from resource screen to object
 	phase 2:
 		existing modifiers tick
 		skip if none
