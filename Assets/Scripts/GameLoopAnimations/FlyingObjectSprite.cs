@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ScatteringObject : MonoBehaviour
+public class FlyingObjectSprite : MonoBehaviour
 {
     public Object Object { get; private set; }
     public MapTile SourceTile { get; private set; }
@@ -13,12 +13,15 @@ public class ScatteringObject : MonoBehaviour
     private Vector3 TargetPosition;
     private float FlyingTime;
 
-    public void Init(Object obj, MapTile sourceTile, MapTile targetTile)
+    public System.Action<Object, MapTile> OnArriveCallback;
+
+    public void Init(Object obj, MapTile sourceTile, MapTile targetTile, System.Action<Object, MapTile> onArriveCallback)
     {
         IsDone = false;
         Object = obj;
         SourceTile = sourceTile;
         TargetTile = targetTile;
+        OnArriveCallback = onArriveCallback;
 
         SourcePosition = new Vector3(sourceTile.Coordinates.x + 0.5f, sourceTile.Coordinates.y + 0.5f, 0f);
         TargetPosition = new Vector3(targetTile.Coordinates.x + 0.5f, targetTile.Coordinates.y + 0.5f, 0f);
@@ -45,7 +48,8 @@ public class ScatteringObject : MonoBehaviour
     private void OnArriveAtTarget()
     {
         transform.position = TargetPosition;
-        Game.Instance.OnObjectArrivedDuringScatter(Object, TargetTile);
         IsDone = true;
+        OnArriveCallback(Object, TargetTile);
     }
+    
 }

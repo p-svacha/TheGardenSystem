@@ -10,14 +10,14 @@ public static class HarvestAnimationManager
     private const float OBJECT_INTERVAL = 0.35f;
     private const float END_DELAY = 0.7f;
 
-    private static AnimationState State;
+    public static HarvestAnimationState State;
     private static float Timer;
     private static float LastStateEventTime;
     private static int StateIndex;
     private static int MaxResourcesProduced;
     private static List<GardenSector> Sectors;
     private static List<FlyingResourceIcon> FlyingResourceIcons;
-    private static List<ScatteringObject> ReturningObjects;
+    private static List<FlyingObjectSprite> ReturningObjects;
 
     private static System.Action Callback;
 
@@ -33,8 +33,8 @@ public static class HarvestAnimationManager
         Sectors = new List<GardenSector>(Game.Instance.Sectors);
         StateIndex = 0;
         FlyingResourceIcons = new List<FlyingResourceIcon>();
-        ReturningObjects = new List<ScatteringObject>();
-        State = AnimationState.InitialWait;
+        ReturningObjects = new List<FlyingObjectSprite>();
+        State = HarvestAnimationState.InitialWait;
 
         CurrentResourcePlusValues = new Dictionary<ResourceDef, int>();
         foreach (var kvp in Game.Instance.CurrentFinalResourceProduction)
@@ -50,33 +50,33 @@ public static class HarvestAnimationManager
 
         switch (State)
         {
-            case AnimationState.InitialWait:
+            case HarvestAnimationState.InitialWait:
                 UpdateInitialWait();
                 break;
 
-            case AnimationState.ResourceDistribution:
+            case HarvestAnimationState.ResourceDistribution:
                 UpdateResourceDistribution();
                 break;
 
-            case AnimationState.ExistingModifierTicker:
+            case HarvestAnimationState.ExistingModifierTicker:
                 UpdateExistingModifierTicker();
                 break;
 
-            case AnimationState.NewModifierApplication:
+            case HarvestAnimationState.NewModifierApplication:
                 UpdateNewModifierApplication();
                 break;
 
-            case AnimationState.ObjectsReturning:
+            case HarvestAnimationState.ObjectsReturning:
                 UpdateObjectsReturning();
                 break;
 
-            case AnimationState.FinalWait:
+            case HarvestAnimationState.FinalWait:
                 UpdateFinalWait();
                 break;
         }
     }
 
-    private static void SwitchStateTo(AnimationState state)
+    private static void SwitchStateTo(HarvestAnimationState state)
     {
         Debug.Log($"Starting harvest animation state: {state} after {Timer} seconds.");
         State = state;
@@ -93,7 +93,7 @@ public static class HarvestAnimationManager
             MaxResourcesProduced = Sectors.Max(s => s.Objects.Where(o => o.Tile != null).Max(o => Game.Instance.GetTileProduction(o.Tile).Sum(p => p.Value.GetValue())));
             Debug.Log($"Max resources produced this day is {MaxResourcesProduced}");
 
-            SwitchStateTo(AnimationState.ResourceDistribution);
+            SwitchStateTo(HarvestAnimationState.ResourceDistribution);
         }
     }
 
@@ -162,40 +162,78 @@ public static class HarvestAnimationManager
         // Check if everything done
         if (StateIndex >= MaxResourcesProduced && FlyingResourceIcons.Count == 0)
         {
-            SwitchStateTo(AnimationState.ExistingModifierTicker);
+            SwitchStateTo(HarvestAnimationState.ExistingModifierTicker);
         }
     }
 
     private static void UpdateExistingModifierTicker()
     {
-        SwitchStateTo(AnimationState.NewModifierApplication);
+        SwitchStateTo(HarvestAnimationState.NewModifierApplication);
     }
 
     private static void UpdateNewModifierApplication()
     {
-        SwitchStateTo(AnimationState.ObjectsReturning);
+        SwitchStateTo(HarvestAnimationState.ObjectsReturning);
+        Game.Instance.DrawFullMap(); // To open shed doors
     }
 
     private static void UpdateObjectsReturning()
     {
-        foreach (GardenSector sector in Sectors)
+        // Flying objects
+        foreach (FlyingObjectSprite so in ReturningObjects) so.UpdateAnimation(Time.deltaTime);
+        foreach (FlyingObjectSprite so in ReturningObjects.Where(s => s.IsDone)) GameObject.Destroy(so.gameObject);
+        ReturningObjects = ReturningObjects.Where(s => !s.IsDone).ToList();
+
+        // New spawned objects
+        if (Timer - LastStateEventTime >= OBJECT_INTERVAL)
         {
-            foreach (Object obj in sector.Objects) obj.IsInShed = true;
+            // Spawn an object in each sector
+            foreach (GardenSector sector in Sectors)
+            {
+                if (StateIndex >= sector.CurrentScatter.Count) continue;
+
+                // Init scatter object
+                Object objToScatter = sector.CurrentScatter.Keys.ToList()[StateIndex];
+                MapTile sourceTile = objToScatter.Tile;
+                MapTile targetTile = sector.ShedTile;
+                GameObject scatteringObjGo = new GameObject($"Flying {objToScatter.LabelCapWord}");
+                FlyingObjectSprite returningObject = scatteringObjGo.AddComponent<FlyingObjectSprite>();
+                returningObject.Init(objToScatter, sourceTile, targetTile, onArriveCallback: OnObjectReturned);
+                ReturningObjects.Add(returningObject);
+
+                // Remove object from map
+                Game.Instance.ClearTile(sourceTile);
+                Game.Instance.DrawFullMap();
+            }
+
+            LastStateEventTime = Timer;
+            StateIndex++;
         }
 
-        SwitchStateTo(AnimationState.FinalWait);
+        // Check if everything done
+        if (StateIndex >= Sectors.Max(s => s.CurrentScatter.Count) && ReturningObjects.Count == 0)
+        {
+            SwitchStateTo(HarvestAnimationState.FinalWait);
+            Game.Instance.DrawFullMap(); // To close shed doors
+        }
+    }
+
+    private static void OnObjectReturned(Object obj, MapTile tile)
+    {
+        Game.Instance.OnObjectReturnedDuringHarvest(obj);
     }
 
     private static void UpdateFinalWait()
     {
         if (Timer >= END_DELAY)
         {
-            SwitchStateTo(AnimationState.Finished);
+            SwitchStateTo(HarvestAnimationState.Finished);
             Callback?.Invoke();
         }
     }
 
-    private enum AnimationState
+
+    public enum HarvestAnimationState
     {
         InitialWait,
         ResourceDistribution,

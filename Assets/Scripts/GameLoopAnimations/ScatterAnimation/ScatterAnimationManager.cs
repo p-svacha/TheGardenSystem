@@ -18,7 +18,7 @@ public static class ScatterAnimationManager
     private static float LastObjectTime;
     private static int ObjectIndex;
     private static List<GardenSector> Sectors;
-    private static List<ScatteringObject> ScatteringObjects;
+    private static List<FlyingObjectSprite> ScatteringObjects;
 
     private static System.Action Callback;
 
@@ -31,7 +31,7 @@ public static class ScatterAnimationManager
         LastObjectTime = 0f;
         Sectors = new List<GardenSector>(Game.Instance.Sectors);
         ObjectIndex = 0;
-        ScatteringObjects = new List<ScatteringObject>();
+        ScatteringObjects = new List<FlyingObjectSprite>();
         State = AnimationState.PreScatter;
 
         // Open all shed doors
@@ -75,8 +75,8 @@ public static class ScatterAnimationManager
     private static void UpdateScatter()
     {
         // Flying objects
-        foreach (ScatteringObject so in ScatteringObjects) so.UpdateAnimation(Time.deltaTime);
-        foreach (ScatteringObject so in ScatteringObjects.Where(s => s.IsDone)) GameObject.Destroy(so.gameObject);
+        foreach (FlyingObjectSprite so in ScatteringObjects) so.UpdateAnimation(Time.deltaTime);
+        foreach (FlyingObjectSprite so in ScatteringObjects.Where(s => s.IsDone)) GameObject.Destroy(so.gameObject);
         ScatteringObjects = ScatteringObjects.Where(s => !s.IsDone).ToList();
 
         // New spawned objects
@@ -92,8 +92,8 @@ public static class ScatterAnimationManager
                 MapTile sourceTile = sector.ShedTile;
                 MapTile targetTile = sector.CurrentScatter[objToScatter];
                 GameObject scatteringObjGo = new GameObject($"Flying {objToScatter.LabelCapWord}");
-                ScatteringObject scatteringObject = scatteringObjGo.AddComponent<ScatteringObject>();
-                scatteringObject.Init(objToScatter, sourceTile, targetTile);
+                FlyingObjectSprite scatteringObject = scatteringObjGo.AddComponent<FlyingObjectSprite>();
+                scatteringObject.Init(objToScatter, sourceTile, targetTile, onArriveCallback: OnObjectLanded);
                 ScatteringObjects.Add(scatteringObject);
                 objToScatter.IsInShed = false;
 
@@ -109,7 +109,7 @@ public static class ScatterAnimationManager
         }
 
         // Check if everything done
-        if (ObjectIndex >= Sectors.Max(s => s.NumObjects) && ScatteringObjects.Count == 0)
+        if (ObjectIndex >= Sectors.Max(s => s.CurrentScatter.Count) && ScatteringObjects.Count == 0)
         {
             SwitchStateTo(AnimationState.PostScatter);
         }
@@ -122,6 +122,11 @@ public static class ScatterAnimationManager
             SwitchStateTo(AnimationState.Finished);
             Callback?.Invoke();
         }
+    }
+
+    private static void OnObjectLanded(Object obj, MapTile tile)
+    {
+        Game.Instance.OnObjectArrivedDuringScatter(obj, tile);
     }
 
     private enum AnimationState

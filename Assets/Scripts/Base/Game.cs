@@ -309,14 +309,24 @@ public class Game
         }
     }
 
+    public void OnObjectExistingModifierTickedDuringHarvest()
+    {
+
+    }
+
     public void OnObjectAppliesModifierDuringHarvest()
     {
 
     }
 
-    public void OnObjectReturnedDuringHarvest()
+    public void OnObjectReturnedDuringHarvest(Object obj)
     {
-
+        obj.IsInShed = true;
+        // Add object to shed window if open
+        if (UI_ShedWindow.Instance.gameObject.activeSelf && UI_ShedWindow.Instance.DisplayedSector == obj.Sector)
+        {
+            UI_ShedWindow.Instance.Show(obj.Sector);
+        }
     }
 
     private void OnHarvestAnimationDone()
@@ -738,6 +748,7 @@ public class Game
     public void AddNewObjectToInventory(GardenSector sector, ObjectDef def)
     {
         Object newObj = new Object(def);
+        newObj.SetSector(sector);
         AllObjects.Add(newObj);
         sector.AddObject(newObj);
     }

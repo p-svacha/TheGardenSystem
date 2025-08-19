@@ -17,6 +17,11 @@ public class Object : ITooltipTarget
     public MapTile Tile { get; private set; }
 
     /// <summary>
+    /// The sector this object belongs to.
+    /// </summary>
+    public GardenSector Sector { get; private set; }
+
+    /// <summary>
     /// Flag if this object is currently in the shed. Used for animations and shed display.
     /// </summary>
     public bool IsInShed;
@@ -31,6 +36,11 @@ public class Object : ITooltipTarget
     public void SetTile(MapTile tile)
     {
         Tile = tile;
+    }
+
+    public void SetSector(GardenSector sector)
+    {
+        Sector = sector;
     }
 
     #region Modifiers

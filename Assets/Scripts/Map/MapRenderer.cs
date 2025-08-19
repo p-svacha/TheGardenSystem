@@ -218,6 +218,7 @@ public class MapRenderer : MonoBehaviour
                     bool isDoorOpen = false;
                     if (UI_ShedWindow.Instance.gameObject.activeSelf && UI_ShedWindow.Instance.DisplayedSector == mapTile.Sector) isDoorOpen = true;
                     if (Game.Instance.GameState == GameState.Noon) isDoorOpen = true;
+                    if (Game.Instance.GameState == GameState.Evening_HarvestAnimation && HarvestAnimationManager.State == HarvestAnimationManager.HarvestAnimationState.ObjectsReturning) isDoorOpen = true;
                     if (isDoorOpen) ObjectTilemap.SetTile(cell, ShedOpenTile);
                 }
 
