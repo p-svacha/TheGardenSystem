@@ -22,10 +22,24 @@ public class SelfEffect : ObjectEffect
         EffectOutcome.ApplyProductionModifiersTo(sourceTile, source, tileProductions);
     }
 
-    public override void ApplyObjectAndTileModifiers(MapTile sourceTile)
+    public override List<Modifier> GetObjectModifiersToApply(MapTile sourceTile)
     {
-        if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(sourceTile)) return;
-        EffectOutcome.ApplyModifiersTo(sourceTile);
+        List<Modifier> modifiers = new List<Modifier>();
+
+        Modifier selfModifer = TryCreateObjectModifierFor(sourceTile, sourceTile, sourceTile);
+        if (selfModifer != null) modifiers.Add(selfModifer);
+
+        return modifiers;
+    }
+    
+    public override List<Modifier> GetTileModifiersToApply(MapTile sourceTile)
+    {
+        List<Modifier> modifiers = new List<Modifier>();
+
+        Modifier selfModifer = TryCreateTileModifierFor(sourceTile, sourceTile, sourceTile);
+        if (selfModifer != null) modifiers.Add(selfModifer);
+
+        return modifiers;
     }
 
     public override string GetDescription()

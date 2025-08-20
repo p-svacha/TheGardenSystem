@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FizzlingModifier : MonoBehaviour
+public class FizzlingModifierSprite : MonoBehaviour
 {
     public Modifier Modifier { get; private set; }
     public bool IsDone { get; private set; }

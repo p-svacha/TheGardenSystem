@@ -429,12 +429,6 @@ public class Game
         // Start animation
         HarvestAnimationManager.StartAnimation(callback: OnHarvestAnimationDone);
         HUD.RefreshGameLoopButton();
-
-        // todo: migrate this to animation
-
-        ApplyNewModifiers();
-
-        // todo end
     }
 
     public void OnResourceIconArrivesDuringHarvest(MapTile sourceTile, ResourceDef res, bool isNegative)
@@ -455,9 +449,13 @@ public class Game
         }
     }
 
-    public void OnObjectAppliesModifierDuringHarvest()
+    public void ApplyModifier(Modifier modifier)
     {
+        if (modifier.Tile != null && modifier.Object != null) throw new System.Exception("Cannot apply a modifier that is attached to both an object and a tile.");
+        if (modifier.Tile == null && modifier.Object == null) throw new System.Exception("Cannot apply a modifier that is attached to neither an object nor a tile.");
 
+        if (modifier.Tile != null) modifier.Tile.ApplyModifier(modifier);
+        else if (modifier.Object != null) modifier.Object.ApplyModifier(modifier);
     }
 
     public void OnObjectReturnedDuringHarvest(Object obj)
@@ -482,20 +480,6 @@ public class Game
         TooltipManager.Instance.ResetTooltips();
 
         HUD.RefreshGameLoopButton();
-    }
-
-    /// <summary>
-    /// Applies all modifiers that got added to objects or tiles from effects this turn.
-    /// </summary>
-    private void ApplyNewModifiers()
-    {
-        foreach (MapTile tile in Map.OwnedTiles)
-        {
-            foreach (ObjectEffect effect in tile.GetEffects())
-            {
-                effect.ApplyObjectAndTileModifiers(tile);
-            }
-        }
     }
 
     #endregion

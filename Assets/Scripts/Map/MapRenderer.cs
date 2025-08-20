@@ -6,6 +6,8 @@ using System.Linq;
 
 public class MapRenderer : MonoBehaviour
 {
+    public const float ANIMATED_TILE_FRAME_SPEED = 0.5f;
+
     public static MapRenderer Instance;
 
     // Tilemaps
@@ -133,7 +135,7 @@ public class MapRenderer : MonoBehaviour
 
         foreach (var def in DefDatabase<ModifierDef>.AllDefs)
         {
-            AnimatedTile tile = TileFactory.CreateAnimatedTileFromSpriteSheet(def.SpritePath, 0.2f);
+            AnimatedTile tile = TileFactory.CreateAnimatedTileFromSpriteSheet(def.SpritePath, ANIMATED_TILE_FRAME_SPEED);
             ModifierTileCache[def] = tile;
         }
     }

@@ -10,8 +10,10 @@ public static class HarvestAnimationManager
     private const float OBJECT_INTERVAL = 0.35f;
     private const float END_DELAY = 0.7f;
 
-    private const float MODIFIER_INTERVAL = 0.08f;             // time between spawn waves
-    private const float MODIFIER_FIZZLE_DURATION = 0.45f;      // each fizzle’s expand+fade duration
+    private const float MODIFIER_DURATION_TICK_INTERVAL = 0.08f;
+    private const float MODIFIER_FIZZLE_OUT_DURATION = 3.45f; //0.45
+
+    private const float NEW_MODIFIER_INTERVAL = 1f;
 
     public static HarvestAnimationState State;
     private static float Timer;
@@ -21,7 +23,13 @@ public static class HarvestAnimationManager
     private static List<GardenSector> Sectors;
     private static List<FlyingResourceIcon> FlyingResourceIcons;
     private static List<FlyingObjectSprite> ReturningObjects;
-    private static List<FizzlingModifier> FizzlingModifiers = new List<FizzlingModifier>();
+
+    private static int MaxExistingModifiers;
+    private static List<FizzlingModifierSprite> FizzlingModifiers;
+
+    private static int MaxNewModifiers;
+    private static Dictionary<MapTile, List<Modifier>> ModifiersToApply;
+    private static List<FlyingModifierSprite> FlyingNewModifiers;
 
     private static System.Action Callback;
 
@@ -38,6 +46,9 @@ public static class HarvestAnimationManager
         StateIndex = 0;
         FlyingResourceIcons = new List<FlyingResourceIcon>();
         ReturningObjects = new List<FlyingObjectSprite>();
+        FizzlingModifiers = new List<FizzlingModifierSprite>();
+        FlyingNewModifiers = new List<FlyingModifierSprite>();
+
         State = HarvestAnimationState.InitialWait;
 
         CurrentResourcePlusValues = new Dictionary<ResourceDef, int>();
@@ -143,7 +154,6 @@ public static class HarvestAnimationManager
                         }
                         k -= count;
                     }
-                    Debug.Log($"Resource Distribution: Index for {scatteredObj.LabelCapWord} is resource {res}");
                     if (res == null) continue;
 
                     // Init resource icon
@@ -166,6 +176,7 @@ public static class HarvestAnimationManager
         // Check if everything done
         if (StateIndex >= MaxResourcesProduced && FlyingResourceIcons.Count == 0)
         {
+            MaxExistingModifiers = Game.Instance.Map.OwnedTiles.Max(t => t.GetTotalAmountOfModifiers());
             SwitchStateTo(HarvestAnimationState.ExistingModifierTicker);
         }
     }
@@ -189,7 +200,7 @@ public static class HarvestAnimationManager
         }
 
         // Spawn new fizzle FX in (in waves, iterated through modifier index on each tile).
-        if (Timer - LastStateEventTime >= MODIFIER_INTERVAL)
+        if (Timer - LastStateEventTime >= MODIFIER_DURATION_TICK_INTERVAL)
         {
             foreach (MapTile tile in Game.Instance.Map.OwnedTiles)
             {
@@ -211,8 +222,8 @@ public static class HarvestAnimationManager
                     // Spawn a GO at the tile center
                     Vector3 worldPos = new Vector3(tile.Coordinates.x + 0.5f, tile.Coordinates.y + 0.5f, 0f);
                     GameObject go = new GameObject($"Fizzling {modifierToTick.LabelCapWord}");
-                    var fizz = go.AddComponent<FizzlingModifier>();
-                    fizz.Init(modifierToTick, worldPos, MODIFIER_FIZZLE_DURATION);
+                    var fizz = go.AddComponent<FizzlingModifierSprite>();
+                    fizz.Init(modifierToTick, worldPos, MODIFIER_FIZZLE_OUT_DURATION);
 
                     FizzlingModifiers.Add(fizz);
 
@@ -225,24 +236,75 @@ public static class HarvestAnimationManager
         }
 
         // Completion gate: when we've iterated past the longest sector list AND nothing is active.
-        int maxModifiers = Game.Instance.Map.OwnedTiles.Max(t => t.GetTotalAmountOfModifiers());
-
-        if (StateIndex >= maxModifiers && FizzlingModifiers.Count == 0)
+        if (StateIndex >= MaxExistingModifiers && FizzlingModifiers.Count == 0)
         {
+            // Calculate which modifiers will be applied, grouped by source tiles
+            ModifiersToApply = new Dictionary<MapTile, List<Modifier>>();
+            foreach (MapTile tile in Game.Instance.Map.OwnedTiles)
+            {
+                ModifiersToApply.Add(tile, new List<Modifier>());
+
+                foreach (ObjectEffect effect in tile.GetEffects())
+                {
+                    List<Modifier> objectModifiers = effect.GetObjectModifiersToApply(tile);
+                    ModifiersToApply[tile].AddRange(objectModifiers);
+
+                    List<Modifier> tileModifiers = effect.GetTileModifiersToApply(tile);
+                    ModifiersToApply[tile].AddRange(tileModifiers);
+                }
+            }
+
+            MaxNewModifiers = ModifiersToApply.Max(x => x.Value.Count);
+
             SwitchStateTo(HarvestAnimationState.NewModifierApplication);
         }
     }
 
     private static void UpdateNewModifierApplication()
     {
-        // Todo: First stage all modifiers that will be applied, grouped by source tile (Dictionary<MapTile, Modifier>)
-        // Do that before switching to this state
+        // Advance animations
+        for (int i = 0; i < FlyingNewModifiers.Count; i++)
+        {
+            FlyingNewModifiers[i].UpdateAnimation(Time.deltaTime);
+        }
 
-        // In this update, iterate through these groups, and start sending modifier sprites 1 by 1
-        // on arrive, apply the modifier and redraw map
+        // Destroy finished, compact list
+        for (int i = FlyingNewModifiers.Count - 1; i >= 0; i--)
+        {
+            if (FlyingNewModifiers[i].IsDone)
+            {
+                GameObject.Destroy(FlyingNewModifiers[i].gameObject);
+                FlyingNewModifiers.RemoveAt(i);
+            }
+        }
 
-        SwitchStateTo(HarvestAnimationState.ObjectsReturning);
-        Game.Instance.DrawFullMap(); // To open shed doors
+        // Spawn new flying modifier
+        if (Timer - LastStateEventTime >= MODIFIER_DURATION_TICK_INTERVAL)
+        {
+            foreach (MapTile tile in Game.Instance.Map.OwnedTiles)
+            {
+                // Get modifier we want to decrease duration
+                if (StateIndex >= ModifiersToApply[tile].Count) continue;
+                Modifier newModifier = ModifiersToApply[tile][StateIndex];
+
+                // Spawn a GO at the tile center
+                GameObject go = new GameObject($"New flying modifier {newModifier.LabelCapWord}");
+                FlyingModifierSprite sprite = go.AddComponent<FlyingModifierSprite>();
+                sprite.Init(newModifier, newModifier.SourceTile, newModifier.AttachedTile);
+
+                FlyingNewModifiers.Add(sprite);
+            }
+
+            LastStateEventTime = Timer;
+            StateIndex++;
+        }
+
+        // todp make this crocect
+        if (StateIndex >= MaxNewModifiers && FlyingNewModifiers.Count == 0)
+        {
+            SwitchStateTo(HarvestAnimationState.ObjectsReturning);
+            Game.Instance.DrawFullMap(); // To open shed doors
+        }
     }
 
     private static void UpdateObjectsReturning()

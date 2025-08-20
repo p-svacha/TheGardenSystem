@@ -30,14 +30,53 @@ public abstract class ObjectEffect
     public abstract void ApplyProductionModifiers(MapTile sourceTile, Dictionary<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProductions);
 
     /// <summary>
-    /// Applies all object modifiers that originate from this effect, if the criteria is fulfilled.
+    /// Returns the list of all modifiers that should be applied to objects during this harvest, originating from this effect from a specified tile.
     /// </summary>
-    public abstract void ApplyObjectAndTileModifiers(MapTile sourceTile);
+    public abstract List<Modifier> GetObjectModifiersToApply(MapTile sourceTile);
+
+    /// <summary>
+    /// Returns the list of all modifiers that should be applied to tiles during this harvest, originating from this effect from a specified tile.
+    /// </summary>
+    public abstract List<Modifier> GetTileModifiersToApply(MapTile sourceTile);
 
     /// <summary>
     /// Returns what this effect does as a human-readable string including TMPro tooltip links.
     /// </summary>
     public abstract string GetDescription();
+
+    /// <summary>
+    /// Returns if the criteria of this effect is fulfilled on the specified tile.
+    /// </summary>
+    protected bool IsCriteriaFulfilledOn(MapTile tile)
+    {
+        return (EffectCriteria == null || EffectCriteria.IsFulfilledOn(tile));
+    }
+
+    /// <summary>
+    /// Returns the object Modifier originating from this effect on the specified target tile, or null if it can't.
+    /// Checks for everything.
+    /// </summary>
+    protected Modifier TryCreateObjectModifierFor(MapTile sourceTile, MapTile criteriaCheckTile, MapTile modifierTargetTile)
+    {
+        if (EffectOutcome.IsApplyingObjectModifier && IsCriteriaFulfilledOn(criteriaCheckTile) && modifierTargetTile.HasObject)
+        {
+            return new Modifier(modifierTargetTile.Object, EffectOutcome.AppliedObjectModifier, sourceTile, EffectOutcome.AppliedObjectModifierDuration);
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Returns the object Modifier originating from this effect on the specified target tile, or null if it can't.
+    /// Checks for everything.
+    /// </summary>
+    protected Modifier TryCreateTileModifierFor(MapTile sourceTile, MapTile criteriaCheckTile, MapTile modifierTargetTile)
+    {
+        if (EffectOutcome.IsApplyingTileModifier && IsCriteriaFulfilledOn(criteriaCheckTile))
+        {
+            return new Modifier(modifierTargetTile, EffectOutcome.AppliedTileModifier, sourceTile, EffectOutcome.AppliedTileModifierDuration);
+        }
+        return null;
+    }
 
     /// <summary>
     /// Returns if this is a valid ObjectEffect, including a reason of why if it is not.

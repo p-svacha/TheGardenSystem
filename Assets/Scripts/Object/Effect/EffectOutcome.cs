@@ -89,17 +89,8 @@ public class EffectOutcome
         }
     }
 
-    /// <summary>
-    /// Applies the configured modifier to the specified tile and/or the object on it.
-    /// </summary>
-    public void ApplyModifiersTo(MapTile tile)
-    {
-        if (AppliedTileModifier != null) tile.ApplyModifier(AppliedTileModifier, AppliedTileModifierDuration);
-        if (tile.HasObject)
-        {
-            if(AppliedObjectModifier != null) tile.Object.ApplyModifier(AppliedObjectModifier, AppliedObjectModifierDuration);
-        }
-    }
+    public bool IsApplyingObjectModifier => AppliedObjectModifier != null;
+    public bool IsApplyingTileModifier => AppliedTileModifier != null;
 
     /// <summary>
     /// Applies the destruction command to the given object.

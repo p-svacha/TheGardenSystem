@@ -77,17 +77,19 @@ public class MapTile : ITooltipTarget
 
     #region Modifiers
 
-    public void ApplyModifier(ModifierDef def, int duration = -1)
+    public void ApplyModifier(Modifier modifier)
     {
-        Debug.Log($"Applying modifier {def.DefName} to tile {Coordinates} with a duration of {duration}.");
-        if (!def.IsStackable && HasModifier(def))
+        Debug.Log($"Applying modifier {modifier.Def.DefName} to tile {Coordinates} with a duration of {modifier.RemainingDuration}.");
+
+        if (!modifier.Def.IsStackable && HasModifier(modifier.Def))
         {
-            Modifier existingModifier = Modifiers.First(m => m.Def == def);
+            Modifier existingModifier = Modifiers.First(m => m.Def == modifier.Def);
             if (existingModifier.IsInfinite) return;
-            if (duration == -1) existingModifier.MakeInfinite();
-            else if (duration > existingModifier.RemainingDuration) existingModifier.SetDuration(duration);
+            if (modifier.IsInfinite) existingModifier.MakeInfinite();
+            else if (modifier.RemainingDuration > existingModifier.RemainingDuration) existingModifier.SetDuration(modifier.RemainingDuration);
         }
-        else Modifiers.Add(new Modifier(this, def, duration));
+
+        else Modifiers.Add(modifier);
     }
 
     public void RemoveExpiredModifiers()

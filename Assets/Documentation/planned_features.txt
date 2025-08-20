@@ -1,13 +1,17 @@
 FEATURE ROADMAP (in about the order they should be implemented)
 
+bug: modifier overlay is transparent on tilemap
+bug: animated tile animation resets on every drawfullmap
+
 modifiers:
 	fix "x days remaining" in tooltip. always add +1
 	show modifiers in cabinet
 	show modifiers on flyingobjectsprite
 
-animated tiles for modifiers
+destruction effect outcome
+	add logic
+	add to harvest animation
 
-self effect destroy self
 
 object that applies enriched
 	treat for animals
@@ -22,6 +26,8 @@ harvest animation:
 		only animate if modifier fizzles out
 	thrid phase:
 		one by one scattered objects apply modifiers to tiles and objects
+	phase 4:
+		object destruction
 
 ordered scatter:
 	add a little jingle, particles, shake or effect when an effect triggers
@@ -68,6 +74,7 @@ new mechanic - crafting:
 		first come first serve applies
 
 tooltip improvements:
+	make modifier description grey in tooltip just like object description, maybe terrain too go check
 	add max width attribute
 	show type on top right (i.e. "rare object" / "market resource" / "resource production", "synergy tag")
 	flip when not enough space on right, so it goes left from cursor and shows the background sprite flipped so the little arrow is correct

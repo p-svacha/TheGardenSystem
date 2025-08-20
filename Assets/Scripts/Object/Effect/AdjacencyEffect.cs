@@ -20,13 +20,30 @@ public class AdjacencyEffect : ObjectEffect
         }
     }
 
-    public override void ApplyObjectAndTileModifiers(MapTile sourceTile)
+    public override List<Modifier> GetObjectModifiersToApply(MapTile sourceTile)
     {
+        List<Modifier> modifiers = new List<Modifier>();
+
         foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles(Radius))
         {
-            if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(adjacentTile)) continue;
-            EffectOutcome.ApplyModifiersTo(adjacentTile);
+            Modifier modifier = TryCreateObjectModifierFor(sourceTile, adjacentTile, adjacentTile);
+            if (modifier != null) modifiers.Add(modifier);
         }
+
+        return modifiers;
+    }
+
+    public override List<Modifier> GetTileModifiersToApply(MapTile sourceTile)
+    {
+        List<Modifier> modifiers = new List<Modifier>();
+
+        foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles(Radius))
+        {
+            Modifier modifier = TryCreateTileModifierFor(sourceTile, adjacentTile, adjacentTile);
+            if (modifier != null) modifiers.Add(modifier);
+        }
+
+        return modifiers;
     }
 
     public override string GetDescription()
