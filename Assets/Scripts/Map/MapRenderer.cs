@@ -28,7 +28,7 @@ public class MapRenderer : MonoBehaviour
     private Dictionary<TerrainDef, Tile> TerrainTileCache;
     private Dictionary<Direction, Tile> FenceTileCache;
     private Dictionary<ObjectDef, Tile> ObjectTileCache;
-    private Dictionary<ModifierDef, Tile> ModifierTileCache;
+    private Dictionary<ModifierDef, AnimatedTile> ModifierTileCache;
 
     public Tile ShedOpenTile;
 
@@ -87,7 +87,7 @@ public class MapRenderer : MonoBehaviour
 
         foreach (var def in DefDatabase<TerrainDef>.AllDefs)
         {
-            Tile tile = CreateTileFromSprite(def.Sprite);
+            Tile tile = TileFactory.CreateTileFromSprite(def.Sprite);
             TerrainTileCache[def] = tile;
         }
     }
@@ -98,19 +98,19 @@ public class MapRenderer : MonoBehaviour
     private void InitializeOverlayTiles()
     {
         // Grid
-        GridOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Overlays/TileGridOverlay"));
-        FertilityOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Terrain/Overlays/Fertility"));
-        NegativeFertilityOverlayTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Terrain/Overlays/FertilityNegative"));
+        GridOverlayTile = TileFactory.CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Overlays/TileGridOverlay"));
+        FertilityOverlayTile = TileFactory.CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Terrain/Overlays/Fertility"));
+        NegativeFertilityOverlayTile = TileFactory.CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Terrain/Overlays/FertilityNegative"));
     }
 
     private void InitializeFenceTiles()
     {
         FenceTileCache = new Dictionary<Direction, Tile>();
 
-        FenceTileCache.Add(Direction.N, CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_N"))));
-        FenceTileCache.Add(Direction.E, CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_E"))));
-        FenceTileCache.Add(Direction.S, CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_S"))));
-        FenceTileCache.Add(Direction.W, CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_W"))));
+        FenceTileCache.Add(Direction.N, TileFactory.CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_N"))));
+        FenceTileCache.Add(Direction.E, TileFactory.CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_E"))));
+        FenceTileCache.Add(Direction.S, TileFactory.CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_S"))));
+        FenceTileCache.Add(Direction.W, TileFactory.CreateTileFromSprite((ResourceManager.LoadSprite("Sprites/Overlays/Fence_W"))));
     }
 
     private void InitializeObjectTiles()
@@ -119,32 +119,27 @@ public class MapRenderer : MonoBehaviour
 
         foreach (var def in DefDatabase<ObjectDef>.AllDefs)
         {
-            Tile tile = CreateTileFromSprite(def.Sprite);
+            Tile tile = TileFactory.CreateTileFromSprite(def.Sprite);
             ObjectTileCache[def] = tile;
         }
 
         // Special tiles
-        ShedOpenTile = CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Objects/Shed_Open"));
+        ShedOpenTile = TileFactory.CreateTileFromSprite(ResourceManager.LoadSprite("Sprites/Objects/Shed_Open"));
     }
 
     private void InitializeModifierTiles()
     {
-        ModifierTileCache = new Dictionary<ModifierDef, Tile>();
+        ModifierTileCache = new Dictionary<ModifierDef, AnimatedTile>();
 
         foreach (var def in DefDatabase<ModifierDef>.AllDefs)
         {
-            Tile tile = CreateTileFromSprite(def.Sprite);
+            AnimatedTile tile = TileFactory.CreateAnimatedTileFromSpriteSheet(def.SpritePath, 0.2f);
             ModifierTileCache[def] = tile;
         }
     }
 
-    private Tile CreateTileFromSprite(Sprite sprite)
-    {
-        var tile = ScriptableObject.CreateInstance<Tile>();
-        tile.sprite = sprite;
-        tile.colliderType = Tile.ColliderType.None;
-        return tile;
-    }
+
+
 
     #endregion
 

@@ -1,9 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A modifier is a modular ObjectEffect that can be attached to any tile or object, to change its behaviour or production.
+/// </summary>
 public class ModifierDef : Def, ITooltipTarget
 {
-    public override Sprite Sprite => ResourceManager.LoadSprite("Sprites/ObjectModifiers/" + DefName);
+    public string SpritePath => "Sprites/ObjectModifiers/" + DefName;
+
+    public override Sprite Sprite => ResourceManager.LoadSprite(SpritePath);
 
     /// <summary>
     /// The effect that may get applied to the object holding the modifier.

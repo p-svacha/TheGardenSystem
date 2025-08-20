@@ -20,7 +20,7 @@ public class AdjacencyEffect : ObjectEffect
         }
     }
 
-    public override void ApplyObjectModifiers(MapTile sourceTile)
+    public override void ApplyObjectAndTileModifiers(MapTile sourceTile)
     {
         foreach (MapTile adjacentTile in sourceTile.GetAdjacentTiles(Radius))
         {

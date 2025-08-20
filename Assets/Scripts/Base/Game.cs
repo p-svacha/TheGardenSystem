@@ -137,7 +137,7 @@ public class Game
 
     #endregion
 
-    #region Game Loop
+    #region Game Loop Base
 
     public void AdvanceGameLoop()
     {
@@ -233,6 +233,85 @@ public class Game
         }
     }
 
+    #endregion
+
+    #region Morning
+
+    private void StartNewDay()
+    {
+        Day++;
+        Debug.Log($"Starting Day {Day}.");
+        if (Day % DAYS_PER_MONTH == 1) StartNewMonth();
+
+        GameState = GameState.Morning;
+
+        // UI
+        HUD.DatePanel.Refresh();
+        HUD.ResourcePanel.Refresh();
+        HUD.OrderPanel.Refresh();
+        TooltipManager.Instance.ResetTooltips();
+        HUD.AcquireTilesControl.Show();
+        HUD.ShopControl.transform.parent.gameObject.SetActive(true);
+
+        HUD.RefreshGameLoopButton();
+    }
+
+    private void StartNewMonth()
+    {
+        Debug.Log($"Starting Month {CurrentMonthName}.");
+
+        // Shop restock
+        ShopResources = new ResourceCollection(ResourceType.MarketResource);
+        foreach (ResourceDef res in ShopResources.Resources.Keys.ToList())
+        {
+            ShopResources.AddResource(res, Random.Range(0, 4) * 10);
+        }
+
+        ShopObjects = new Dictionary<ObjectDef, int>();
+        Dictionary<ObjectTierDef, int> numObjectsByTier = new Dictionary<ObjectTierDef, int>()
+        {
+            { ObjectTierDefOf.Common, 3 },
+            { ObjectTierDefOf.Rare, 2 },
+            { ObjectTierDefOf.Epic, 1 },
+        };
+
+        foreach (var tier in numObjectsByTier)
+        {
+            List<ObjectDef> commonObjects = DefDatabase<ObjectDef>.AllDefs.Where(x => x.Tier == tier.Key).ToList().RandomElements(tier.Value);
+            foreach (ObjectDef obj in commonObjects) ShopObjects.Add(obj, tier.Key.MarketValue);
+        }
+        ShopDiscountedObject = ShopObjects.Keys.ToList().RandomElement();
+        ShopObjects[ShopDiscountedObject] = (int)(ShopObjects[ShopDiscountedObject] * SHOP_DISCOUNT);
+    }
+
+    public void SetAcquireTilesMode(bool value)
+    {
+        IsAcquiringTiles = value;
+        RefreshAcquiringTilesOverlays();
+    }
+
+    private void RefreshAcquiringTilesOverlays()
+    {
+        if (IsAcquiringTiles) UI_TileOverlayContainer.Instance.ShowTileCostOverlay();
+        else UI_TileOverlayContainer.Instance.HideAllOverlays();
+    }
+
+    private void TryToBuyTile(GardenSector sector, MapTile tile)
+    {
+        if (!Resources.HasResources(tile.AcquireCost)) return; // not enough money
+
+        Resources.RemoveResources(tile.AcquireCost);
+        AddTileToGarden(sector, tile);
+
+        // UI
+        HUD.ResourcePanel.Refresh();
+        RefreshAcquiringTilesOverlays();
+    }
+
+    #endregion
+
+    #region Scatter
+
     /// <summary>
     /// Scatters the objects around the garden.
     /// </summary>
@@ -271,6 +350,74 @@ public class Game
         HUD.RefreshGameLoopButton();
     }
 
+    /// <summary>
+    /// Calculates and returns the final resource productions of the day, including abstract resources.
+    /// </summary>
+    private Dictionary<ResourceDef, ResourceProduction> GetCurrentScatterProduction()
+    {
+        // Create base resource productions for each tile in the garden
+        CurrentPerTileResourceProduction.Clear();
+        foreach (MapTile tile in Map.OwnedTiles)
+        {
+            CurrentPerTileResourceProduction.Add(tile, new Dictionary<ResourceDef, ResourceProduction>());
+
+            ResourceCollection baseProduction = tile.HasObject ? tile.Object.GetNativeResourceProduction() : new();
+            string label = tile.HasObject ? tile.Object.LabelCapWord : "Empty Tile";
+
+            foreach (ResourceDef resource in DefDatabase<ResourceDef>.AllDefs)
+            {
+                int baseValue;
+                if (!baseProduction.Resources.TryGetValue(resource, out baseValue)) baseValue = 0;
+                string id = $"{Day}_{tile.Coordinates}_{resource.DefName}";
+                CurrentPerTileResourceProduction[tile].Add(resource, new ResourceProduction(id, label, resource, baseValue));
+            }
+        }
+
+        // Apply modifiers from each tile to all other affected objects
+        foreach (MapTile tile in Map.OwnedTiles)
+        {
+            foreach (ObjectEffect effect in tile.GetEffects())
+            {
+                if (!effect.Validate(out string invalidReason)) throw new System.Exception($"Cannot apply invalid effect of source {effect.EffectSource.NestedTooltipLinkText} and type {effect.GetType()}. ValidationFailReason: {invalidReason}.\nMaybe a new attribute has been added to EffectOutcome that has not been added in the copy constructor?");
+                effect.ApplyProductionModifiers(tile, CurrentPerTileResourceProduction);
+            }
+        }
+
+        // Create an final resource productions for each resource
+        Dictionary<ResourceDef, ResourceProduction> finalProduction = new Dictionary<ResourceDef, ResourceProduction>();
+        foreach (ResourceDef resource in DefDatabase<ResourceDef>.AllDefs)
+        {
+            string id = $"{Day}_final_{resource.DefName}";
+            finalProduction.Add(resource, new ResourceProduction(id, "Daily Production", resource, 0));
+        }
+
+        // Add resources from every tile to the final production
+        foreach (KeyValuePair<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProduction in CurrentPerTileResourceProduction)
+        {
+            MapTile tile = tileProduction.Key;
+            Object obj = tile.Object;
+            Dictionary<ResourceDef, ResourceProduction> objectProduction = tileProduction.Value;
+
+            foreach (KeyValuePair<ResourceDef, ResourceProduction> objectResourceProduction in objectProduction)
+            {
+                ResourceDef resource = objectResourceProduction.Key;
+                ResourceProduction production = objectResourceProduction.Value;
+                int numResourcesProduced = production.GetValue();
+
+                if (numResourcesProduced != 0)
+                {
+                    finalProduction[resource].AddProductionModifier(new ProductionModifier(production.Label, ProductionModifierType.Additive, production.GetValue()));
+                }
+            }
+        }
+
+        return finalProduction;
+    }
+
+    #endregion
+
+    #region Harvest
+
     private void StartHarvest()
     {
         // State
@@ -285,7 +432,6 @@ public class Game
 
         // todo: migrate this to animation
 
-        DecrementModifierDurations();
         ApplyNewModifiers();
 
         // todo end
@@ -307,11 +453,6 @@ public class Game
                 DrawFullMap();
             }
         }
-    }
-
-    public void OnObjectExistingModifierTickedDuringHarvest()
-    {
-
     }
 
     public void OnObjectAppliesModifierDuringHarvest()
@@ -343,22 +484,6 @@ public class Game
         HUD.RefreshGameLoopButton();
     }
 
-
-    /// <summary>
-    /// Decrements the duration of all modifiers.
-    /// </summary>
-    private void DecrementModifierDurations()
-    {
-        foreach (MapTile tile in Map.OwnedTiles)
-        {
-            tile.DecrementModifierDurations();
-            if(tile.HasObject)
-            {
-                tile.Object.DecrementModifierDurations();
-            }
-        }
-    }
-
     /// <summary>
     /// Applies all modifiers that got added to objects or tiles from effects this turn.
     /// </summary>
@@ -368,10 +493,14 @@ public class Game
         {
             foreach (ObjectEffect effect in tile.GetEffects())
             {
-                effect.ApplyObjectModifiers(tile);
+                effect.ApplyObjectAndTileModifiers(tile);
             }
         }
     }
+
+    #endregion
+
+    #region Night
 
     private void StartPostScatter()
     {
@@ -471,155 +600,14 @@ public class Game
     }
 
     /// <summary>
-    /// Calculates and returns the final resource productions of the day, including abstract resources.
+    /// Ends the current day and starts the next one.
     /// </summary>
-    private Dictionary<ResourceDef, ResourceProduction> GetCurrentScatterProduction()
-    {
-        // Create base resource productions for each tile in the garden
-        CurrentPerTileResourceProduction.Clear();
-        foreach (MapTile tile in Map.OwnedTiles)
-        {
-            CurrentPerTileResourceProduction.Add(tile, new Dictionary<ResourceDef, ResourceProduction>());
-
-            ResourceCollection baseProduction = tile.HasObject ? tile.Object.GetNativeResourceProduction() : new();
-            string label = tile.HasObject ? tile.Object.LabelCapWord : "Empty Tile";
-
-            foreach (ResourceDef resource in DefDatabase<ResourceDef>.AllDefs)
-            {
-                int baseValue;
-                if(!baseProduction.Resources.TryGetValue(resource, out baseValue)) baseValue = 0;
-                string id = $"{Day}_{tile.Coordinates}_{resource.DefName}";
-                CurrentPerTileResourceProduction[tile].Add(resource, new ResourceProduction(id, label, resource, baseValue));
-            }
-        }
-
-        // Apply modifiers from each tile to all other affected objects
-        foreach (MapTile tile in Map.OwnedTiles)
-        {
-            foreach (ObjectEffect effect in tile.GetEffects())
-            {
-                if (!effect.Validate(out string invalidReason)) throw new System.Exception($"Cannot apply invalid effect of {tile}. ValidationFailReason: {invalidReason}");
-                effect.ApplyProductionModifiers(tile, CurrentPerTileResourceProduction);
-            }
-        }
-
-        // Create an final resource productions for each resource
-        Dictionary<ResourceDef, ResourceProduction> finalProduction = new Dictionary<ResourceDef, ResourceProduction>();
-        foreach (ResourceDef resource in DefDatabase<ResourceDef>.AllDefs)
-        {
-            string id = $"{Day}_final_{resource.DefName}";
-            finalProduction.Add(resource, new ResourceProduction(id, "Daily Production", resource, 0));
-        }
-
-        // Add resources from every tile to the final production
-        foreach (KeyValuePair<MapTile, Dictionary<ResourceDef, ResourceProduction>> tileProduction in CurrentPerTileResourceProduction)
-        {
-            MapTile tile = tileProduction.Key;
-            Object obj = tile.Object;
-            Dictionary<ResourceDef, ResourceProduction> objectProduction = tileProduction.Value;
-
-            foreach (KeyValuePair<ResourceDef, ResourceProduction> objectResourceProduction in objectProduction)
-            {
-                ResourceDef resource = objectResourceProduction.Key;
-                ResourceProduction production = objectResourceProduction.Value;
-                int numResourcesProduced = production.GetValue();
-
-                if (numResourcesProduced != 0)
-                {
-                    finalProduction[resource].AddProductionModifier(new ProductionModifier(production.Label, ProductionModifierType.Additive, production.GetValue()));
-                }
-            }
-        }
-
-        return finalProduction;
-    }
-
     public void EndDay()
     {
         CurrentFinalResourceProduction.Clear();
 
         StartNewDay();
     }
-
-    #endregion
-
-    #region Morning
-
-    private void StartNewDay()
-    {
-        Day++;
-        Debug.Log($"Starting Day {Day}.");
-        if (Day % DAYS_PER_MONTH == 1) StartNewMonth();
-
-        GameState = GameState.Morning;
-
-        // UI
-        HUD.DatePanel.Refresh();
-        HUD.ResourcePanel.Refresh();
-        HUD.OrderPanel.Refresh();
-        TooltipManager.Instance.ResetTooltips();
-        HUD.AcquireTilesControl.Show();
-        HUD.ShopControl.transform.parent.gameObject.SetActive(true);
-
-        HUD.RefreshGameLoopButton();
-    }
-
-    private void StartNewMonth()
-    {
-        Debug.Log($"Starting Month {CurrentMonthName}.");
-
-        // Shop restock
-        ShopResources = new ResourceCollection(ResourceType.MarketResource);
-        foreach (ResourceDef res in ShopResources.Resources.Keys.ToList())
-        {
-            ShopResources.AddResource(res, Random.Range(0, 4) * 10);
-        } 
-
-        ShopObjects = new Dictionary<ObjectDef, int>();
-        Dictionary<ObjectTierDef, int> numObjectsByTier = new Dictionary<ObjectTierDef, int>()
-        {
-            { ObjectTierDefOf.Common, 3 },
-            { ObjectTierDefOf.Rare, 2 },
-            { ObjectTierDefOf.Epic, 1 },
-        };
-
-        foreach(var tier in numObjectsByTier)
-        {
-            List<ObjectDef> commonObjects = DefDatabase<ObjectDef>.AllDefs.Where(x => x.Tier == tier.Key).ToList().RandomElements(tier.Value);
-            foreach (ObjectDef obj in commonObjects) ShopObjects.Add(obj, tier.Key.MarketValue);
-        }
-        ShopDiscountedObject = ShopObjects.Keys.ToList().RandomElement();
-        ShopObjects[ShopDiscountedObject] = (int)(ShopObjects[ShopDiscountedObject] * SHOP_DISCOUNT);
-    }
-
-    public void SetAcquireTilesMode(bool value)
-    {
-        IsAcquiringTiles = value;
-        RefreshAcquiringTilesOverlays();
-    }
-
-    private void RefreshAcquiringTilesOverlays()
-    {
-        if (IsAcquiringTiles) UI_TileOverlayContainer.Instance.ShowTileCostOverlay();
-        else UI_TileOverlayContainer.Instance.HideAllOverlays();
-    }
-
-    private void TryToBuyTile(GardenSector sector, MapTile tile)
-    {
-        if (!Resources.HasResources(tile.AcquireCost)) return; // not enough money
-
-        Resources.RemoveResources(tile.AcquireCost);
-        AddTileToGarden(sector, tile);
-
-        // UI
-        HUD.ResourcePanel.Refresh();
-        RefreshAcquiringTilesOverlays();
-    }
-
-
-    #endregion
-
-    #region Draft
 
     private void StartObjectDraft(string title, ObjectTierDef tier)
     {

@@ -1,19 +1,27 @@
 FEATURE ROADMAP (in about the order they should be implemented)
 
+modifiers:
+	fix "x days remaining" in tooltip. always add +1
+	show modifiers in cabinet
+	show modifiers on flyingobjectsprite
+
+animated tiles for modifiers
+
+self effect destroy self
+
+object that applies enriched
+	treat for animals
+
 harvest animation:
 	first phase:
 		add logic for negative accumulative resources
 			they go from resource screen to object
-	phase 2:
+	phase 2: 
 		existing modifiers tick
 		skip if none
 		only animate if modifier fizzles out
 	thrid phase:
 		one by one scattered objects apply modifiers to tiles and objects
-	four phase:
-		shed doors open
-		objects move back to shed one by one
-		shed doors close again when done
 
 ordered scatter:
 	add a little jingle, particles, shake or effect when an effect triggers
@@ -21,7 +29,7 @@ ordered scatter:
 
 rename kindle to fuel
 
-mergeable objects:
+new mechanic - mergeable objects:
 	some tiles have the tag "mergeable".
 	if 3 mergeable objects of the same type are next to each other, they turn into a new bigger version (of 1 increased tier) on the middle tile of the 3
 	i.e. 3 carrots turn into "carrot patch" that gives +2 food (i know this technically loses 1 food vs 3 carrots, but the save on space is a big advantage)
@@ -37,6 +45,27 @@ affection arrows in production overlays:
 	use ^ ^ ^ on tile if source is from same tile
 	a circle at one end of the arrow indicates the source of the effect (can either be the object receiving the effect, or the one it originates from)
 	also show indicators of what will merge
+
+new mechanic - stackable modifiers:
+	use "enriched" modifier and make it stackable
+	stacked modifiers are drawn the same as one modifier visually
+	in tooltip stacked modifiers are displayed as "enriched (x2)"
+		nested tooltip over (x2) shows when the inidivudal modifiers expire
+	implement application logic for stackable ones
+
+new mechanic - object destriction:
+	objects can have effects that destroy other objects
+	for example: destroy a random adjacent tier 1 plant to gain +1 food production permanently
+	affects both effect criteria and outcome:
+		in criteria it needs to check if there is an adjacent tier 1 plant
+		outcome is the destruction
+		outcome also applies modifier to self
+
+new mechanic - crafting:
+	object that reduces X of resource A to produce Y of resoure b
+	can fail if not enough of resource A is present
+	beware race conditions: it has to be calculated in advance which of these can execute and which not
+		first come first serve applies
 
 tooltip improvements:
 	add max width attribute
@@ -105,6 +134,8 @@ tutorial:
 	add a tutorial (1 month) explaining game play loop
 
 QOL:
+	add mote text (small, upwards moving text) when clicking disabled end day button when shed window is open
+		or just hide button when shed window is open
 	allow looking at shed inventories during object draft
 		add a "hide window" button to object draft window
 		the button then hides and small symbols at the top show the current selection of objects
@@ -275,6 +306,9 @@ sectors (maybe 'plots'):
 			- then additional research to improve trading
 		- complex resources that are "crafted" from basic resources (i.e. object with -1 food, -1 herbs, +1 premium food)
 		- mechanic and resource to change town mandate. When used, you get a new option and can choose to stick to the old mandate or take the new one
+
+sound:
+	add sound to the game
 
 main menu:
 	just a small main menu instead of starting game directly

@@ -10,6 +10,9 @@ public static class HarvestAnimationManager
     private const float OBJECT_INTERVAL = 0.35f;
     private const float END_DELAY = 0.7f;
 
+    private const float MODIFIER_INTERVAL = 0.08f;             // time between spawn waves
+    private const float MODIFIER_FIZZLE_DURATION = 0.45f;      // each fizzle’s expand+fade duration
+
     public static HarvestAnimationState State;
     private static float Timer;
     private static float LastStateEventTime;
@@ -18,6 +21,7 @@ public static class HarvestAnimationManager
     private static List<GardenSector> Sectors;
     private static List<FlyingResourceIcon> FlyingResourceIcons;
     private static List<FlyingObjectSprite> ReturningObjects;
+    private static List<FizzlingModifier> FizzlingModifiers = new List<FizzlingModifier>();
 
     private static System.Action Callback;
 
@@ -168,11 +172,75 @@ public static class HarvestAnimationManager
 
     private static void UpdateExistingModifierTicker()
     {
-        SwitchStateTo(HarvestAnimationState.NewModifierApplication);
+        // Advance animations
+        for (int i = 0; i < FizzlingModifiers.Count; i++)
+        {
+            FizzlingModifiers[i].UpdateAnimation(Time.deltaTime);
+        }
+
+        // Destroy finished, compact list
+        for (int i = FizzlingModifiers.Count - 1; i >= 0; i--)
+        {
+            if (FizzlingModifiers[i].IsDone)
+            {
+                GameObject.Destroy(FizzlingModifiers[i].gameObject);
+                FizzlingModifiers.RemoveAt(i);
+            }
+        }
+
+        // Spawn new fizzle FX in (in waves, iterated through modifier index on each tile).
+        if (Timer - LastStateEventTime >= MODIFIER_INTERVAL)
+        {
+            foreach (MapTile tile in Game.Instance.Map.OwnedTiles)
+            {
+                // Get total amount of modifiers
+                int numTotalModifiers = tile.GetTotalAmountOfModifiers();
+
+                // Get modifier we want to decrease duration
+                if (StateIndex >= numTotalModifiers) continue;
+                Modifier modifierToTick = null;
+                if (StateIndex < tile.Modifiers.Count) modifierToTick = tile.Modifiers[StateIndex];
+                else modifierToTick = tile.Object.Modifiers[StateIndex - tile.Modifiers.Count];
+
+                // Decrease duration
+                modifierToTick.DecreaseDuration();
+
+                // If modifier is expired, spawn a fizzle out animation
+                if (modifierToTick.IsExpired)
+                {
+                    // Spawn a GO at the tile center
+                    Vector3 worldPos = new Vector3(tile.Coordinates.x + 0.5f, tile.Coordinates.y + 0.5f, 0f);
+                    GameObject go = new GameObject($"Fizzling {modifierToTick.LabelCapWord}");
+                    var fizz = go.AddComponent<FizzlingModifier>();
+                    fizz.Init(modifierToTick, worldPos, MODIFIER_FIZZLE_DURATION);
+
+                    FizzlingModifiers.Add(fizz);
+
+                    Game.Instance.DrawFullMap(); // Redraw map so modifier isn't drawn anymore on tilemap
+                }
+            }
+
+            LastStateEventTime = Timer;
+            StateIndex++;
+        }
+
+        // Completion gate: when we've iterated past the longest sector list AND nothing is active.
+        int maxModifiers = Game.Instance.Map.OwnedTiles.Max(t => t.GetTotalAmountOfModifiers());
+
+        if (StateIndex >= maxModifiers && FizzlingModifiers.Count == 0)
+        {
+            SwitchStateTo(HarvestAnimationState.NewModifierApplication);
+        }
     }
 
     private static void UpdateNewModifierApplication()
     {
+        // Todo: First stage all modifiers that will be applied, grouped by source tile (Dictionary<MapTile, Modifier>)
+        // Do that before switching to this state
+
+        // In this update, iterate through these groups, and start sending modifier sprites 1 by 1
+        // on arrive, apply the modifier and redraw map
+
         SwitchStateTo(HarvestAnimationState.ObjectsReturning);
         Game.Instance.DrawFullMap(); // To open shed doors
     }

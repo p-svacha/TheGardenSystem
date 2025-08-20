@@ -83,6 +83,21 @@
     {
         new ModifierDef()
         {
+            DefName = "Enriched",
+            Label = "enriched",
+            Description = "Native production is increased.",
+            IsStackable = true,
+            Effect = new SelfEffect()
+            {
+                EffectOutcome = new EffectOutcome()
+                {
+                    NativeProductionModifier = 1,
+                }
+            }
+        },
+
+        new ModifierDef()
+        {
             DefName = "VerdantlyIdolized",
             Label = "verdantly idolized",
             Description = "Blessed by the Verdant Idol. This object radiates fertile energy, enriching the soil beneath it.",
@@ -181,6 +196,43 @@
                         NativeProductionModifier = 1
                     },
                 },
+            }
+        },
+
+        new ObjectDef()
+        {
+            DefName = "KibbleSingle",
+            Label = "kibble",
+            Description = "A single piece of kibble, loved by all animals.",
+            Tier = ObjectTierDefOf.Common,
+            Effects = new List<ObjectEffect>()
+            {
+                new AdjacencyEffect()
+                {
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TagsAny = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Animal,
+                        }
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        AppliedObjectModifier = ModifierDefOf.Enriched,
+                        AppliedObjectModifierDuration = 3,
+                    }
+                },
+                new SelfEffect()
+                {
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TagNearby = ObjectTagDefOf.Animal,
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        Destroy = true,
+                    }
+                }
             }
         },
 

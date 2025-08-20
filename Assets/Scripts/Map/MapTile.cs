@@ -87,13 +87,12 @@ public class MapTile : ITooltipTarget
             if (duration == -1) existingModifier.MakeInfinite();
             else if (duration > existingModifier.RemainingDuration) existingModifier.SetDuration(duration);
         }
-        else Modifiers.Add(new Modifier(def, duration));
+        else Modifiers.Add(new Modifier(this, def, duration));
     }
 
-    public void DecrementModifierDurations()
+    public void RemoveExpiredModifiers()
     {
-        foreach (Modifier modifier in Modifiers) modifier.DecreaseDuration();
-        Modifiers = Modifiers.Where(m => m.RemainingDuration == -1 || m.RemainingDuration > 0).ToList();
+        Modifiers = Modifiers.Where(m => !m.IsExpired).ToList();
     }
 
     public bool HasModifier(ModifierDef def) => Modifiers.Any(m => m.Def == def);
@@ -168,6 +167,17 @@ public class MapTile : ITooltipTarget
         {
             { ResourceDefOf.Gold, finalGoldCost },
         });
+    }
+
+    /// <summary>
+    /// Returns the total amount of modifiers on this tile, counting both tile modifiers and object modifiers.
+    /// </summary>
+    /// <returns></returns>
+    public int GetTotalAmountOfModifiers()
+    {
+        int numTotalModifiers = Modifiers.Count;
+        if (HasObject) numTotalModifiers += Object.Modifiers.Count;
+        return numTotalModifiers;
     }
 
     #endregion

@@ -70,6 +70,43 @@ public static class ObjectDefs
 
         new ObjectDef()
         {
+            DefName = "KibbleSingle",
+            Label = "kibble",
+            Description = "A single piece of kibble, loved by all animals.",
+            Tier = ObjectTierDefOf.Common,
+            Effects = new List<ObjectEffect>()
+            {
+                new AdjacencyEffect()
+                {
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TagsAny = new List<ObjectTagDef>()
+                        {
+                            ObjectTagDefOf.Animal,
+                        }
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        AppliedObjectModifier = ModifierDefOf.Enriched,
+                        AppliedObjectModifierDuration = 3,
+                    }
+                },
+                new SelfEffect()
+                {
+                    EffectCriteria = new EffectCriteria()
+                    {
+                        TagNearby = ObjectTagDefOf.Animal,
+                    },
+                    EffectOutcome = new EffectOutcome()
+                    {
+                        Destroy = true,
+                    }
+                }
+            }
+        },
+
+        new ObjectDef()
+        {
             DefName = "CompostHeap",
             Label = "compost heap",
             Description = "Old scraps, new life. Everything returns to the soil in time.",

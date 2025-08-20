@@ -3,7 +3,8 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// An ObjectEffect defines a specific effect originating from a source tile, that affects the resource production of tiles or objects.
+/// An ObjectEffect defines a specific effect applied to an object originating from a source (which can be the object itself, another object, or terrain).
+/// Eact ObjectEffect consists of a criteria and an outcome. The criteria defines the conditions of WHEN the effect is applied, and the outcome defines WHAT is applied.
 /// </summary>
 public abstract class ObjectEffect
 {
@@ -14,7 +15,7 @@ public abstract class ObjectEffect
     public ITooltipTarget EffectSource { get; set; }
 
     /// <summary>
-    /// The criteria of when this effect should be triggered.
+    /// The criteria of when this effect should be triggered. May be null if the effect should always be applied.
     /// </summary>
     public EffectCriteria EffectCriteria { get; set; }
 
@@ -31,7 +32,7 @@ public abstract class ObjectEffect
     /// <summary>
     /// Applies all object modifiers that originate from this effect, if the criteria is fulfilled.
     /// </summary>
-    public abstract void ApplyObjectModifiers(MapTile sourceTile);
+    public abstract void ApplyObjectAndTileModifiers(MapTile sourceTile);
 
     /// <summary>
     /// Returns what this effect does as a human-readable string including TMPro tooltip links.

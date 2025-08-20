@@ -35,7 +35,7 @@ public class EffectCriteria
     /// <summary>
     /// If not 0, the effect is only applied if the amount of nearby objects a defined tag is at least this value.
     /// </summary>
-    public int TagNearbyThreshhold { get; init; } = 0;
+    public int TagNearbyThreshhold { get; init; } = 1;
 
     /// <summary>
     /// Defines the radius of what counts as nearby for the nearby tag condition.
@@ -82,14 +82,14 @@ public class EffectCriteria
         }
 
         // Nearby tags checks
-        if (TagNearby != null && TagNearbyThreshhold == 0)
+        if (TagNearby != null && TagNearbyThreshhold <= 0)
         {
             invalidReason = "If TagNearby is defined, the the threshhold needs to be defined as well.";
             return false;
         }
-        if (TagNearby == null && TagNearbyThreshhold != 0)
+        if (TagNearby != null && TagNearbyRadius <= 0)
         {
-            invalidReason = "If TagNearbyThreshhold is defined, the the tag needs to be defined as well.";
+            invalidReason = "If TagNearby is defined, the the radius needs to be defined as well.";
             return false;
         }
 

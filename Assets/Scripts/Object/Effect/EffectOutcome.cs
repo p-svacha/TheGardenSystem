@@ -37,16 +37,30 @@ public class EffectOutcome
     public int AppliedTileModifierDuration { get; init; } = -1;
 
     /// <summary>
+    /// Flag if this outcome destroys the object it is applied to.
+    /// </summary>
+    public bool Destroy { get; init; } = false;
+
+    /// <summary>
     /// Checks if this criteria is valid the way it is defined.
     /// </summary>
     public bool Validate(out string invalidReason)
     {
         invalidReason = "";
 
-        if(NativeProductionModifier == 0 && ResourceProductionModifier.Count == 0 && AppliedObjectModifier == null && AppliedTileModifier == null)
+        if (NativeProductionModifier == 0 && ResourceProductionModifier.Count == 0 && AppliedObjectModifier == null && AppliedTileModifier == null && !Destroy)
         {
             invalidReason = "There is no outcome effect defined.";
             return false;
+        }
+
+        if (Destroy)
+        {
+            if (NativeProductionModifier != 0 || ResourceProductionModifier.Count != 0 || AppliedObjectModifier != null)
+            {
+                invalidReason = "Outcome can't change anything on object it is set to destroy.";
+                return false;
+            }
         }
 
         return true;
@@ -75,6 +89,9 @@ public class EffectOutcome
         }
     }
 
+    /// <summary>
+    /// Applies the configured modifier to the specified tile and/or the object on it.
+    /// </summary>
     public void ApplyModifiersTo(MapTile tile)
     {
         if (AppliedTileModifier != null) tile.ApplyModifier(AppliedTileModifier, AppliedTileModifierDuration);
@@ -82,6 +99,16 @@ public class EffectOutcome
         {
             if(AppliedObjectModifier != null) tile.Object.ApplyModifier(AppliedObjectModifier, AppliedObjectModifierDuration);
         }
+    }
+
+    /// <summary>
+    /// Applies the destruction command to the given object.
+    /// </summary>
+    public void ApplyDestructionTo(Object obj)
+    {
+        if (!Destroy) throw new System.Exception("Can't apply destruction without destroy flag.");
+
+        // todo
     }
 
     /// <summary>
@@ -131,6 +158,7 @@ public class EffectOutcome
             AppliedObjectModifierDuration = this.AppliedObjectModifierDuration,
             AppliedTileModifier = this.AppliedTileModifier,
             AppliedTileModifierDuration = this.AppliedTileModifierDuration,
+            Destroy = this.Destroy,
         };
     }
 }

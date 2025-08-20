@@ -22,7 +22,7 @@ public class SelfEffect : ObjectEffect
         EffectOutcome.ApplyProductionModifiersTo(sourceTile, source, tileProductions);
     }
 
-    public override void ApplyObjectModifiers(MapTile sourceTile)
+    public override void ApplyObjectAndTileModifiers(MapTile sourceTile)
     {
         if (EffectCriteria != null && !EffectCriteria.IsFulfilledOn(sourceTile)) return;
         EffectOutcome.ApplyModifiersTo(sourceTile);

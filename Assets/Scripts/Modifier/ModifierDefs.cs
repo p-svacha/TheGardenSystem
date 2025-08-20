@@ -7,6 +7,21 @@ public static class ModifierDefs
     {
         new ModifierDef()
         {
+            DefName = "Enriched",
+            Label = "enriched",
+            Description = "Native production is increased.",
+            IsStackable = true,
+            Effect = new SelfEffect()
+            {
+                EffectOutcome = new EffectOutcome()
+                {
+                    NativeProductionModifier = 1,
+                }
+            }
+        },
+
+        new ModifierDef()
+        {
             DefName = "VerdantlyIdolized",
             Label = "verdantly idolized",
             Description = "Blessed by the Verdant Idol. This object radiates fertile energy, enriching the soil beneath it.",
