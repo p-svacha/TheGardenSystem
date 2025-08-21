@@ -1,39 +1,18 @@
 FEATURE ROADMAP (in about the order they should be implemented)
 
-bug: modifier overlay is transparent on tilemap
 bug: animated tile animation resets on every drawfullmap
-
-modifiers:
-	fix "x days remaining" in tooltip. always add +1
-	show modifiers in cabinet
-	show modifiers on flyingobjectsprite
-
-destruction effect outcome
-	add logic
-	add to harvest animation
+v v v v
+don't redraw full map every time - only the relevant tiles on the relevant layer
 
 
-object that applies enriched
-	treat for animals
-
-harvest animation:
-	first phase:
-		add logic for negative accumulative resources
-			they go from resource screen to object
-	phase 2: 
-		existing modifiers tick
-		skip if none
-		only animate if modifier fizzles out
-	thrid phase:
-		one by one scattered objects apply modifiers to tiles and objects
-	phase 4:
-		object destruction
-
-ordered scatter:
-	add a little jingle, particles, shake or effect when an effect triggers
-		probably needs a new bool object.IsAffectedBy(otherObject)
+show animated modifiers in cabinet
+show animated modifiers on flyingobjectsprite
 
 rename kindle to fuel
+
+remake beehive -> bonus for bees
+add bee -> produces honey
+add honey -> produces food
 
 new mechanic - mergeable objects:
 	some tiles have the tag "mergeable".
@@ -52,28 +31,37 @@ affection arrows in production overlays:
 	a circle at one end of the arrow indicates the source of the effect (can either be the object receiving the effect, or the one it originates from)
 	also show indicators of what will merge
 
-new mechanic - stackable modifiers:
-	use "enriched" modifier and make it stackable
+fix stackable modifier visuals and feedback:
 	stacked modifiers are drawn the same as one modifier visually
 	in tooltip stacked modifiers are displayed as "enriched (x2)"
 		nested tooltip over (x2) shows when the inidivudal modifiers expire
-	implement application logic for stackable ones
 
-new mechanic - object destriction:
+new mechanic - object destruction:
 	objects can have effects that destroy other objects
 	for example: destroy a random adjacent tier 1 plant to gain +1 food production permanently
 	affects both effect criteria and outcome:
 		in criteria it needs to check if there is an adjacent tier 1 plant
 		outcome is the destruction
 		outcome also applies modifier to self
+	should show up correctly in harvest animation
+		should have own animation, like pixel crumbling (random pixels dissolving (getting bigger and transparent) randomly over a very short time frame) 
+	use it properly for kibble
+
+new mechanic - adjacency effect only affects one random of candidates:
+	adjacency effect that picks X random tiles fulfilling criteria, and applies outcome there
+	don't forget new attribute in copy constructor of EffectOutcome
+	use on kibble
 
 new mechanic - crafting:
 	object that reduces X of resource A to produce Y of resoure b
 	can fail if not enough of resource A is present
 	beware race conditions: it has to be calculated in advance which of these can execute and which not
 		first come first serve applies
+	make sure it looks correct in harvest animation
+		resources icons should fly reverse for negative values, from resource panel to object
 
 tooltip improvements:
+	change title of production tooltip to "<RESOURCE> Production" instead of the object name
 	make modifier description grey in tooltip just like object description, maybe terrain too go check
 	add max width attribute
 	show type on top right (i.e. "rare object" / "market resource" / "resource production", "synergy tag")
@@ -112,7 +100,7 @@ sector selection:
 	which sector does a bought tile go to?
 		always adjacent, add user selection if multiple options
 
-terraforming:
+[maybe] terraforming:
 	more focus on terraforming
 	more transitions between terrain types
 	also multidimenstional transitions

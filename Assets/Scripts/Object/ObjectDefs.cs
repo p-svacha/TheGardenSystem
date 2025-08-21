@@ -91,6 +91,7 @@ public static class ObjectDefs
                         AppliedObjectModifierDuration = 3,
                     }
                 },
+                /* todo: readd when it works
                 new SelfEffect()
                 {
                     EffectCriteria = new EffectCriteria()
@@ -102,6 +103,7 @@ public static class ObjectDefs
                         Destroy = true,
                     }
                 }
+                */
             }
         },
 

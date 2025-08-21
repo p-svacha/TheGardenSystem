@@ -449,13 +449,15 @@ public class Game
         }
     }
 
-    public void ApplyModifier(Modifier modifier)
+    public void ApplyModifier(Modifier modifier, bool redraw = true)
     {
         if (modifier.Tile != null && modifier.Object != null) throw new System.Exception("Cannot apply a modifier that is attached to both an object and a tile.");
         if (modifier.Tile == null && modifier.Object == null) throw new System.Exception("Cannot apply a modifier that is attached to neither an object nor a tile.");
 
         if (modifier.Tile != null) modifier.Tile.ApplyModifier(modifier);
         else if (modifier.Object != null) modifier.Object.ApplyModifier(modifier);
+
+        if (redraw) DrawFullMap();
     }
 
     public void OnObjectReturnedDuringHarvest(Object obj)

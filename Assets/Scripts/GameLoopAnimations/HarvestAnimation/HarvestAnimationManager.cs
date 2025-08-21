@@ -10,7 +10,7 @@ public static class HarvestAnimationManager
     private const float OBJECT_INTERVAL = 0.35f;
     private const float END_DELAY = 0.7f;
 
-    private const float MODIFIER_DURATION_TICK_INTERVAL = 0.08f;
+    private const float MODIFIER_DURATION_TICK_INTERVAL = 1f;
     private const float MODIFIER_FIZZLE_OUT_DURATION = 3.45f; //0.45
 
     private const float NEW_MODIFIER_INTERVAL = 1f;
@@ -79,6 +79,10 @@ public static class HarvestAnimationManager
 
             case HarvestAnimationState.NewModifierApplication:
                 UpdateNewModifierApplication();
+                break;
+
+            case HarvestAnimationState.ObjectDestruction:
+                UpdateObjectDestruction();
                 break;
 
             case HarvestAnimationState.ObjectsReturning:
@@ -302,9 +306,14 @@ public static class HarvestAnimationManager
         // todp make this crocect
         if (StateIndex >= MaxNewModifiers && FlyingNewModifiers.Count == 0)
         {
-            SwitchStateTo(HarvestAnimationState.ObjectsReturning);
-            Game.Instance.DrawFullMap(); // To open shed doors
+            SwitchStateTo(HarvestAnimationState.ObjectDestruction);
         }
+    }
+
+    private static void UpdateObjectDestruction()
+    {
+        SwitchStateTo(HarvestAnimationState.ObjectsReturning);
+        Game.Instance.DrawFullMap(); // To open shed doors
     }
 
     private static void UpdateObjectsReturning()
@@ -369,6 +378,7 @@ public static class HarvestAnimationManager
         ResourceDistribution,
         ExistingModifierTicker,
         NewModifierApplication,
+        ObjectDestruction,
         ObjectsReturning,
         FinalWait,
         Finished
